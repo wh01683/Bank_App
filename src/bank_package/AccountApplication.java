@@ -5,6 +5,6 @@ package bank_package;
  */
 interface AccountApplication {
 
-    public String screeningResult();
+    public boolean screeningResult();
 
 }

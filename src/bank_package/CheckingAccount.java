@@ -9,38 +9,34 @@ class CheckingAccount implements Account {
     * of accounts already created*/
     private final String TYPE = "CHECKING";
     private final double ACCOUNT_NUMBER = 1000000;
-    private final double COMPOUND_FREQUENCY;
-    private final boolean WITHDRAWALS_ALLOWED;
+    private final double MINIMUM_REQUIRED_BALANCE = 0;
     private final Customer OWNER;
+    private double overDraftProtection = -750.0; //set to -750 dollars over draft protection allowed
+    private double overDraftFee = this.overDraftProtection / 20;
+    private CheckingAccountApplication checkingAccountApplication;
     private double interestRate;
-    private double balance;
+    private double accountBalance;
 
-    public CheckingAccount(double interest, Customer owner, double compFreq,
-                           boolean withdrawAllowed) {
-        this.interestRate = interest;
+    public CheckingAccount(double openingBalance, double overDraftProtection, Customer owner) {
+
         this.OWNER = owner;
-        this.COMPOUND_FREQUENCY = compFreq;
-        this.WITHDRAWALS_ALLOWED = withdrawAllowed;
+        this.accountBalance = openingBalance;
+        this.overDraftProtection = overDraftProtection;
     }
 
     @Override
     public double getBalance() {
-        return this.balance;
+        return this.accountBalance;
     }
 
     @Override
     public void setBalance(double newBalance) {
-        this.balance = newBalance;
+        this.accountBalance = newBalance;
     }
 
     @Override
     public double getInterest() {
         return this.interestRate;
-    }
-
-    @Override
-    public void setInterest(double newInterest) {
-        this.interestRate = newInterest;
     }
 
     @Override
@@ -51,5 +47,21 @@ class CheckingAccount implements Account {
     @Override
     public Customer getOwner() {
         return this.OWNER;
+    }
+
+    @Override
+    public double getMinRequiredBalance() {
+        return this.MINIMUM_REQUIRED_BALANCE;
+    }
+
+    @Override
+    public double deposit(double amount) {
+        this.accountBalance += amount;
+        return amount;
+    }
+
+    @Override
+    public double withdraw(double amount) {
+        return 0;
     }
 }

@@ -4,6 +4,18 @@ package bank_package;
 import java.util.Hashtable;
 import java.util.UUID;
 
+/*This "CustomerInterface" class will be the class which primarily interacts with the customer. When the customer
+* logs in to the bank system, they will be prompted for their CUSTOMER ID. This is their primary login name. The
+* interface will prompt the user to create a new account if they do not have a CUSTOMER ID, or if they supplied a
+* CUSTOMER ID which is not found in the hash table. Upon finding the correct customer associated with their CUSTOMER ID,
+* the customer interface will prompt the user for their password. Their password is submitted for verification, comparing
+* their input with the password string of the CUSTOMER object associated with that CUSTOMER ID. Upon verification, the
+* customer may then access the information of all accounts associated with that customer, balances, interest rates, etc.
+* They may also apply for additional accounts (CD, IRA, Savings, etc) through this interface. They may also deposit/
+* withdraw money from their accounts and transfer money between accounts.
+*
+* ToDo: make a Customer UUID scanner, re-prompt customer for UUID if they enter a UUID not found in the customerHashtable*/
+
 public class CustomerInterface {
 
     private static Customer cust;
@@ -18,6 +30,8 @@ public class CustomerInterface {
     private uScanner credHistory = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
     private uScanner credLim = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
 
+
+    /**/
     private CustomerInterface(UUID newCustID, Bank newBank) {
         bank = newBank;
         customerHashtable = bank.getCustomerTable();
@@ -50,7 +64,6 @@ public class CustomerInterface {
     }
 
     private CreditReport fillCredReportInformation(int tempAge) {
-
         System.out.println("Since you are " + tempAge + " years old, you must provide some credit information.");
         double credLimit = credLim.doubleGet();
         double amountOfLatePayments = 0;

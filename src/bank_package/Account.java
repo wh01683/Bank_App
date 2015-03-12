@@ -16,11 +16,14 @@ interface Account {
 
     public double getInterest();
 
-    public void setInterest(double newInterest);
-
     public String getType();
 
     public Customer getOwner();
 
+    public double getMinRequiredBalance();
+
+    public double deposit(double amount);
+
+    public double withdraw(double amount);
 
 }
