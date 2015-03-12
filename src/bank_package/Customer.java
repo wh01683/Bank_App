@@ -4,7 +4,11 @@ import java.util.UUID;
 
 
 public class Customer {
+
+    private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
+    private final int NUM_IN_ALPHABET = ALPHABET.length();
+    private final int NUM_IN_ALPHABET = ALPHABET.length();
     final int NUM_IN_HEX = HEX_ALPHABET.length();
     private final UUID CUSTOMER_ID;
     private final String name;
@@ -28,7 +32,7 @@ public class Customer {
         this.age = ageS.intGet();
         this.name = nameS.stringGet();
         if (this.age > 17)
-            this._cred = fillCredReport(this.age);
+            this._cred = new CreditReport(this.age);
         this._score = new ChexSystems();
 
     }
@@ -38,11 +42,21 @@ public class Customer {
         this.age = tempAge;
         this.name = tempName;
         if (this.age > 17)
-            this._cred = fillCredReport(this.age);
+            this._cred = new CreditReport(this.age);
+        this._cred = _cred.makeRandomCreditReport();
         this._score = new ChexSystems();
 
     }
 
+    public Customer(boolean random) {
+        this.CUSTOMER_ID = new UUID(64, 64);
+        this.age = r.nextInt(100);
+        this.name = nameGen(2, 50);
+        this._cred = _cred.makeRandomCreditReport();
+        this._cred.setLatePaymentAmount(r.nextDouble() * 2000000000);
+        this._score = new ChexSystems();
+
+    }
 
     public UUID getUUID() {
         return this.CUSTOMER_ID;
@@ -77,5 +91,12 @@ public class Customer {
                 accountBalance, lenCredHistory);
     }
 
+    private String nameGen(int minLength, int maxLength) {
+        String temp = "";
+        for (int i = minLength; i <= maxLength; i++) {
+            temp += ALPHABET.charAt(r.nextInt(NUM_IN_ALPHABET));
+        }
+        return temp;
+    }
 
 }

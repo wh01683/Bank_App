@@ -14,7 +14,7 @@ class TestGenerator {
     final int NUM_IN_HEX = HEX_ALPHABET.length();
     private final int NUM_IN_ALPHABET = ALPHABET.length();
     File test = new File("tests.xml");
-    private Hashtable<TestGenerator, UUID> testList;
+    private Hashtable<Customer, UUID> testList;
     private XMLEncoder x = new XMLEncoder(getStreams("C:\\Users\\robert\\Desktop\\tests.xml"));
     private Random r = new Random();
     private Customer _cust;
@@ -22,17 +22,21 @@ class TestGenerator {
     private ChexSystems _chex;
 
     public TestGenerator(int amountOfTests) {
-        this._cust = new Customer(nameGen(2, 50), r.nextInt(100));
+        /*this._cust = new Customer(nameGen(2, 50), r.nextInt(100));
         this._cred = new CreditReport(r.nextInt(100), r.nextInt(100), r.nextInt(100), r.nextDouble() * 2000000000, r.nextDouble() * 2000000000,
                 r.nextInt(100));
         this._cred.setLatePaymentAmount(r.nextDouble() * 2000000000);
         this._chex = new ChexSystems();
-
-        testList = new Hashtable<TestGenerator, UUID>(amountOfTests);
+        */
+        Customer tempCustomer = new Customer(true);
+        testList = new Hashtable<Customer, UUID>();
         for (int i = 0; i < amountOfTests; i++) {
-            testList.put(new TestGenerator(1), this._cust.getUUID());
+            testList.put(tempCustomer, this._cust.getUUID());
         }
+
+
     }
+
 
     public void printTests() {
         this.x.writeObject(this.testList);

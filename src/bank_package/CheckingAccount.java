@@ -8,7 +8,7 @@ class CheckingAccount implements Account {
     /*ToDo: implement observer to watch for new accounts created calculate account number from the number
     * of accounts already created*/
     private final String TYPE = "CHECKING";
-    private final double ACCOUNT_NUMBER;
+    private final double ACCOUNT_NUMBER = 1000000;
     private final double COMPOUND_FREQUENCY;
     private final boolean WITHDRAWALS_ALLOWED;
     private final Customer OWNER;

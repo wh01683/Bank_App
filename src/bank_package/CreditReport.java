@@ -14,6 +14,9 @@ class CreditReport {
     private final double CREDIT_ACCOUNT_BALANCE;
     private double latePaymentAmounts;
 
+    private Random r = new Random();
+
+
     public CreditReport(int age, int latePaymentsOnRecord, int recentCredInquiries, double credLimit,
                         double accountBalance, int lenCredHistory) {
 
@@ -121,4 +124,9 @@ class CreditReport {
         return tempScore;
     }
 
+    public CreditReport makeRandomCreditReport() {
+        /*Makes totally random credit report*/
+        return new CreditReport(r.nextInt(100), r.nextInt(100), r.nextInt(100), r.nextDouble() * 2000000000, r.nextDouble() * 2000000000,
+                r.nextInt(100));
+    }
 }
