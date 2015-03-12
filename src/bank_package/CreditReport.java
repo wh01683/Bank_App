@@ -8,14 +8,14 @@ public class CreditReport {
     private double latePaymentAmounts;
 
 
-    private MoBettaScanner latePay;
+    private uScanner latePay;
 
     public CreditReport(int age, int latePaymentsOnRecord, int recentCredInquiries, double credLimit,
                         double accountBalance, int lenCredHistory) {
 
         this.CUSTOMER_AGE = age;
         this.RECENT_LATE_PAYMENT_NUMBER = latePaymentsOnRecord;
-        latePay = new MoBettaScanner("You indicated you have " + this.RECENT_LATE_PAYMENT_NUMBER + " late payments on record.\n"
+        latePay = new uScanner("You indicated you have " + this.RECENT_LATE_PAYMENT_NUMBER + " late payments on record.\n"
                 + "Please enter the total amount of the late payments.", 0.0, 2000000000.0);
         this.RECENT_CREDIT_INQUIRIES = recentCredInquiries;
         this.CREDIT_LIMIT = credLimit;
