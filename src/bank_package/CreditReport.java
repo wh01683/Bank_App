@@ -1,14 +1,13 @@
 package bank_package;
 
 import java.util.*;
-
 public class CreditReport {
-
     static Scanner in = new Scanner(System.in);
     final int CREDIT_SCORE, RECENT_LATE_PAYMENT_NUMBER, CUSTOMER_AGE, RECENT_CREDIT_INQUIRIES, LENGTH_OF_CREDIT_HISTORY;
     final double CREDIT_LIMIT, CREDIT_USED, CREDIT_ACCOUNT_BALANCE;
-
     private double latePaymentAmounts;
+
+
     private MoBettaScanner latePay;
 
     public CreditReport(int age, int latePaymentsOnRecord, int recentCredInquiries, double credLimit,
