@@ -76,4 +76,8 @@ class Bank {
 
     }
 
+    protected Hashtable getCustomerTable() {
+        return this.customerHashtable;
+    }
+
 }
