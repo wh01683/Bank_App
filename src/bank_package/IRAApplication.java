@@ -13,11 +13,9 @@ public class IRAApplication implements AccountApplication {
         this.approved = decideApproved();
     }
 
-    public String screeningResult() {
-        if (!this.approved)
-            return ("You have been declined, " + this._cust.getName() + ". We apologize.");
-        else
-            return ("Congratulations " + this._cust.getName() + "! You have been approved.");
+    public boolean screeningResult() {
+
+        return this.approved;
     }
 
     private boolean decideApproved() {
