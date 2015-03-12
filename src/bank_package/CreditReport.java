@@ -1,5 +1,7 @@
 package bank_package;
 
+import sun.security.krb5.internal.CredentialsUtil;
+
 import java.util.*;
 
 class CreditReport {
@@ -12,27 +14,39 @@ class CreditReport {
     private final double CREDIT_LIMIT;
     private final double CREDIT_USED;
     private final double CREDIT_ACCOUNT_BALANCE;
-    private double latePaymentAmounts;
+    private final double AMOUNT_OF_LATE_PAYMENTS;
 
     private Random r = new Random();
 
 
-    public CreditReport(int age, int latePaymentsOnRecord, int recentCredInquiries, double credLimit,
+    public CreditReport(int age, int latePaymentsOnRecord, double amountOfLatePayments, int recentCredInquiries, double credLimit,
                         double accountBalance, int lenCredHistory) {
 
         this.CUSTOMER_AGE = age;
         this.RECENT_LATE_PAYMENT_NUMBER = latePaymentsOnRecord;
-        uScanner latePay = new uScanner("You indicated you have " + this.RECENT_LATE_PAYMENT_NUMBER + " late payments on record.\n"
-                + "Please enter the total amount of the late payments.", 0.0, 2000000000.0);
+        this.AMOUNT_OF_LATE_PAYMENTS = amountOfLatePayments;
         this.RECENT_CREDIT_INQUIRIES = recentCredInquiries;
         this.CREDIT_LIMIT = credLimit;
         this.CREDIT_ACCOUNT_BALANCE = accountBalance;
         this.LENGTH_OF_CREDIT_HISTORY = lenCredHistory;
         this.CREDIT_SCORE = calculateCreditScore();
-        this.CREDIT_USED = (this.CREDIT_LIMIT / this.CREDIT_ACCOUNT_BALANCE) * 100;
+        this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
 
 		/*if (this.RECENT_LATE_PAYMENT_NUMBER > 0) this.RECENT_LATE_PAYMENT_AMOUNT = latePay.doubleGet();
         else this.RECENT_LATE_PAYMENT_AMOUNT = 0;*/
+
+    }
+
+    public CreditReport(boolean Random, int age) {
+        this.CUSTOMER_AGE = age;
+        this.RECENT_LATE_PAYMENT_NUMBER = r.nextInt(100);
+        this.AMOUNT_OF_LATE_PAYMENTS = r.nextDouble() * 2000000000.0;
+        this.RECENT_CREDIT_INQUIRIES = r.nextInt(100);
+        this.CREDIT_LIMIT = r.nextDouble() * 2000000000.0;
+        this.CREDIT_ACCOUNT_BALANCE = r.nextDouble() * 2000000000.0;
+        this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
+        this.LENGTH_OF_CREDIT_HISTORY = r.nextInt(100);
+        this.CREDIT_SCORE = calculateCreditScore();
 
     }
 
@@ -46,11 +60,7 @@ class CreditReport {
         this.LENGTH_OF_CREDIT_HISTORY = 0;
         this.CREDIT_SCORE = calculateCreditScore();
         this.CREDIT_USED = (this.CREDIT_LIMIT / this.CREDIT_ACCOUNT_BALANCE) * 100;
-        this.latePaymentAmounts = 0;
-    }
-
-    public void setLatePaymentAmount(double newPayments) {
-        this.latePaymentAmounts = newPayments;
+        this.AMOUNT_OF_LATE_PAYMENTS = 0;
     }
 
     public int getCreditScore() {
@@ -59,12 +69,20 @@ class CreditReport {
 
     private int calculateCreditScore() {
         int tempScore = 100; //base score
-        tempScore += 159; //I automatically add 159 because I do not take into account variables comprising
-        //20% of the credit score: types of credit in use and new credit.
+        tempScore += 79; /*I automatically add 79 because I do not take into account variables comprising
+        10% of the credit score: types of credit in use. Realistically, a users credit score would improve if they
+        are using a diverse amount of payment options which require a credit score. For instance, all other things being
+        equal, a user would have a HIGHER credit score if they had 2 credit cards, a car payment, and a mortgage THAN
+        a user with just 4 credit cards.*/
+
         tempScore += calcPaymentHistoryScore() + calcAmtOwedScore() + calcLenHistoryScore();
 
         return tempScore;
 
+    }
+
+    private int calcNewCreditScore() {
+        return 80 - (this.RECENT_CREDIT_INQUIRIES * 10);
     }
 
     private int calcPaymentHistoryScore() {
@@ -90,7 +108,7 @@ class CreditReport {
                 severity = 10;
         }
 
-        double latePaymentMult = severity * this.latePaymentAmounts;
+        double latePaymentMult = severity * this.AMOUNT_OF_LATE_PAYMENTS;
 
         if (latePaymentMult == 0 || latePaymentMult < 1000) tempScore = 279;
         if (latePaymentMult < 3000) tempScore = 200;
@@ -117,7 +135,7 @@ class CreditReport {
         //max is 120
         int tempScore = 20;
 
-        tempScore += this.CUSTOMER_AGE;
+        tempScore += this.CUSTOMER_AGE - this.LENGTH_OF_CREDIT_HISTORY;
 
         if (tempScore > 120) tempScore = 120;
 
@@ -126,7 +144,7 @@ class CreditReport {
 
     public CreditReport makeRandomCreditReport() {
         /*Makes totally random credit report*/
-        return new CreditReport(r.nextInt(100), r.nextInt(100), r.nextInt(100), r.nextDouble() * 2000000000, r.nextDouble() * 2000000000,
-                r.nextInt(100));
+        return new CreditReport(r.nextInt(100), r.nextInt(100), r.nextDouble() * 200000000.0, r.nextInt(100),
+                r.nextDouble() * 2000000000.0, r.nextDouble() * 2000000000.0, r.nextInt(100));
     }
 }

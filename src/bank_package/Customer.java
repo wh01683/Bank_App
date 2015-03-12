@@ -7,15 +7,15 @@ public class Customer {
 
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
-    private final int NUM_IN_ALPHABET = ALPHABET.length();
-    private final int NUM_IN_ALPHABET = ALPHABET.length();
     final int NUM_IN_HEX = HEX_ALPHABET.length();
+    private final int NUM_IN_ALPHABET = ALPHABET.length();
     private final UUID CUSTOMER_ID;
     private final String name;
     Random r = new Random();
     private uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
     private uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
     private uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
+
     private uScanner credInquiries = new uScanner("Please enter the number of recent credit inquiries: ", -1, 99);
     private uScanner credBalance = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
     private uScanner credHistory = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
@@ -52,8 +52,7 @@ public class Customer {
         this.CUSTOMER_ID = new UUID(64, 64);
         this.age = r.nextInt(100);
         this.name = nameGen(2, 50);
-        this._cred = _cred.makeRandomCreditReport();
-        this._cred.setLatePaymentAmount(r.nextDouble() * 2000000000);
+        this._cred = new CreditReport(true, this.age);
         this._score = new ChexSystems();
 
     }
@@ -78,16 +77,20 @@ public class Customer {
         return this._cred.getCreditScore();
     }
 
+
     private CreditReport fillCredReport(int tempAge) {
 
         System.out.println("Since you are " + tempAge + " years old, you must provide some credit information.");
         double credLimit = credLim.doubleGet();
+        double amountOfLatePayments = 0;
         double accountBalance = credBalance.doubleGet();
         int lenCredHistory = credHistory.intGet();
         int latePaymentsOnRecord = latePayments.intGet();
+        if (latePaymentsOnRecord > 0)
+            amountOfLatePayments = getLatePaymentAmounts(latePaymentsOnRecord);
         int recentCredInquiries = credInquiries.intGet();
 
-        return new CreditReport(age, latePaymentsOnRecord, recentCredInquiries, credLimit,
+        return new CreditReport(age, latePaymentsOnRecord, amountOfLatePayments, recentCredInquiries, credLimit,
                 accountBalance, lenCredHistory);
     }
 
@@ -99,4 +102,10 @@ public class Customer {
         return temp;
     }
 
+
+    private double getLatePaymentAmounts(int newNumberOfLatePayments) {
+        uScanner latePay = new uScanner("You indicated you have " + newNumberOfLatePayments + " late payments on record.\n"
+                + "Please enter the total amount of the late payments.", 0.0, 2000000000.0);
+        return latePay.doubleGet();
+    }
 }

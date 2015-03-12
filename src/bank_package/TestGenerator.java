@@ -29,7 +29,7 @@ class TestGenerator {
         this._chex = new ChexSystems();
         */
         Customer tempCustomer = new Customer(true);
-        testList = new Hashtable<Customer, UUID>();
+        testList = new Hashtable<Customer, UUID>(amountOfTests);
         for (int i = 0; i < amountOfTests; i++) {
             testList.put(tempCustomer, this._cust.getUUID());
         }
