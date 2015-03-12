@@ -15,7 +15,6 @@ public class Customer {
     private uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
     private uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
     private uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
-
     private uScanner credInquiries = new uScanner("Please enter the number of recent credit inquiries: ", -1, 99);
     private uScanner credBalance = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
     private uScanner credHistory = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
@@ -26,16 +25,6 @@ public class Customer {
     private int age;
     private int ChexSystemsScore = 0; //intialize to 0 indicating no prior history
 
-
-    public Customer() {
-        this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
-        this.age = ageS.intGet();
-        this.name = nameS.stringGet();
-        if (this.age > 17)
-            this._cred = new CreditReport(this.age);
-        this._score = new ChexSystems();
-
-    }
 
     public Customer(String tempName, int tempAge) {
         this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
@@ -52,7 +41,7 @@ public class Customer {
         this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
         this.age = r.nextInt(100);
         this.name = nameGen(2, 50);
-        this._cred = new CreditReport(true, this.age);
+        this._cred = new CreditReport(this.age, true);
         this._score = new ChexSystems();
 
     }

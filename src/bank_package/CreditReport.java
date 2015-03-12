@@ -37,7 +37,7 @@ class CreditReport {
 
     }
 
-    public CreditReport(boolean Random, int age) {
+    public CreditReport(int age, boolean random) {
         this.CUSTOMER_AGE = age;
         this.RECENT_LATE_PAYMENT_NUMBER = r.nextInt(100);
         this.AMOUNT_OF_LATE_PAYMENTS = r.nextDouble() * 2000000000.0;

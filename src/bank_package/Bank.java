@@ -7,12 +7,13 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
 class Bank {
 
     private final boolean RANDOM_BANK;
     File test = new File("tests.xml");
-    PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\tests.xml");
+    PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\tests.txt");
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private int numberCustomers;
     private int numberAccounts;
@@ -27,8 +28,8 @@ class Bank {
 
         if (this.RANDOM_BANK) {
             this.customerHashtable = new Hashtable<Integer, Customer>(this.numberCustomers * 2);
-            Customer temp = new Customer(this.RANDOM_BANK);
             for (int i = 0; i < this.numberCustomers; ++i) {
+                Customer temp = new Customer(this.RANDOM_BANK);
                 customerHashtable.put(temp.getUUID().hashCode(), temp);
             }
 
@@ -70,7 +71,9 @@ class Bank {
     }
 
     public void printCustomerInfoToFile() {
-        x.writeObject(this.customerHashtable);
+
+        writer.println(this.customerHashtable.toString());
+
     }
 
 }
