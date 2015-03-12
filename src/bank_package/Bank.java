@@ -1,20 +1,23 @@
 package bank_package;
-public class Bank {
+
+class Bank {
 
     private String name = "Sea Island Bank - No Shoes, No Problem!";
-    private double balance;
+    private int numberCustomers;
     private int numberAccounts;
 
-    public Bank(double newBalance) {
-        this.balance = newBalance;
+    public Bank(String name, int numberAccounts, int numberCustomers) {
+        this.name = name;
+        this.numberAccounts = numberAccounts;
+        this.numberCustomers = numberCustomers;
     }
 
-    public double getBalance() {
-        return this.balance;
+    public int getNumberAccounts() {
+        return this.numberAccounts;
     }
 
-    public void setBalance(double newBalance) {
-        this.balance = newBalance;
+    public int getNumberCustomers() {
+        return this.numberCustomers;
     }
 
 }

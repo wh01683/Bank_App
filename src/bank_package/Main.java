@@ -9,7 +9,7 @@ package bank_package;
  * information like ChexSystems report (the banking equivalent of a credit check), available balance
  * to open with, check basic customer information like age, etc*/
 
-public class Main {
+class Main {
 
     public static void main(String[] args) {
 

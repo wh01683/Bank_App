@@ -7,15 +7,15 @@ import java.util.Random;
 import java.util.UUID;
 
 
-public class TestGenerator {
+class TestGenerator {
 
-    final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    final String HEX_ALPHABET = "abcdefABCDEF0123456789";
+    private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
     final int NUM_IN_HEX = HEX_ALPHABET.length();
-    final int NUM_IN_ALPHABET = ALPHABET.length();
-    Hashtable<TestGenerator, UUID> testList;
+    private final int NUM_IN_ALPHABET = ALPHABET.length();
     File test = new File("tests.xml");
-    XMLEncoder x = new XMLEncoder(getStreams("C:\\Users\\robert\\Desktop\\tests.xml"));
+    private Hashtable<TestGenerator, UUID> testList;
+    private XMLEncoder x = new XMLEncoder(getStreams("C:\\Users\\robert\\Desktop\\tests.xml"));
     private Random r = new Random();
     private Customer _cust;
     private CreditReport _cred;

@@ -2,9 +2,9 @@ package bank_package;
 import java.util.Scanner;
 import java.util.regex.*;
 
-public class uScanner {
+class uScanner {
 
-    static Scanner in = new Scanner(System.in);
+    private static Scanner in = new Scanner(System.in);
 
     private int maxInt;
     private int minInt;
@@ -37,12 +37,7 @@ public class uScanner {
             System.out.println("Must enter a numeric value.");
             in.next();
         }
-
-        int input = in.nextInt();
-
-        return input;
-
-
+        return in.nextInt();
     }
 
     public int intGet() {
@@ -87,9 +82,7 @@ public class uScanner {
             System.out.println("Must enter a numeric value.");
             in.next();
         }
-        double input = in.nextDouble();
-
-        return input;
+        return in.nextDouble();
     }
 
     private String getString() {
@@ -99,10 +92,7 @@ public class uScanner {
             System.out.println(this.prompt);
             in.next();
         }
-
-        String input = in.next();
-
-        return input;
+        return in.next();
     }
 
 

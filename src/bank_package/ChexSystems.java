@@ -1,9 +1,8 @@
 package bank_package;
 import java.util.Random;
 
-public class ChexSystems {
-
-    final int CHEX_SYSTEMS_SCORE;
+class ChexSystems {
+    private final int CHEX_SYSTEMS_SCORE;
     private Random r = new Random();
 
     public ChexSystems() {

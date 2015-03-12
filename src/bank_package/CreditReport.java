@@ -1,21 +1,25 @@
 package bank_package;
 
 import java.util.*;
-public class CreditReport {
+
+class CreditReport {
     static Scanner in = new Scanner(System.in);
-    final int CREDIT_SCORE, RECENT_LATE_PAYMENT_NUMBER, CUSTOMER_AGE, RECENT_CREDIT_INQUIRIES, LENGTH_OF_CREDIT_HISTORY;
-    final double CREDIT_LIMIT, CREDIT_USED, CREDIT_ACCOUNT_BALANCE;
+    private final int CREDIT_SCORE;
+    private final int RECENT_LATE_PAYMENT_NUMBER;
+    private final int CUSTOMER_AGE;
+    private final int RECENT_CREDIT_INQUIRIES;
+    private final int LENGTH_OF_CREDIT_HISTORY;
+    private final double CREDIT_LIMIT;
+    private final double CREDIT_USED;
+    private final double CREDIT_ACCOUNT_BALANCE;
     private double latePaymentAmounts;
-
-
-    private uScanner latePay;
 
     public CreditReport(int age, int latePaymentsOnRecord, int recentCredInquiries, double credLimit,
                         double accountBalance, int lenCredHistory) {
 
         this.CUSTOMER_AGE = age;
         this.RECENT_LATE_PAYMENT_NUMBER = latePaymentsOnRecord;
-        latePay = new uScanner("You indicated you have " + this.RECENT_LATE_PAYMENT_NUMBER + " late payments on record.\n"
+        uScanner latePay = new uScanner("You indicated you have " + this.RECENT_LATE_PAYMENT_NUMBER + " late payments on record.\n"
                 + "Please enter the total amount of the late payments.", 0.0, 2000000000.0);
         this.RECENT_CREDIT_INQUIRIES = recentCredInquiries;
         this.CREDIT_LIMIT = credLimit;

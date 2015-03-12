@@ -8,15 +8,15 @@ package bank_package;
 
 import java.util.*;
 
-public interface Account {
-
-    public void setBalance();
+interface Account {
 
     public double getBalance();
 
-    public void setInterest();
+    public void setBalance(double newBalance);
 
     public double getInterest();
+
+    public void setInterest(double newInterest);
 
     public String getType();
 

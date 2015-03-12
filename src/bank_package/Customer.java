@@ -4,7 +4,7 @@ import java.util.UUID;
 
 
 public class Customer {
-    final String HEX_ALPHABET = "abcdefABCDEF0123456789";
+    private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
     final int NUM_IN_HEX = HEX_ALPHABET.length();
     private final UUID CUSTOMER_ID;
     private final String name;
@@ -66,7 +66,6 @@ public class Customer {
 
     private CreditReport fillCredReport(int tempAge) {
 
-        int age = tempAge;
         System.out.println("Since you are " + tempAge + " years old, you must provide some credit information.");
         double credLimit = credLim.doubleGet();
         double accountBalance = credBalance.doubleGet();
@@ -74,11 +73,8 @@ public class Customer {
         int latePaymentsOnRecord = latePayments.intGet();
         int recentCredInquiries = credInquiries.intGet();
 
-        CreditReport tempcr = new CreditReport(age, latePaymentsOnRecord, recentCredInquiries, credLimit,
+        return new CreditReport(age, latePaymentsOnRecord, recentCredInquiries, credLimit,
                 accountBalance, lenCredHistory);
-
-
-        return tempcr;
     }
 
 
