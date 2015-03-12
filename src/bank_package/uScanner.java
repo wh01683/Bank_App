@@ -2,7 +2,7 @@ package bank_package;
 import java.util.Scanner;
 import java.util.regex.*;
 
-public class MoBettaScanner {
+public class uScanner {
 
     static Scanner in = new Scanner(System.in);
 
@@ -16,7 +16,7 @@ public class MoBettaScanner {
 
     private String prompt;
 
-    public MoBettaScanner(String textPrompt, int min, int max) {
+    public uScanner(String textPrompt, int min, int max) {
         this.prompt = textPrompt;
         this.minInt = min;
         this.maxInt = max;
@@ -24,7 +24,7 @@ public class MoBettaScanner {
         this.maxLength = max;
     }
 
-    public MoBettaScanner(String textPrompt, double min, double max) {
+    public uScanner(String textPrompt, double min, double max) {
         this.prompt = textPrompt;
         this.minDouble = min;
         this.maxDouble = max;

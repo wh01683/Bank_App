@@ -9,13 +9,13 @@ public class Customer {
     private final UUID CUSTOMER_ID;
     private final String name;
     Random r = new Random();
-    private MoBettaScanner nameS = new MoBettaScanner("Please enter your name: ", 2, 50);
-    private MoBettaScanner ageS = new MoBettaScanner("Please enter your age: ", 14, 99);
-    private MoBettaScanner latePayments = new MoBettaScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
-    private MoBettaScanner credInquiries = new MoBettaScanner("Please enter the number of recent credit inquiries: ", -1, 99);
-    private MoBettaScanner credBalance = new MoBettaScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
-    private MoBettaScanner credHistory = new MoBettaScanner("Please enter the length of your credit history in years: ", -1, 99);
-    private MoBettaScanner credLim = new MoBettaScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
+    private uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
+    private uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
+    private uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
+    private uScanner credInquiries = new uScanner("Please enter the number of recent credit inquiries: ", -1, 99);
+    private uScanner credBalance = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
+    private uScanner credHistory = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
+    private uScanner credLim = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
     private CreditReport _cred;
     private ChexSystems _score;
 
