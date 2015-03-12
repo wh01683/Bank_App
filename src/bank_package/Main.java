@@ -13,9 +13,9 @@ class Main {
 
     public static void main(String[] args) {
 
-        TestGenerator test = new TestGenerator(560);
-        test.printTests();
+        Bank test = new Bank("Fred", 1000, 20, true);
 
+        test.printCustomerInfoToFile();
 
     }
 

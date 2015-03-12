@@ -28,7 +28,7 @@ public class Customer {
 
 
     public Customer() {
-        this.CUSTOMER_ID = new UUID(64, 64);
+        this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
         this.age = ageS.intGet();
         this.name = nameS.stringGet();
         if (this.age > 17)
@@ -38,7 +38,7 @@ public class Customer {
     }
 
     public Customer(String tempName, int tempAge) {
-        this.CUSTOMER_ID = new UUID(64, 64);
+        this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
         this.age = tempAge;
         this.name = tempName;
         if (this.age > 17)
@@ -49,7 +49,7 @@ public class Customer {
     }
 
     public Customer(boolean random) {
-        this.CUSTOMER_ID = new UUID(64, 64);
+        this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
         this.age = r.nextInt(100);
         this.name = nameGen(2, 50);
         this._cred = new CreditReport(true, this.age);
