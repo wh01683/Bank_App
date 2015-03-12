@@ -1,13 +1,14 @@
 package bank_package;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class CreditReport {
 
     static Scanner in = new Scanner(System.in);
     final int CREDIT_SCORE, RECENT_LATE_PAYMENT_NUMBER, CUSTOMER_AGE, RECENT_CREDIT_INQUIRIES, LENGTH_OF_CREDIT_HISTORY;
-    final double CREDIT_LIMIT, CREDIT_USED, CREDIT_ACCOUNT_BALANCE, RECENT_LATE_PAYMENT_AMOUNT;
+    final double CREDIT_LIMIT, CREDIT_USED, CREDIT_ACCOUNT_BALANCE;
 
+    private double latePaymentAmounts;
     private MoBettaScanner latePay;
 
     public CreditReport(int age, int latePaymentsOnRecord, int recentCredInquiries, double credLimit,
@@ -24,8 +25,8 @@ public class CreditReport {
         this.CREDIT_SCORE = calculateCreditScore();
         this.CREDIT_USED = (this.CREDIT_LIMIT / this.CREDIT_ACCOUNT_BALANCE) * 100;
 
-        if (this.RECENT_LATE_PAYMENT_NUMBER > 0) this.RECENT_LATE_PAYMENT_AMOUNT = latePay.doubleGet();
-        else this.RECENT_LATE_PAYMENT_AMOUNT = 0;
+		/*if (this.RECENT_LATE_PAYMENT_NUMBER > 0) this.RECENT_LATE_PAYMENT_AMOUNT = latePay.doubleGet();
+        else this.RECENT_LATE_PAYMENT_AMOUNT = 0;*/
 
     }
 
@@ -39,8 +40,11 @@ public class CreditReport {
         this.LENGTH_OF_CREDIT_HISTORY = 0;
         this.CREDIT_SCORE = calculateCreditScore();
         this.CREDIT_USED = (this.CREDIT_LIMIT / this.CREDIT_ACCOUNT_BALANCE) * 100;
-        this.RECENT_LATE_PAYMENT_AMOUNT = 0;
+        this.latePaymentAmounts = 0;
+    }
 
+    public void setLatePaymentAmount(double newPayments) {
+        this.latePaymentAmounts = newPayments;
     }
 
     public int getCreditScore() {
@@ -80,7 +84,7 @@ public class CreditReport {
                 severity = 10;
         }
 
-        double latePaymentMult = severity * this.RECENT_LATE_PAYMENT_AMOUNT;
+        double latePaymentMult = severity * this.latePaymentAmounts;
 
         if (latePaymentMult == 0 || latePaymentMult < 1000) tempScore = 279;
         if (latePaymentMult < 3000) tempScore = 200;

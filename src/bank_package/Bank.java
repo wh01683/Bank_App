@@ -1,5 +1,4 @@
 package bank_package;
-
 public class Bank {
 
     private double balance;

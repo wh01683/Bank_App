@@ -1,5 +1,4 @@
 package bank_package;
-
 import java.util.Random;
 
 public class ChexSystems {
@@ -8,7 +7,7 @@ public class ChexSystems {
     private Random r = new Random();
 
     public ChexSystems() {
-        //BankApplicationPackage.ChexSystems score ranges from 100 to 899
+        //ChexSystems score ranges from 100 to 899
         this.CHEX_SYSTEMS_SCORE = (r.nextInt() * 899) + 100;
     }
 
