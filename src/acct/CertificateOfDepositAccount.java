@@ -9,14 +9,14 @@ import bank_package.uScanner;
  */
 
 public class CertificateOfDepositAccount implements Account {
-    private static uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
+    private static final uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
     private final double INTEREST_RATE;
     private final Integer ACCOUNT_NUMBER;
     private final String TYPE = "FIXED TERM CERTIFICATE OF DEPOSIT";
     private final double MIN_BALANCE = 1000.00;
     private final int TERM_LENGTH;
     private final Customer OWNER;
-    private RandomGenerator random = new RandomGenerator();
+    private final RandomGenerator random = new RandomGenerator();
     private double accountBalance;
 
 

@@ -1,5 +1,7 @@
 package bank_package;
 
+import acct.Account;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -9,13 +11,14 @@ import java.util.Hashtable;
 
 public class Bank {
     private final boolean RANDOM_BANK;
+    private final int numberCustomers;
+    private final int numberAccounts;
+    private final int[] keyArray;
     File test = new File("tests.xml");
     PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\newionuflkijan.txt");
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
-    private int numberCustomers;
-    private int numberAccounts;
     private Hashtable<Integer, Customer> customerHashtable;
-    private int[] keyArray;
+    private Hashtable<Integer, Account> accountHashtable;
 
     public Bank(String name, int numberAccounts, int numberCustomers, boolean random) {
         this.name = name;
@@ -31,6 +34,7 @@ public class Bank {
                 customerHashtable.put(temp.getUUID().hashCode(), temp);
                 keyArray[i] = temp.getUUID().hashCode();
             }
+
 
         }
 
@@ -77,7 +81,12 @@ public class Bank {
 
     }
 
-    protected Hashtable getCustomerTable() {
+    @Override
+    public String toString() {
+        return this.name + "-" + this.getNumberCustomers() + "-" + this.getNumberAccounts();
+    }
+
+    Hashtable getCustomerTable() {
         return this.customerHashtable;
     }
 

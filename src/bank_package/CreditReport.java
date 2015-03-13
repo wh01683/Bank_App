@@ -3,7 +3,7 @@ package bank_package;
 import java.util.Random;
 import java.util.Scanner;
 
-public class CreditReport {
+class CreditReport {
     static Scanner in = new Scanner(System.in);
     private final int CREDIT_SCORE;
     private final int RECENT_LATE_PAYMENT_NUMBER;
@@ -15,7 +15,7 @@ public class CreditReport {
     private final double CREDIT_ACCOUNT_BALANCE;
     private final double AMOUNT_OF_LATE_PAYMENTS;
 
-    private Random r = new Random();
+    private final Random r = new Random();
 
 
     public CreditReport(int age, int latePaymentsOnRecord, double amountOfLatePayments, int recentCredInquiries,

@@ -9,9 +9,9 @@ import bank_package.Customer;
 public class SavingsAccountApplication implements AccountApplication {
 
     private static final double MIN_BALANCE = 5.0;
+    private final Customer _cust;
     private Bank _bank;
     private boolean approved;
-    private Customer _cust;
 
     public SavingsAccountApplication(Customer newCustomer, double openingBalance) {
         this._cust = newCustomer;

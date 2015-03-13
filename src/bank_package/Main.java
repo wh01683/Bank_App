@@ -21,7 +21,7 @@ class Main {
 
     }
 
-    public void work() {
+    void work() {
 
         Bank testBank = new Bank("Fred", 1000, 20, true);
         testBank.addCustomer(100);

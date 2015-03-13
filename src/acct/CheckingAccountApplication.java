@@ -6,9 +6,9 @@ import bank_package.Customer;
 public class CheckingAccountApplication implements AccountApplication {
 
     private static final double MIN_BALANCE = 0;
+    private final Customer _cust;
     private Bank _bank;
     private boolean approved;
-    private Customer _cust;
 
     public CheckingAccountApplication(Customer newCustomer, double openingBalance) {
         this._cust = newCustomer;

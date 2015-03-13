@@ -4,15 +4,14 @@ import java.util.Scanner;
 
 public class uScanner {
 
-    private static Scanner in = new Scanner(System.in);
-
+    private static final Scanner in = new Scanner(System.in);
+    private final String prompt;
     private int maxInt;
     private int minInt;
     private double maxDouble;
     private double minDouble;
     private int minLength;
     private int maxLength;
-    private String prompt;
 
     public uScanner(String textPrompt, int min, int max) {
         this.prompt = textPrompt;

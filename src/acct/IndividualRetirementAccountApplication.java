@@ -8,9 +8,9 @@ import bank_package.Customer;
  */
 public class IndividualRetirementAccountApplication implements AccountApplication {
     private static final double MIN_BALANCE = 100.0;
+    private final Customer _cust;
     private Bank _bank;
     private boolean approved;
-    private Customer _cust;
 
 
     public IndividualRetirementAccountApplication(Customer newCustomer, double openingBalance) {

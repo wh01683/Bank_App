@@ -15,39 +15,55 @@ import java.util.UUID;
 * They may also apply for additional accounts (CD, IRA, Savings, etc) through this interface. They may also deposit/
 * withdraw money from their accounts and transfer money between accounts.
 *
-* ToDo: make a Customer UUID scanner, re-prompt customer for UUID if they enter a UUID not found in the customerHashtable*/
-
+*/
 public class CustomerInterface {
 
+    private static final AccountFactory accountFactory = new AccountFactory();
     private static Customer cust;
     private static Bank bank;
     private static Hashtable<Integer, Customer> customerHashtable;
     private static CustomerInterface ourInstance;
     private static boolean LOGGED_IN = false;
-    private static AccountFactory accountFactory = new AccountFactory();
-    private uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
-    private uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
-    private uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
-    private uScanner credInquiries = new uScanner("Please enter the number of recent credit inquiries: ", -1, 99);
-    private uScanner credBalance = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
-    private uScanner credHistory = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
-    private uScanner credLim = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
-    private uScanner uuid = new uScanner("Please enter the Customer ID you received when you registered.", 0, 16);
-    private uScanner password = new uScanner("Please enter your password", 4, 16);
-    private uScanner accountRequest = new uScanner("What type of account would you like to add?", -1, 10);
+    private final uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
+    private final uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
+    private final uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
+    private final uScanner credInquiries = new uScanner("Please enter the number of recent credit inquiries: ", -1, 99);
+    private final uScanner credBalance = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
+    private final uScanner credHistory = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
+    private final uScanner credLim = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
+    private final uScanner uuid = new uScanner("Please enter the Customer ID you received when you registered.", 0, 16);
+    private final uScanner password = new uScanner("Please enter your password", 4, 16);
+    private final uScanner accountRequest = new uScanner("What type of account would you like to add?", -1, 10);
+    private final uScanner haveAccount = new uScanner("Do you have an account with us? YES or NO?", -1, 4);
+    private final uScanner registerPrompt = new uScanner("Would you like to register? YES or NO?", -1, 4);
 
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
-    private CustomerInterface(UUID newCustID, Bank newBank) {
+    private CustomerInterface(Bank newBank) {
         bank = newBank;
         customerHashtable = bank.getCustomerTable();
+        UUID newCustID;
         String realPass;
         String enteredPass;
+        boolean customerHasAccount = hasAccount();
+
+        if (!customerHasAccount) {
+            Customer newCustomer = registerNewCustomer();
+            newCustID = newCustomer.getUUID();
+        } else
+            newCustID = UUID.fromString(uuid.alphaNumericStringGet());
 
         if (!customerHashtable.containsKey(newCustID.hashCode())) {
             System.out.println("We could not find your ID, please try again.");
-            newCustID = UUID.fromString(uuid.alphaNumericStringGet());
+            boolean wantsRegister = wantsToRegister();
+            if (wantsRegister) {
+                cust = registerNewCustomer();
+                newCustID = cust.getUUID();
+                /*ToDo: Must implement observer class to update bank's customer table before proceeding from here.*/
+            } else if (!wantsRegister)
+                newCustID = UUID.fromString(uuid.alphaNumericStringGet());
         }
+
         cust = customerHashtable.get(newCustID.hashCode());
         realPass = cust.getPASSWORD();
         enteredPass = password.stringGet();
@@ -60,6 +76,7 @@ public class CustomerInterface {
                 System.exit(1);
             } else {
                 System.out.println("Invalid password. Try Again. " + attempts + " attempts remaining.");
+                LOGGED_IN = false;
                 attempts++;
                 enteredPass = password.stringGet();
             }
@@ -72,7 +89,7 @@ public class CustomerInterface {
     public static CustomerInterface getInstance(UUID newCustomerID, Bank thisBank) {
         if (!(ourInstance == null))
             return ourInstance;
-        else return new CustomerInterface(newCustomerID, thisBank);
+        else return new CustomerInterface(thisBank);
     }
 
     private Customer registerNewCustomer() {
@@ -122,6 +139,26 @@ public class CustomerInterface {
         }
     }
 
+    private boolean hasAccount() {
+        String answer = this.haveAccount.stringGet();
 
+        if (answer.equalsIgnoreCase("YES"))
+            return true;
 
+        else if (answer.equalsIgnoreCase("NO"))
+            return false;
+
+        else return false;
+    }
+
+    private boolean wantsToRegister() {
+        String answer = this.registerPrompt.stringGet();
+
+        if (answer.equalsIgnoreCase("YES"))
+            return true;
+        else if (answer.equalsIgnoreCase("NO"))
+            return false;
+
+        else return false;
+    }
 }

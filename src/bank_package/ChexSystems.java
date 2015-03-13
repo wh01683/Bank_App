@@ -2,9 +2,9 @@ package bank_package;
 import java.util.Random;
 
 /*ToDo: make a more realisitc ChexSystems class that calculates ChexSystems score based on customer history (like CreditScore)*/
-public class ChexSystems {
+class ChexSystems {
     private final int CHEX_SYSTEMS_SCORE;
-    private Random r = new Random();
+    private final Random r = new Random();
 
     public ChexSystems() {
         //ChexSystems score ranges from 100 to 899
