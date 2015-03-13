@@ -4,27 +4,29 @@ import bank_package.Customer;
 import bank_package.RandomGenerator;
 
 /**
- * Created by robert on 3/11/2015.
+ * Created by robert on 3/13/2015.
  */
-public class SavingsAccount implements Account {
+public class MoneyMarketAccount implements Account {
 
-    private final String TYPE = "SAVINGS ACCOUNT";
+    private final String TYPE = "MONEY MARKET ACCOUNT";
     private final Integer ACCOUNT_NUMBER;
-    private final double MINIMUM_REQUIRED_BALANCE = 5;
+    private final double MINIMUM_REQUIRED_BALANCE = 5000;
     private final Customer OWNER;
     private RandomGenerator random = new RandomGenerator();
-    private double interestRate = .0105;
+    private double interestRate = .01;
     private double accountBalance;
 
-    public SavingsAccount(Customer owner, double openingBalance) {
+    public MoneyMarketAccount(Customer owner, double openingBalance) {
+
         this.OWNER = owner;
         this.accountBalance = openingBalance;
         this.ACCOUNT_NUMBER = random.acctGen();
     }
 
     @Override
-    public Account getNewAccount(Customer customer, double openingBalance) {
-        return null;
+    public String toString() {
+        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
+                this.OWNER.getChexSystemsScore() + "-" + this.getMinRequiredBalance();
     }
 
     public Integer getACCOUNT_NUMBER() {
@@ -32,9 +34,8 @@ public class SavingsAccount implements Account {
     }
 
     @Override
-    public String toString() {
-        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
-                this.OWNER.getChexSystemsScore() + "-" + this.interestRate + "-" + this.getMinRequiredBalance();
+    public Account getNewAccount(Customer customer, double openingBalance) {
+        return new MoneyMarketAccount(customer, openingBalance);
     }
 
     @Override
@@ -75,6 +76,8 @@ public class SavingsAccount implements Account {
 
     @Override
     public double withdraw(double amount) {
-        return 0;
+        this.accountBalance -= amount;
+        return amount;
     }
+
 }

@@ -8,8 +8,6 @@ import bank_package.RandomGenerator;
  */
 public class CheckingAccount implements Account {
 
-    /*ToDo: implement observer to watch for new accounts created calculate account number from the number
-    * of accounts already created*/
     private final String TYPE = "CHECKING ACCOUNT";
     private final Integer ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 0;

@@ -46,7 +46,7 @@ class CreditReport {
     }
 
     public CreditReport(int age) {
-
+    /*for customers of age lesser than 18 and greater than 0*/
         this.CUSTOMER_AGE = age;
         this.RECENT_LATE_PAYMENT_NUMBER = 0;
         this.RECENT_CREDIT_INQUIRIES = 0;

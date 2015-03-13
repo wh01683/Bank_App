@@ -71,8 +71,7 @@ public class Bank {
     public void printCustomerInfoToFile() {
 
         Enumeration<Integer> enumKeys = customerHashtable.keys();
-        System.out.println("CUSTOMER ID --------------------------PASSWORD ---NAME ------------------------------" +
-                "------------AGE-CRED");
+
         while (enumKeys.hasMoreElements()) {
             Integer key = enumKeys.nextElement();
             Customer temp = customerHashtable.get(key);

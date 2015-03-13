@@ -32,9 +32,13 @@ public class AccountFactory {
             double tempOpeningBalance = openingBalanceScanner.doubleGet();
             if (new CertificateOfDepositApplication(customer, tempOpeningBalance).screeningResult())
                 return new CertificateOfDepositAccount(customer, tempOpeningBalance, termLengthScanner.intGet());
+        } else if (accountType.equalsIgnoreCase("MMA")) {
+            double tempOpeningBalance = openingBalanceScanner.doubleGet();
+            if (new MoneyMarketAccountApplication(customer, tempOpeningBalance).screeningResult())
+                return new MoneyMarketAccount(customer, tempOpeningBalance);
         }
-
         return null;
     }
 
 }
+

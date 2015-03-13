@@ -12,7 +12,7 @@ public class IndividualRetirementAccount implements Account {
     private final String TYPE = "MONEY MARKET INDIVIDUAL RETIREMENT ACCOUNT";
     private final Integer ACCOUNT_NUMBER;
     private final Customer OWNER;
-    private RandomGenerator random;
+    private RandomGenerator random = new RandomGenerator();
     private double interestRate;
     private double accountBalance;
 

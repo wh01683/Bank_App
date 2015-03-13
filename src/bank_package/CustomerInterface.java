@@ -86,7 +86,7 @@ public class CustomerInterface {
 
     }
 
-    public static CustomerInterface getInstance(UUID newCustomerID, Bank thisBank) {
+    public static CustomerInterface getInstance(Bank thisBank) {
         if (!(ourInstance == null))
             return ourInstance;
         else return new CustomerInterface(thisBank);
@@ -133,8 +133,7 @@ public class CustomerInterface {
         if (!LOGGED_IN) {
             System.out.println("User not logged in. Exiting.");
             System.exit(1);
-        }
-        if (LOGGED_IN) {
+        } else if (LOGGED_IN) {
             cust.addAccount(accountFactory.getAccount(accountRequest.stringGet(), cust));
         }
     }
