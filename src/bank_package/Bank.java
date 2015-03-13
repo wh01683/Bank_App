@@ -89,6 +89,7 @@ public class Bank {
             Integer key = enumKeys.nextElement();
             Customer temp = customerHashtable.get(key);
             System.out.println(temp.toString());
+            temp.printAccountInformation();
         }
 
     }
