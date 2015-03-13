@@ -25,22 +25,27 @@ public class AccountFactory {
             double tempOpeningBalance = openingBalanceScanner.doubleGet();
             if (new CheckingAccountApplication(customer, tempOpeningBalance).screeningResult())
                 return new CheckingAccount(customer, tempOpeningBalance);
+            else return null;
         } else if (accountType.equalsIgnoreCase("SAVINGS")) {
             double tempOpeningBalance = openingBalanceScanner.doubleGet();
             if (new SavingsAccountApplication(customer, tempOpeningBalance).screeningResult())
                 return new SavingsAccount(customer, tempOpeningBalance);
+            else return null;
         } else if (accountType.equalsIgnoreCase("IRA")) {
             double tempOpeningBalance = openingBalanceScanner.doubleGet();
             if (new IndividualRetirementAccountApplication(customer, tempOpeningBalance).screeningResult())
                 return new IndividualRetirementAccount(customer, tempOpeningBalance);
+            else return null;
         } else if (accountType.equalsIgnoreCase("CD")) {
             double tempOpeningBalance = openingBalanceScanner.doubleGet();
             if (new CertificateOfDepositApplication(customer, tempOpeningBalance).screeningResult())
                 return new CertificateOfDepositAccount(customer, tempOpeningBalance, termLengthScanner.intGet());
+            else return null;
         } else if (accountType.equalsIgnoreCase("MMA")) {
             double tempOpeningBalance = openingBalanceScanner.doubleGet();
             if (new MoneyMarketAccountApplication(customer, tempOpeningBalance).screeningResult())
                 return new MoneyMarketAccount(customer, tempOpeningBalance);
+            else return null;
         }
         return null;
     }

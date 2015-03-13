@@ -46,13 +46,18 @@ public class Bank {
 
     public void addCustomer(int numberCustomers) {
         this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
+        this.accountHashtable = new Hashtable<Integer, Account>(numberCustomers * 10);
         for (int i = 0; i < numberCustomers; i++) {
             Customer tempCustomer = new Customer(true);
             this.customerHashtable.put(tempCustomer.getUUID().hashCode(), tempCustomer);
+
             for (int k = 0; k < r.nextInt(10); k++) { //generates anywhere between 10 and 0 random accounts
                 Account tempAccount = testAccountFactory.getRandomAccount(tempCustomer);
                 tempCustomer.addAccount(tempAccount);
             }
+
+            updateAccountTable();
+
         }
     }
 
@@ -76,18 +81,29 @@ public class Bank {
         }
     }
 
-    public void printCustomerInfoToFile() {
+    public void printCustomerInfo() {
 
         Enumeration<Integer> enumKeys = customerHashtable.keys();
 
         while (enumKeys.hasMoreElements()) {
             Integer key = enumKeys.nextElement();
             Customer temp = customerHashtable.get(key);
-            temp.printAllCustomerInformation();
+            System.out.println(temp.toString());
         }
 
     }
 
+    public void printAccountInfo() {
+
+        Enumeration<Integer> enumKeys = this.accountHashtable.keys();
+
+        while (enumKeys.hasMoreElements()) {
+            Integer key = enumKeys.nextElement();
+            Account temp = accountHashtable.get(key);
+            System.out.println(temp.toString());
+        }
+
+    }
     @Override
     public String toString() {
         return this.name + "-" + this.getNumberCustomers() + "-" + this.getNumberAccounts();
@@ -95,6 +111,29 @@ public class Bank {
 
     Hashtable getCustomerTable() {
         return this.customerHashtable;
+    }
+
+    private void updateAccountTable() {
+
+        Enumeration<Integer> enumKeys = customerHashtable.keys();
+        while (enumKeys.hasMoreElements()) {
+            Integer key = enumKeys.nextElement();
+            Customer temp = customerHashtable.get(key);
+
+            Hashtable<Integer, Account> tempHash = temp.getAccountHashtable();
+            Enumeration<Integer> acctKeys = tempHash.keys();
+
+            while (acctKeys.hasMoreElements()) {
+                Integer acctKey = acctKeys.nextElement();
+                Account tempAcct = tempHash.get(acctKey);
+                if (!(tempAcct == null))
+                    this.accountHashtable.put(acctKey, tempAcct);
+
+            }
+
+        }
+
+
     }
 
 }

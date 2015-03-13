@@ -17,9 +17,9 @@ public class Customer {
     private final Random r = new Random();
     private final CreditReport _cred;
     private final ChexSystems _score;
-    private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
     private final int age;
     private final int ChexSystemsScore; //intialize to 0 indicating no prior history
+    private Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
     private AccountFactory testAccountFactory = new AccountFactory();
     private RandomGenerator random = new RandomGenerator();
 
@@ -47,6 +47,9 @@ public class Customer {
 
     }
 
+    public Hashtable<Integer, Account> getAccountHashtable() {
+        return this.accountHashtable;
+    }
     public String getPASSWORD() {
         return this.PASSWORD;
     }
@@ -97,4 +100,10 @@ public class Customer {
 
     }
 
+    @Override
+    public String toString() {
+        return ("\nID: " + this.CUSTOMER_ID + " Pass: " + this.PASSWORD + " Name: " + this.NAME + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
+                + " Chex: " + this.getChexSystemsScore() + " ");
+
+    }
 }

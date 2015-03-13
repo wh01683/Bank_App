@@ -29,7 +29,6 @@ public class RandomGenerator {
             tempAccountNumber = temp += r.nextInt(99999999);
 
         this.acctNumberList.add(tempAccountNumber);
-
         currentIndex++;
         return tempAccountNumber;
     }
@@ -55,5 +54,12 @@ public class RandomGenerator {
         return accounts[r.nextInt(3)];
     }
 
+    public double getDubs(double min, double max) {
+        return ((r.nextDouble() * max) + min);
+    }
+
+    public int getInts(int min, int max) {
+        return ((r.nextInt(max)) + min);
+    }
 
 }

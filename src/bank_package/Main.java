@@ -23,9 +23,11 @@ class Main {
 
     void work() {
 
-        Bank testBank = new Bank("Fred", 200000, 50000, true);
-        testBank.addCustomer(50000);
-        testBank.printCustomerInfoToFile();
+        Bank testBank = new Bank("Fred", 500, 50, true);
+        testBank.addCustomer(50);
+        System.out.println(testBank.toString());
+        testBank.printCustomerInfo();
+        testBank.printAccountInfo();
 
     }
 
