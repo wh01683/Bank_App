@@ -5,20 +5,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
 class Bank {
-
     private final boolean RANDOM_BANK;
     File test = new File("tests.xml");
-    PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\tests.txt");
+    PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\newionuflkijan.txt");
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private int numberCustomers;
     private int numberAccounts;
     private Hashtable<Integer, Customer> customerHashtable;
-    private XMLEncoder x = new XMLEncoder(getFOS("C:\\Users\\robert\\Desktop\\tests.xml"));
+    //private XMLEncoder x = new XMLEncoder(getFOS("C:\\Users\\robert\\Desktop\\tests.xml"));
     private int[] keyArray;
 
     public Bank(String name, int numberAccounts, int numberCustomers, boolean random) {
@@ -75,8 +76,15 @@ class Bank {
 
     public void printCustomerInfoToFile() {
 
-        for (int i = 0; i < this.numberCustomers; i++) {
-            writer.println(this.customerHashtable.get(keyArray[i]).getName());
+        Enumeration<Integer> enumKeys = customerHashtable.keys();
+
+        while (enumKeys.hasMoreElements()) {
+            Integer key = enumKeys.nextElement();
+            Customer temp = customerHashtable.get(key);
+            System.out.println(temp.getName());
+
+
+            //writer.printf((customerHashtable.get(key).getName()));
         }
 
     }
