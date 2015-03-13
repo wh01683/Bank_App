@@ -128,7 +128,7 @@ class Customer {
     }
 
     public void printAllCustomerInformation() {
-        System.out.println(this.CUSTOMER_ID + " " + this.PASSWORD + " " + this.NAME + " " + this.getAge() + " " + this.getCreditScore()
+        System.out.println("\n" + this.CUSTOMER_ID + " " + this.PASSWORD + " " + this.NAME + " " + this.getAge() + " " + this.getCreditScore()
                 + " " + this.getChexSystemsScore() + " ");
         this.printAccountInformation();
 

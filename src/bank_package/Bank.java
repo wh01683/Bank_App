@@ -65,24 +65,11 @@ class Bank {
         }
     }
 
-    /*private FileOutputStream getFOS(String fileName) {
-
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(fileName);
-            return fos;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
-            return null;
-        }
-    }*/
-
     public void printCustomerInfoToFile() {
 
         Enumeration<Integer> enumKeys = customerHashtable.keys();
         System.out.println("CUSTOMER ID --------------------------PASSWORD ---NAME ------------------------------" +
-                "------------AGE-CRED-CHEX-SAV-CHK-CD--IRA");
+                "------------AGE-CRED");
         while (enumKeys.hasMoreElements()) {
             Integer key = enumKeys.nextElement();
             Customer temp = customerHashtable.get(key);
