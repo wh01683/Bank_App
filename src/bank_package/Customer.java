@@ -3,7 +3,7 @@ import java.util.Random;
 import java.util.UUID;
 
 
-public class Customer {
+class Customer {
 
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
@@ -25,7 +25,7 @@ public class Customer {
     private boolean EligibleForSavings;
     private boolean EligibleForMMA;
     private int age;
-    private int ChexSystemsScore = 0; //intialize to 0 indicating no prior history
+    private int ChexSystemsScore; //intialize to 0 indicating no prior history
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport, ChexSystems newScore) {
         this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
@@ -34,6 +34,8 @@ public class Customer {
         this._cred = newCreditReport;
         this._score = newScore;
         this.PASSWORD = password;
+        this.ChexSystemsScore = _score.getScore();
+        //applyForAccounts();
 
     }
 
@@ -44,6 +46,8 @@ public class Customer {
         this._cred = new CreditReport(this.age, true);
         this._score = new ChexSystems();
         this.PASSWORD = passwordGen(5, 15);
+        this.ChexSystemsScore = _score.getScore();
+        // applyForAccounts();
 
     }
 
@@ -63,6 +67,18 @@ public class Customer {
         return this.NAME;
     }
 
+    private void applyForAccounts() {
+
+        CheckingAccountApplication check = new CheckingAccountApplication(this);
+        SavingsAccountApplication save = new SavingsAccountApplication(this);
+        CertificateOfDepositApplication cd = new CertificateOfDepositApplication(this);
+        IndividualRetirementAccountApplication ira = new IndividualRetirementAccountApplication(this);
+
+        this.EligibleForCD = cd.screeningResult();
+        this.EligibleForChecking = check.screeningResult();
+        this.EligibleForIRA = ira.screeningResult();
+        this.EligibleForSavings = save.screeningResult();
+    }
     public int getChexSystemsScore() {
         return this._score.getScore();
     }

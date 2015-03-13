@@ -8,7 +8,7 @@ class ChexSystems {
 
     public ChexSystems() {
         //ChexSystems score ranges from 100 to 899
-        this.CHEX_SYSTEMS_SCORE = (r.nextInt() * 899) + 100;
+        this.CHEX_SYSTEMS_SCORE = (r.nextInt(799) + 100);
     }
 
     public int getScore() {

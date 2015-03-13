@@ -19,18 +19,21 @@ class Bank {
     private int numberAccounts;
     private Hashtable<Integer, Customer> customerHashtable;
     private XMLEncoder x = new XMLEncoder(getFOS("C:\\Users\\robert\\Desktop\\tests.xml"));
+    private int[] keyArray;
 
     public Bank(String name, int numberAccounts, int numberCustomers, boolean random) {
         this.name = name;
         this.numberAccounts = numberAccounts;
         this.numberCustomers = numberCustomers;
         this.RANDOM_BANK = random;
+        this.keyArray = new int[numberCustomers];
 
         if (this.RANDOM_BANK) {
             this.customerHashtable = new Hashtable<Integer, Customer>(this.numberCustomers * 2);
             for (int i = 0; i < this.numberCustomers; ++i) {
                 Customer temp = new Customer(this.RANDOM_BANK);
                 customerHashtable.put(temp.getUUID().hashCode(), temp);
+                keyArray[i] = temp.getUUID().hashCode();
             }
 
         }
@@ -72,7 +75,9 @@ class Bank {
 
     public void printCustomerInfoToFile() {
 
-        writer.println(this.customerHashtable.toString());
+        for (int i = 0; i < this.numberCustomers; i++) {
+            writer.println(this.customerHashtable.get(keyArray[i]).getName());
+        }
 
     }
 

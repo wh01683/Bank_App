@@ -3,13 +3,13 @@ package bank_package;
 /**
  * Created by robert on 3/11/2015.
  */
-public class IRAApplication implements AccountApplication {
+public class IndividualRetirementAccountApplication implements AccountApplication {
     private Bank _bank;
     private boolean approved;
     private Customer _cust;
 
 
-    public IRAApplication(Customer newCustomer) {
+    public IndividualRetirementAccountApplication(Customer newCustomer) {
         this.approved = decideApproved();
     }
 
