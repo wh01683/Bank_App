@@ -1,4 +1,7 @@
-package bank_package;
+package acct;
+
+import bank_package.Customer;
+import bank_package.RandomGenerator;
 
 /**
  * Created by robert on 3/12/2015.
@@ -7,15 +10,33 @@ public class IndividualRetirementAccount implements Account {
 
     private final double MIN_BALANCE = 100.00;
     private final String TYPE = "MONEY MARKET INDIVIDUAL RETIREMENT ACCOUNT";
-    private Customer owner;
+    private final Integer ACCOUNT_NUMBER;
+    private final Customer OWNER;
+    private RandomGenerator random;
     private double interestRate;
     private double accountBalance;
 
 
-    public IndividualRetirementAccount(double openingBalance, Customer owner) {
+    public IndividualRetirementAccount(Customer owner, double openingBalance) {
         this.accountBalance = openingBalance;
-        this.owner = owner;
+        this.OWNER = owner;
         this.interestRate = calculateInterestRate();
+        this.ACCOUNT_NUMBER = random.acctGen();
+    }
+
+    @Override
+    public Account getNewAccount(Customer customer, double openingBalance) {
+        return new IndividualRetirementAccount(customer, openingBalance);
+    }
+
+    public Integer getACCOUNT_NUMBER() {
+        return this.ACCOUNT_NUMBER;
+    }
+
+    @Override
+    public String toString() {
+        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
+                this.OWNER.getChexSystemsScore() + "-" + this.getMinRequiredBalance();
     }
 
     @Override
@@ -40,7 +61,7 @@ public class IndividualRetirementAccount implements Account {
 
     @Override
     public Customer getOwner() {
-        return this.owner;
+        return this.OWNER;
     }
 
     @Override

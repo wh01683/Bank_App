@@ -1,26 +1,49 @@
-package bank_package;
+package acct;
+
+import bank_package.Customer;
+import bank_package.RandomGenerator;
+import bank_package.uScanner;
 
 /**
  * Created by robert on 3/12/2015.
  */
-public class CertificateOfDepositAccount implements Account {
 
+public class CertificateOfDepositAccount implements Account {
+    private static uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
     private final double INTEREST_RATE;
+    private final Integer ACCOUNT_NUMBER;
     private final String TYPE = "FIXED TERM CERTIFICATE OF DEPOSIT";
     private final double MIN_BALANCE = 1000.00;
     private final int TERM_LENGTH;
-    private Customer owner;
+    private final Customer OWNER;
+    private RandomGenerator random = new RandomGenerator();
     private double accountBalance;
 
 
-    public CertificateOfDepositAccount(double openingBalance, int termLength, Customer customer) {
+    public CertificateOfDepositAccount(Customer customer, double openingBalance, int termLength) {
 
-        this.owner = customer;
+        this.OWNER = customer;
         this.INTEREST_RATE = calculateInterestRate(termLength);
         this.accountBalance += openingBalance;
         this.TERM_LENGTH = termLength;
+        this.ACCOUNT_NUMBER = random.acctGen();
+
     }
 
+    @Override
+    public Account getNewAccount(Customer owner, double openingBalance) {
+        return new CertificateOfDepositAccount(owner, openingBalance, termLength.intGet());
+    }
+
+    @Override
+    public String toString() {
+        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
+                this.OWNER.getChexSystemsScore() + "-" + this.getMinRequiredBalance() + "-" + this.TERM_LENGTH;
+    }
+
+    public Integer getACCOUNT_NUMBER() {
+        return this.ACCOUNT_NUMBER;
+    }
 
     @Override
     public double getBalance() {
@@ -65,7 +88,7 @@ public class CertificateOfDepositAccount implements Account {
 
     @Override
     public Customer getOwner() {
-        return this.owner;
+        return this.OWNER;
     }
 
     @Override

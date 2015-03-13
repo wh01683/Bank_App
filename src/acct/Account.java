@@ -1,4 +1,6 @@
-package bank_package;
+package acct;
+
+import bank_package.Customer;
 
 /**
 
@@ -6,7 +8,7 @@ package bank_package;
  */
 
 
-interface Account {
+public interface Account {
 
     public double getBalance();
 
@@ -24,4 +26,7 @@ interface Account {
 
     public double withdraw(double amount);
 
+    public Account getNewAccount(Customer customer, double openingBalance);
+
+    public Integer getACCOUNT_NUMBER();
 }

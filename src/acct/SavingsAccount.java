@@ -1,27 +1,43 @@
-package bank_package;
+package acct;
+
+import bank_package.Customer;
+import bank_package.RandomGenerator;
 
 /**
  * Created by robert on 3/11/2015.
  */
-class CheckingAccount implements Account {
+public class SavingsAccount implements Account {
 
     /*ToDo: implement observer to watch for new accounts created calculate account number from the number
     * of accounts already created*/
-    private final String TYPE = "CHECKING ACCOUNT";
-    private final double ACCOUNT_NUMBER = 1000000;
-    private final double MINIMUM_REQUIRED_BALANCE = 0;
+    private final String TYPE = "SAVINGS ACCOUNT";
+    private final Integer ACCOUNT_NUMBER;
+    private final double MINIMUM_REQUIRED_BALANCE = 5;
     private final Customer OWNER;
-    private double overDraftProtection = -750.0; //set to -750 dollars over draft protection allowed
-    private double overDraftFee = this.overDraftProtection / 20;
-    private CheckingAccountApplication checkingAccountApplication;
+    private RandomGenerator random;
+    private SavingsAccountApplication savingsAccountApplication;
     private double interestRate;
     private double accountBalance;
 
-    public CheckingAccount(double openingBalance, double overDraftProtection, Customer owner) {
-
+    public SavingsAccount(Customer owner, double openingBalance) {
         this.OWNER = owner;
         this.accountBalance = openingBalance;
-        this.overDraftProtection = overDraftProtection;
+        this.ACCOUNT_NUMBER = random.acctGen();
+    }
+
+    @Override
+    public Account getNewAccount(Customer customer, double openingBalance) {
+        return null;
+    }
+
+    public Integer getACCOUNT_NUMBER() {
+        return this.ACCOUNT_NUMBER;
+    }
+
+    @Override
+    public String toString() {
+        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
+                this.OWNER.getChexSystemsScore() + "-" + this.interestRate + "-" + this.getMinRequiredBalance();
     }
 
     @Override

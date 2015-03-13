@@ -2,7 +2,7 @@ package bank_package;
 
 import java.util.Scanner;
 
-class uScanner {
+public class uScanner {
 
     private static Scanner in = new Scanner(System.in);
 

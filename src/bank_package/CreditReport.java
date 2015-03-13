@@ -2,7 +2,8 @@ package bank_package;
 
 import java.util.Random;
 import java.util.Scanner;
-class CreditReport {
+
+public class CreditReport {
     static Scanner in = new Scanner(System.in);
     private final int CREDIT_SCORE;
     private final int RECENT_LATE_PAYMENT_NUMBER;

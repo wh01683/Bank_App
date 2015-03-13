@@ -1,5 +1,6 @@
 package bank_package;
 
+import acct.AccountFactory;
 
 import java.util.Hashtable;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class CustomerInterface {
     private static Hashtable<Integer, Customer> customerHashtable;
     private static CustomerInterface ourInstance;
     private static boolean LOGGED_IN = false;
+    private static AccountFactory accountFactory = new AccountFactory();
     private uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
     private uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
     private uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -32,6 +34,7 @@ public class CustomerInterface {
     private uScanner credLim = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
     private uScanner uuid = new uScanner("Please enter the Customer ID you received when you registered.", 0, 16);
     private uScanner password = new uScanner("Please enter your password", 4, 16);
+    private uScanner accountRequest = new uScanner("What type of account would you like to add?", -1, 10);
 
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
@@ -108,6 +111,17 @@ public class CustomerInterface {
                 + "Please enter the total amount of the late payments.", 0.0, 2000000000.0);
         return latePay.doubleGet();
     }
+
+    private void addAccount() {
+        if (!LOGGED_IN) {
+            System.out.println("User not logged in. Exiting.");
+            System.exit(1);
+        }
+        if (LOGGED_IN) {
+            cust.addAccount(accountFactory.getAccount(accountRequest.stringGet(), cust));
+        }
+    }
+
 
 
 }

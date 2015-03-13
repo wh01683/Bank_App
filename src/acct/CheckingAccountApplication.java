@@ -1,5 +1,7 @@
-package bank_package;
+package acct;
 
+import bank_package.Bank;
+import bank_package.Customer;
 
 public class CheckingAccountApplication implements AccountApplication {
 

@@ -1,12 +1,14 @@
 package bank_package;
 
+import acct.Account;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.UUID;
 
 
-class Customer {
+public class Customer {
 
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
@@ -14,11 +16,11 @@ class Customer {
     private final String ALPHA_NUMERIC = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final int LENGTH_OF_ALPHA_NUMERIC = ALPHA_NUMERIC.length();
     private final int NUM_IN_ALPHABET = ALPHABET.length();
-    //ABOVE FIELDS ARE USED FOR CREATING RANDOM CUSTOMERS ONLY
-
     private final UUID CUSTOMER_ID;
+    //ABOVE FIELDS ARE USED FOR CREATING RANDOM CUSTOMERS ONLY
     private final String NAME;
     private final String PASSWORD;
+    RandomGenerator random = new RandomGenerator();
     Random r = new Random();
     private CreditReport _cred;
     private ChexSystems _score;
@@ -46,10 +48,7 @@ class Customer {
         this._score = new ChexSystems();
         this.PASSWORD = passwordGen(5, 15);
         this.ChexSystemsScore = _score.getScore();
-        this.addCertificateOfDeposit(r.nextDouble() * 50000);
-        this.addCheckingAccount(r.nextDouble() * 50000);
-        this.addIndividualRetirementAccount(r.nextDouble() * 500000);
-        this.addSavingsAccount(r.nextDouble() * 20000);
+
 
     }
 
@@ -67,34 +66,6 @@ class Customer {
 
     public String getName() {
         return this.NAME;
-    }
-
-    public void addSavingsAccount(double openingBalance) {
-        SavingsAccountApplication temp = new SavingsAccountApplication(this, openingBalance);
-        if (temp.screeningResult()) {
-            this.accountHashtable.put(acctGen(), new SavingsAccount(openingBalance, this));
-        }
-    }
-
-    public void addCertificateOfDeposit(double openingBalance) {
-        CertificateOfDepositApplication temp = new CertificateOfDepositApplication(this, openingBalance);
-        if (temp.screeningResult()) {
-            this.accountHashtable.put(acctGen(), new CertificateOfDepositAccount(openingBalance, r.nextInt(500), this));
-        }
-    }
-
-    public void addCheckingAccount(double openingBalance) {
-        CheckingAccountApplication temp = new CheckingAccountApplication(this, openingBalance);
-        if (temp.screeningResult()) {
-            this.accountHashtable.put(acctGen(), new CheckingAccount(openingBalance, (r.nextInt(1000) * -1), this));
-        }
-    }
-
-    public void addIndividualRetirementAccount(double openingBalance) {
-        IndividualRetirementAccountApplication temp = new IndividualRetirementAccountApplication(this, openingBalance);
-        if (temp.screeningResult()) {
-            this.accountHashtable.put(acctGen(), new IndividualRetirementAccount(openingBalance, this));
-        }
     }
 
     public int getChexSystemsScore() {
@@ -121,17 +92,15 @@ class Customer {
         return temp;
     }
 
-    private int acctGen() {
-        int temp = 100000000;
-
-        return temp += r.nextInt(99999999);
-    }
-
     public void printAllCustomerInformation() {
         System.out.println("\n ID: " + this.CUSTOMER_ID + " Pass: " + this.PASSWORD + " Name: " + this.NAME + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
                 + " Chex: " + this.getChexSystemsScore() + " ");
         this.printAccountInformation();
 
+    }
+
+    public void addAccount(Account newAccount) {
+        this.accountHashtable.put(newAccount.getACCOUNT_NUMBER(), newAccount);
     }
 
     public void printAccountInformation() {

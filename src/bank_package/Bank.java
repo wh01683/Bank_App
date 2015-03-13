@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 
-class Bank {
+public class Bank {
     private final boolean RANDOM_BANK;
     File test = new File("tests.xml");
     PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\newionuflkijan.txt");

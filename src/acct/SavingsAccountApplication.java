@@ -1,20 +1,22 @@
-package bank_package;
+package acct;
 
+import bank_package.Bank;
+import bank_package.Customer;
 
 /**
  * Created by robert on 3/11/2015.
  */
-public class CertificateOfDepositApplication implements AccountApplication {
+public class SavingsAccountApplication implements AccountApplication {
 
-    private static final double MIN_BALANCE = 1000.0;
+    private static final double MIN_BALANCE = 5.0;
     private Bank _bank;
     private boolean approved;
     private Customer _cust;
 
-
-    public CertificateOfDepositApplication(Customer newCustomer, double openingBalance) {
+    public SavingsAccountApplication(Customer newCustomer, double openingBalance) {
         this._cust = newCustomer;
         this.approved = decideApproved(openingBalance);
+
     }
 
     public boolean screeningResult() {
@@ -22,13 +24,15 @@ public class CertificateOfDepositApplication implements AccountApplication {
     }
 
     private boolean decideApproved(double openingBalance) {
-
         if (openingBalance < MIN_BALANCE) this.approved = false;
-        if (this._cust.getChexSystemsScore() < 300 | this._cust.getCreditScore() < 300) this.approved = false;
+        else if (this._cust.getChexSystemsScore() < 300) this.approved = false;
+        else if (this._cust.getAge() < 11) this.approved = false;
         else this.approved = true;
 
         return this.approved;
-
     }
 
+    public double getMinBalance() {
+        return MIN_BALANCE;
+    }
 }
