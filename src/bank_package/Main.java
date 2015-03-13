@@ -24,7 +24,7 @@ class Main {
     public void work() {
 
         Bank testBank = new Bank("Fred", 1000, 20, true);
-        testBank.addCustomer(500000);
+        testBank.addCustomer(100);
         testBank.printCustomerInfoToFile();
 
     }

@@ -17,10 +17,8 @@ public class CertificateOfDepositAccount implements Account {
 
         this.owner = customer;
         this.INTEREST_RATE = calculateInterestRate(termLength);
-        this.setBalance(openingBalance);
+        this.accountBalance += openingBalance;
         this.TERM_LENGTH = termLength;
-
-
     }
 
 
@@ -31,7 +29,7 @@ public class CertificateOfDepositAccount implements Account {
 
     @Override
     public void setBalance(double newBalance) {
-
+        //DOING NOTHING HERE PLEASE MOVE ALONG. THESE ARE NOT THE METHODS YOU'RE LOOKING FOR.
     }
 
     @Override

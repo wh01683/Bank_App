@@ -22,8 +22,9 @@ public class CertificateOfDepositApplication implements AccountApplication {
     }
 
     private boolean decideApproved(double openingBalance) {
+
         if (openingBalance < MIN_BALANCE) this.approved = false;
-        if (this._cust.getChexSystemsScore() < 500 | this._cust.getCreditScore() < 500) this.approved = false;
+        if (this._cust.getChexSystemsScore() < 300 | this._cust.getCreditScore() < 300) this.approved = false;
         else this.approved = true;
 
         return this.approved;
