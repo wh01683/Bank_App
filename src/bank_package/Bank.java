@@ -1,15 +1,12 @@
 package bank_package;
 
-import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.UUID;
-import java.util.function.BiConsumer;
+
 
 class Bank {
     private final boolean RANDOM_BANK;
@@ -19,7 +16,6 @@ class Bank {
     private int numberCustomers;
     private int numberAccounts;
     private Hashtable<Integer, Customer> customerHashtable;
-    //private XMLEncoder x = new XMLEncoder(getFOS("C:\\Users\\robert\\Desktop\\tests.xml"));
     private int[] keyArray;
 
     public Bank(String name, int numberAccounts, int numberCustomers, boolean random) {
@@ -39,6 +35,14 @@ class Bank {
 
         }
 
+    }
+
+    public void addCustomer(int numberCustomers) {
+        this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
+        for (int i = 0; i < numberCustomers; i++) {
+            Customer temp = new Customer(true);
+            this.customerHashtable.put(temp.getUUID().hashCode(), temp);
+        }
     }
 
     public int getNumberAccounts() {
@@ -61,7 +65,7 @@ class Bank {
         }
     }
 
-    private FileOutputStream getFOS(String fileName) {
+    /*private FileOutputStream getFOS(String fileName) {
 
         FileOutputStream fos;
         try {
@@ -72,19 +76,17 @@ class Bank {
             System.exit(1);
             return null;
         }
-    }
+    }*/
 
     public void printCustomerInfoToFile() {
 
         Enumeration<Integer> enumKeys = customerHashtable.keys();
-
+        System.out.println("CUSTOMER ID --------------------------PASSWORD ---NAME ------------------------------" +
+                "------------AGE-CRED-CHEX-SAV-CHK-CD--IRA");
         while (enumKeys.hasMoreElements()) {
             Integer key = enumKeys.nextElement();
             Customer temp = customerHashtable.get(key);
-            System.out.println(temp.getName());
-
-
-            //writer.printf((customerHashtable.get(key).getName()));
+            temp.printAllCustomerInformation();
         }
 
     }

@@ -29,14 +29,22 @@ class Customer {
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport, ChexSystems newScore) {
         this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
+
         this.age = tempAge;
         this.NAME = tempName;
         this._cred = newCreditReport;
         this._score = newScore;
         this.PASSWORD = password;
         this.ChexSystemsScore = _score.getScore();
-        //applyForAccounts();
 
+        CheckingAccountApplication check = new CheckingAccountApplication(this);
+        SavingsAccountApplication save = new SavingsAccountApplication(this);
+        CertificateOfDepositApplication cd = new CertificateOfDepositApplication(this);
+        IndividualRetirementAccountApplication ira = new IndividualRetirementAccountApplication(this);
+        this.EligibleForCD = cd.screeningResult();
+        this.EligibleForChecking = check.screeningResult();
+        this.EligibleForIRA = ira.screeningResult();
+        this.EligibleForSavings = save.screeningResult();
     }
 
     public Customer(boolean random) {
@@ -47,7 +55,17 @@ class Customer {
         this._score = new ChexSystems();
         this.PASSWORD = passwordGen(5, 15);
         this.ChexSystemsScore = _score.getScore();
-        // applyForAccounts();
+
+        CheckingAccountApplication check = new CheckingAccountApplication(this);
+        SavingsAccountApplication save = new SavingsAccountApplication(this);
+        CertificateOfDepositApplication cd = new CertificateOfDepositApplication(this);
+        IndividualRetirementAccountApplication ira = new IndividualRetirementAccountApplication(this);
+        this.EligibleForCD = cd.screeningResult();
+        this.EligibleForChecking = check.screeningResult();
+        this.EligibleForIRA = ira.screeningResult();
+        this.EligibleForSavings = save.screeningResult();
+
+
 
     }
 
@@ -69,15 +87,7 @@ class Customer {
 
     private void applyForAccounts() {
 
-        CheckingAccountApplication check = new CheckingAccountApplication(this);
-        SavingsAccountApplication save = new SavingsAccountApplication(this);
-        CertificateOfDepositApplication cd = new CertificateOfDepositApplication(this);
-        IndividualRetirementAccountApplication ira = new IndividualRetirementAccountApplication(this);
 
-        this.EligibleForCD = cd.screeningResult();
-        this.EligibleForChecking = check.screeningResult();
-        this.EligibleForIRA = ira.screeningResult();
-        this.EligibleForSavings = save.screeningResult();
     }
     public int getChexSystemsScore() {
         return this._score.getScore();
@@ -101,6 +111,12 @@ class Customer {
             temp += ALPHA_NUMERIC.charAt(r.nextInt(LENGTH_OF_ALPHA_NUMERIC));
         }
         return temp;
+    }
+
+    public void printAllCustomerInformation() {
+        System.out.println(this.CUSTOMER_ID + " " + this.PASSWORD + " " + this.NAME + " " + this.getAge() + " " + this.getCreditScore()
+                + " " + this.getChexSystemsScore() + " " + this.EligibleForSavings + " " + this.EligibleForChecking + " " +
+                this.EligibleForCD + " " + this.EligibleForIRA + " ");
     }
 
 }

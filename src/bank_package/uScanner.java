@@ -12,8 +12,6 @@ class uScanner {
     private double minDouble;
     private int minLength;
     private int maxLength;
-
-
     private String prompt;
 
     public uScanner(String textPrompt, int min, int max) {
