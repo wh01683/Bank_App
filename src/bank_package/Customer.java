@@ -1,4 +1,7 @@
 package bank_package;
+
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Random;
 import java.util.UUID;
 
@@ -19,11 +22,7 @@ class Customer {
     Random r = new Random();
     private CreditReport _cred;
     private ChexSystems _score;
-    private boolean EligibleForCD;
-    private boolean EligibleForIRA;
-    private boolean EligibleForChecking;
-    private boolean EligibleForSavings;
-    private boolean EligibleForMMA;
+    private Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
     private int age;
     private int ChexSystemsScore; //intialize to 0 indicating no prior history
 
@@ -37,14 +36,6 @@ class Customer {
         this.PASSWORD = password;
         this.ChexSystemsScore = _score.getScore();
 
-        CheckingAccountApplication check = new CheckingAccountApplication(this);
-        SavingsAccountApplication save = new SavingsAccountApplication(this);
-        CertificateOfDepositApplication cd = new CertificateOfDepositApplication(this);
-        IndividualRetirementAccountApplication ira = new IndividualRetirementAccountApplication(this);
-        this.EligibleForCD = cd.screeningResult();
-        this.EligibleForChecking = check.screeningResult();
-        this.EligibleForIRA = ira.screeningResult();
-        this.EligibleForSavings = save.screeningResult();
     }
 
     public Customer(boolean random) {
@@ -55,17 +46,10 @@ class Customer {
         this._score = new ChexSystems();
         this.PASSWORD = passwordGen(5, 15);
         this.ChexSystemsScore = _score.getScore();
-
-        CheckingAccountApplication check = new CheckingAccountApplication(this);
-        SavingsAccountApplication save = new SavingsAccountApplication(this);
-        CertificateOfDepositApplication cd = new CertificateOfDepositApplication(this);
-        IndividualRetirementAccountApplication ira = new IndividualRetirementAccountApplication(this);
-        this.EligibleForCD = cd.screeningResult();
-        this.EligibleForChecking = check.screeningResult();
-        this.EligibleForIRA = ira.screeningResult();
-        this.EligibleForSavings = save.screeningResult();
-
-
+        this.addCertificateOfDeposit(r.nextDouble() * 50000);
+        this.addCheckingAccount(r.nextDouble() * 50000);
+        this.addIndividualRetirementAccount(r.nextDouble() * 500000);
+        this.addSavingsAccount(r.nextDouble() * 20000);
 
     }
 
@@ -85,10 +69,34 @@ class Customer {
         return this.NAME;
     }
 
-    private void applyForAccounts() {
-
-
+    public void addSavingsAccount(double openingBalance) {
+        SavingsAccountApplication temp = new SavingsAccountApplication(this, openingBalance);
+        if (temp.screeningResult()) {
+            this.accountHashtable.put(acctGen(), new SavingsAccount(openingBalance, this));
+        }
     }
+
+    public void addCertificateOfDeposit(double openingBalance) {
+        CertificateOfDepositApplication temp = new CertificateOfDepositApplication(this, openingBalance);
+        if (temp.screeningResult()) {
+            this.accountHashtable.put(acctGen(), new CertificateOfDepositAccount(openingBalance, r.nextInt(500), this));
+        }
+    }
+
+    public void addCheckingAccount(double openingBalance) {
+        CheckingAccountApplication temp = new CheckingAccountApplication(this, openingBalance);
+        if (temp.screeningResult()) {
+            this.accountHashtable.put(acctGen(), new CheckingAccount(openingBalance, (r.nextInt(1000) * -1), this));
+        }
+    }
+
+    public void addIndividualRetirementAccount(double openingBalance) {
+        IndividualRetirementAccountApplication temp = new IndividualRetirementAccountApplication(this, openingBalance);
+        if (temp.screeningResult()) {
+            this.accountHashtable.put(acctGen(), new IndividualRetirementAccount(openingBalance, this));
+        }
+    }
+
     public int getChexSystemsScore() {
         return this._score.getScore();
     }
@@ -113,10 +121,29 @@ class Customer {
         return temp;
     }
 
+    private int acctGen() {
+        int temp = 100000000;
+
+        return temp += r.nextInt(99999999);
+    }
+
     public void printAllCustomerInformation() {
         System.out.println(this.CUSTOMER_ID + " " + this.PASSWORD + " " + this.NAME + " " + this.getAge() + " " + this.getCreditScore()
-                + " " + this.getChexSystemsScore() + " " + this.EligibleForSavings + " " + this.EligibleForChecking + " " +
-                this.EligibleForCD + " " + this.EligibleForIRA + " ");
+                + " " + this.getChexSystemsScore() + " ");
+        this.printAccountInformation();
+
+    }
+
+    public void printAccountInformation() {
+
+        Enumeration<Integer> enumKeys = accountHashtable.keys();
+
+        while (enumKeys.hasMoreElements()) {
+            Integer key = enumKeys.nextElement();
+            Account temp = accountHashtable.get(key);
+            System.out.print(temp.getBalance() + " ");
+        }
+
     }
 
 }

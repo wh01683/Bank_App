@@ -1,9 +1,5 @@
 package bank_package;
-
-import sun.security.krb5.internal.CredentialsUtil;
-
 import java.util.*;
-
 class CreditReport {
     static Scanner in = new Scanner(System.in);
     private final int CREDIT_SCORE;
@@ -19,8 +15,8 @@ class CreditReport {
     private Random r = new Random();
 
 
-    public CreditReport(int age, int latePaymentsOnRecord, double amountOfLatePayments, int recentCredInquiries, double credLimit,
-                        double accountBalance, int lenCredHistory) {
+    public CreditReport(int age, int latePaymentsOnRecord, double amountOfLatePayments, int recentCredInquiries,
+                        double credLimit, double accountBalance, int lenCredHistory) {
 
         this.CUSTOMER_AGE = age;
         this.RECENT_LATE_PAYMENT_NUMBER = latePaymentsOnRecord;
@@ -31,10 +27,6 @@ class CreditReport {
         this.LENGTH_OF_CREDIT_HISTORY = lenCredHistory;
         this.CREDIT_SCORE = calculateCreditScore();
         this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
-
-		/*if (this.RECENT_LATE_PAYMENT_NUMBER > 0) this.RECENT_LATE_PAYMENT_AMOUNT = latePay.doubleGet();
-        else this.RECENT_LATE_PAYMENT_AMOUNT = 0;*/
-
     }
 
     public CreditReport(int age, boolean random) {
@@ -76,9 +68,7 @@ class CreditReport {
         a user with just 4 credit cards.*/
 
         tempScore += calcPaymentHistoryScore() + calcAmtOwedScore() + calcLenHistoryScore();
-
         return tempScore;
-
     }
 
     private int calcNewCreditScore() {
@@ -142,9 +132,4 @@ class CreditReport {
         return tempScore;
     }
 
-    public CreditReport makeRandomCreditReport() {
-        /*Makes totally random credit report*/
-        return new CreditReport(r.nextInt(100), r.nextInt(100), r.nextDouble() * 200000000.0, r.nextInt(100),
-                r.nextDouble() * 2000000000.0, r.nextDouble() * 2000000000.0, r.nextInt(100));
-    }
 }
