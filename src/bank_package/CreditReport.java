@@ -69,12 +69,14 @@ class CreditReport {
         equal, a user would have a HIGHER credit score if they had 2 credit cards, a car payment, and a mortgage THAN
         a user with just 4 credit cards.*/
 
-        tempScore += calcPaymentHistoryScore() + calcAmtOwedScore() + calcLenHistoryScore();
+        tempScore += calcPaymentHistoryScore() + calcAmtOwedScore() + calcLenHistoryScore() + calcNewCreditScore();
         return tempScore;
     }
 
     private int calcNewCreditScore() {
-        return 80 - (this.RECENT_CREDIT_INQUIRIES * 10);
+        if (this.RECENT_CREDIT_INQUIRIES < 8)
+            return 80 - (this.RECENT_CREDIT_INQUIRIES * 10);
+        else return 0;
     }
 
     private int calcPaymentHistoryScore() {
@@ -100,11 +102,11 @@ class CreditReport {
                 severity = 10;
         }
 
-        double latePaymentMult = severity * this.AMOUNT_OF_LATE_PAYMENTS;
+        double latePaymentMultiplier = severity * this.AMOUNT_OF_LATE_PAYMENTS;
 
-        if (latePaymentMult == 0 || latePaymentMult < 1000) tempScore = 279;
-        if (latePaymentMult < 3000) tempScore = 200;
-        if (latePaymentMult < 5000) tempScore = 100;
+        if (latePaymentMultiplier == 0 || latePaymentMultiplier < 1000) tempScore = 279;
+        if (latePaymentMultiplier < 3000) tempScore = 200;
+        if (latePaymentMultiplier < 5000) tempScore = 100;
         else tempScore = 0;
 
         return tempScore;

@@ -27,7 +27,7 @@ class Customer {
     private int ChexSystemsScore; //intialize to 0 indicating no prior history
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport, ChexSystems newScore) {
-        this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
+        this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
 
         this.age = tempAge;
         this.NAME = tempName;
@@ -39,7 +39,7 @@ class Customer {
     }
 
     public Customer(boolean random) {
-        this.CUSTOMER_ID = new UUID(16, 32).randomUUID();
+        this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
         this.age = r.nextInt(100);
         this.NAME = nameGen(2, 50);
         this._cred = new CreditReport(this.age, true);
