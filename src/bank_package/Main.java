@@ -28,6 +28,7 @@ class Main {
         System.out.println(testBank.toString());
         testBank.printCustomerInfo();
         testBank.printAccountInfo();
+        testBank.writeInfoToFile("DEFAULT");
 
     }
 

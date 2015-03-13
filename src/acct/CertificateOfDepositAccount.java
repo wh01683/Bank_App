@@ -37,7 +37,7 @@ public class CertificateOfDepositAccount implements Account {
 
     @Override
     public String toString() {
-        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
+        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.accountBalance + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
                 this.OWNER.getChexSystemsScore() + "-" + this.getMinRequiredBalance() + "-" + this.TERM_LENGTH;
     }
 

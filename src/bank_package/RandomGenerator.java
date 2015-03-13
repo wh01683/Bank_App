@@ -50,8 +50,8 @@ public class RandomGenerator {
     }
 
     public String accountTypeGen() {
-        String[] accounts = {"SAVINGS", "CHECKING", "IRA", "CD"};
-        return accounts[r.nextInt(3)];
+        String[] accounts = {"SAVINGS", "CHECKING", "IRA", "CD", "MMA"};
+        return accounts[r.nextInt(5)];
     }
 
     public double getDubs(double min, double max) {

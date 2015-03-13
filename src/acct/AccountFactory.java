@@ -78,7 +78,7 @@ public class AccountFactory {
             double tempOpeningBalance = r.nextDouble() * 500000;
             CertificateOfDepositApplication cdApp = new CertificateOfDepositApplication(customer, tempOpeningBalance);
             if (cdApp.screeningResult())
-                return new CertificateOfDepositAccount(customer, tempOpeningBalance, termLengthScanner.intGet());
+                return new CertificateOfDepositAccount(customer, tempOpeningBalance, random.getInts(0, 50));
             else return null;
         } else if (accountType.equalsIgnoreCase("MMA")) {
             double tempOpeningBalance = r.nextDouble() * 500000;

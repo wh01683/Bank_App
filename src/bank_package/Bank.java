@@ -17,7 +17,7 @@ public class Bank {
     private final int numberAccounts;
     private final int[] keyArray;
     File test = new File("tests.xml");
-    PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\newionuflkijan.txt");
+    PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\bankinformation.txt");
     private Random r = new Random();
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
@@ -136,5 +136,29 @@ public class Bank {
 
 
     }
+
+    public void writeInfoToFile(String fileName) {
+
+        if (!fileName.equalsIgnoreCase("DEFAULT")) {
+            writer = getPW(fileName);
+        }
+        Enumeration<Integer> enumKeys = customerHashtable.keys();
+        while (enumKeys.hasMoreElements()) {
+            Integer key = enumKeys.nextElement();
+            Customer temp = customerHashtable.get(key);
+            writer.println(temp.toString());
+            Hashtable<Integer, Account> tempHash = temp.getAccountHashtable();
+            Enumeration<Integer> acctKeys = tempHash.keys();
+
+            while (acctKeys.hasMoreElements()) {
+                Integer acctKey = acctKeys.nextElement();
+                Account tempAcct = tempHash.get(acctKey);
+                writer.println(tempAcct.toString());
+
+            }
+        }
+        writer.close();
+    }
+
 
 }
