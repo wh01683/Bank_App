@@ -1,12 +1,14 @@
 package bank_package;
 
 import acct.Account;
+import acct.AccountFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Random;
 
 
 public class Bank {
@@ -16,9 +18,11 @@ public class Bank {
     private final int[] keyArray;
     File test = new File("tests.xml");
     PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\newionuflkijan.txt");
+    private Random r = new Random();
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
+    private AccountFactory testAccountFactory = new AccountFactory();
 
     public Bank(String name, int numberAccounts, int numberCustomers, boolean random) {
         this.name = name;
@@ -43,8 +47,12 @@ public class Bank {
     public void addCustomer(int numberCustomers) {
         this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
         for (int i = 0; i < numberCustomers; i++) {
-            Customer temp = new Customer(true);
-            this.customerHashtable.put(temp.getUUID().hashCode(), temp);
+            Customer tempCustomer = new Customer(true);
+            this.customerHashtable.put(tempCustomer.getUUID().hashCode(), tempCustomer);
+            for (int k = 0; k < r.nextInt(10); k++) { //generates anywhere between 10 and 0 random accounts
+                Account tempAccount = testAccountFactory.getRandomAccount(tempCustomer);
+                tempCustomer.addAccount(tempAccount);
+            }
         }
     }
 

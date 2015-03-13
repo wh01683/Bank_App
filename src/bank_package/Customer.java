@@ -1,6 +1,7 @@
 package bank_package;
 
 import acct.Account;
+import acct.AccountFactory;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -19,6 +20,7 @@ public class Customer {
     private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
     private final int age;
     private final int ChexSystemsScore; //intialize to 0 indicating no prior history
+    private AccountFactory testAccountFactory = new AccountFactory();
     private RandomGenerator random = new RandomGenerator();
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport, ChexSystems newScore) {
@@ -78,7 +80,9 @@ public class Customer {
     }
 
     public void addAccount(Account newAccount) {
-        this.accountHashtable.put(newAccount.getACCOUNT_NUMBER(), newAccount);
+        if (!(newAccount == null))
+            this.accountHashtable.put(newAccount.getACCOUNT_NUMBER(), newAccount);
+
     }
 
     void printAccountInformation() {

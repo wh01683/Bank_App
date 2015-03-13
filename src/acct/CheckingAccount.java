@@ -9,10 +9,11 @@ import bank_package.RandomGenerator;
 public class CheckingAccount implements Account {
 
     private final String TYPE = "CHECKING ACCOUNT";
-    private final Integer ACCOUNT_NUMBER;
+    private final int ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 0;
     private final Customer OWNER;
-    private RandomGenerator random;
+    private RandomGenerator random = new RandomGenerator();
+
     private double overDraftProtection = -750.0; //set to -750 dollars over draft protection allowed
     private double overDraftFee = 35; //35 dollar default over draft fee... it's what my bank charges
     private CheckingAccountApplication checkingAccountApplication;
