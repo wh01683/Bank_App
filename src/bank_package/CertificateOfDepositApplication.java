@@ -20,13 +20,13 @@ public class CertificateOfDepositApplication implements AccountApplication {
     }
 
     private boolean decideApproved() {
-        boolean appr = true;
+        boolean approved = true;
 
         if (this._cust.getChexSystemsScore() < 500 | this._cust.getCreditScore() < 500) this.approved = false;
         else if (this._cust.getAge() < 18) this.approved = false;
         else this.approved = true;
 
-        return appr;
+        return approved;
 
     }
 

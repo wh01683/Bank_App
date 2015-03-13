@@ -76,6 +76,17 @@ class uScanner {
         return val;
     }
 
+    public String alphaNumericStringGet() {
+
+        String val = getString();
+
+        while (val.length() < this.minLength | val.length() > this.maxLength) {
+            System.out.println("Must be longer than " + this.minLength + " and shorter than " + this.maxLength + " characters long.");
+            val = getString();
+        }
+        return val;
+    }
+
     private double getDouble() {
         System.out.println(this.prompt);
         while (!in.hasNextDouble()) {

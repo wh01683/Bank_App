@@ -22,13 +22,13 @@ public class SavingsAccountApplication implements AccountApplication {
     }
 
     private boolean decideApproved() {
-        boolean appr = true;
+        boolean approved = true;
 
         if (this._cust.getChexSystemsScore() < 300) this.approved = false;
         else if (this._cust.getAge() < 11) this.approved = false;
         else this.approved = true;
 
-        return appr;
+        return approved;
 
     }
 }

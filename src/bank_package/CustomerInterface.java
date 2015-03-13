@@ -22,6 +22,7 @@ public class CustomerInterface {
     private static Bank bank;
     private static Hashtable<Integer, Customer> customerHashtable;
     private static CustomerInterface ourInstance;
+    private static boolean LOGGED_IN = false;
     private uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
     private uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
     private uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -29,17 +30,40 @@ public class CustomerInterface {
     private uScanner credBalance = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
     private uScanner credHistory = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
     private uScanner credLim = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
+    private uScanner uuid = new uScanner("Please enter the Customer ID you received when you registered.", 0, 16);
+    private uScanner password = new uScanner("Please enter your password", 4, 16);
 
-
-    /**/
+    /*private constructor... creates new customer interface using the current bank's information (passed through param)
+    * and the customer's unique ID also passed through param.*/
     private CustomerInterface(UUID newCustID, Bank newBank) {
         bank = newBank;
         customerHashtable = bank.getCustomerTable();
+        String realPass;
+        String enteredPass;
 
         if (!customerHashtable.containsKey(newCustID.hashCode())) {
-            /*prompt user to created a new account*/
+            System.out.println("We could not find your ID, please try again.");
+            newCustID = UUID.fromString(uuid.alphaNumericStringGet());
         }
         cust = customerHashtable.get(newCustID.hashCode());
+        realPass = cust.getPASSWORD();
+        enteredPass = password.stringGet();
+        int attempts = 0;
+
+        while (!enteredPass.equals(realPass) && attempts < 6) {
+            LOGGED_IN = false;
+            if (attempts == 5) {
+                System.out.println("Maximum attempts reached. Exiting.");
+                System.exit(1);
+            } else {
+                System.out.println("Invalid password. Try Again. " + attempts + " attempts remaining.");
+                attempts++;
+                enteredPass = password.stringGet();
+            }
+        }
+
+        if (realPass.equals(enteredPass)) LOGGED_IN = true;
+
     }
 
     public static CustomerInterface getInstance(UUID newCustomerID, Bank thisBank) {
@@ -57,8 +81,9 @@ public class CustomerInterface {
         else
             tempCreditReport = fillCredReportInformation(tempAge);
         ChexSystems tempScore = new ChexSystems();
+        String tempPassword = password.stringGet();
 
-        return new Customer(tempName, tempAge, tempCreditReport, tempScore);
+        return new Customer(tempName, tempAge, tempPassword, tempCreditReport, tempScore);
 
 
     }
@@ -83,4 +108,6 @@ public class CustomerInterface {
                 + "Please enter the total amount of the late payments.", 0.0, 2000000000.0);
         return latePay.doubleGet();
     }
+
+
 }

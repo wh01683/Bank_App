@@ -6,6 +6,7 @@ package bank_package;
 public class IndividualRetirementAccount implements Account {
 
     private final double MIN_BALANCE = 100.00;
+    private final String TYPE = "MONEY MARKET INDIVIDUAL RETIREMENT ACCOUNT";
     private Customer owner;
     private double interestRate;
     private double accountBalance;
@@ -34,7 +35,7 @@ public class IndividualRetirementAccount implements Account {
 
     @Override
     public String getType() {
-        return "MONEY MARKET INDIVIDUAL RETIREMENT ACCOUNT";
+        return this.TYPE;
     }
 
     @Override

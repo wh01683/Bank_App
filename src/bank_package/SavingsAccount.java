@@ -3,25 +3,21 @@ package bank_package;
 /**
  * Created by robert on 3/11/2015.
  */
-class CheckingAccount implements Account {
+class SavingsAccount implements Account {
 
     /*ToDo: implement observer to watch for new accounts created calculate account number from the number
     * of accounts already created*/
-    private final String TYPE = "CHECKING ACCOUNT";
+    private final String TYPE = "SAVINGS ACCOUNT";
     private final double ACCOUNT_NUMBER = 1000000;
-    private final double MINIMUM_REQUIRED_BALANCE = 0;
+    private final double MINIMUM_REQUIRED_BALANCE = 5;
     private final Customer OWNER;
-    private double overDraftProtection = -750.0; //set to -750 dollars over draft protection allowed
-    private double overDraftFee = this.overDraftProtection / 20;
-    private CheckingAccountApplication checkingAccountApplication;
+    private SavingsAccountApplication savingsAccountApplication;
     private double interestRate;
     private double accountBalance;
 
-    public CheckingAccount(double openingBalance, double overDraftProtection, Customer owner) {
-
+    public SavingsAccount(double openingBalance, Customer owner) {
         this.OWNER = owner;
         this.accountBalance = openingBalance;
-        this.overDraftProtection = overDraftProtection;
     }
 
     @Override

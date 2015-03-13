@@ -6,6 +6,7 @@ package bank_package;
 public class CertificateOfDepositAccount implements Account {
 
     private final double INTEREST_RATE;
+    private final String TYPE = "FIXED TERM CERTIFICATE OF DEPOSIT";
     private final double MIN_BALANCE = 1000.00;
     private final int TERM_LENGTH;
     private Customer owner;
@@ -61,7 +62,7 @@ public class CertificateOfDepositAccount implements Account {
 
     @Override
     public String getType() {
-        return "FIXED TERM CERTIFICATE OF DEPOSIT";
+        return this.TYPE;
     }
 
     @Override
