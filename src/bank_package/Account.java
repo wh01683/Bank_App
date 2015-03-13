@@ -6,8 +6,6 @@ package bank_package;
  */
 
 
-import java.util.*;
-
 interface Account {
 
     public double getBalance();

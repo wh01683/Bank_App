@@ -128,8 +128,8 @@ class Customer {
     }
 
     public void printAllCustomerInformation() {
-        System.out.println("\n" + this.CUSTOMER_ID + " " + this.PASSWORD + " " + this.NAME + " " + this.getAge() + " " + this.getCreditScore()
-                + " " + this.getChexSystemsScore() + " ");
+        System.out.println("\n ID: " + this.CUSTOMER_ID + " Pass: " + this.PASSWORD + " Name: " + this.NAME + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
+                + " Chex: " + this.getChexSystemsScore() + " ");
         this.printAccountInformation();
 
     }
@@ -141,7 +141,7 @@ class Customer {
         while (enumKeys.hasMoreElements()) {
             Integer key = enumKeys.nextElement();
             Account temp = accountHashtable.get(key);
-            System.out.print(temp.getBalance() + " ");
+            System.out.println(" Type: " + temp.getType() + " acct #: " + key + " balance: " + temp.getBalance() + " ");
         }
 
     }

@@ -2,7 +2,6 @@ package bank_package;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;

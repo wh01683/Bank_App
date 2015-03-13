@@ -1,8 +1,5 @@
 package bank_package;
 
-import javafx.application.Application;
-
-
 /**
  * Created by robert on 3/11/2015.
  */
