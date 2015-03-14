@@ -75,6 +75,7 @@ public class SavingsAccount implements Account {
 
     @Override
     public double withdraw(double amount) {
-        return 0;
+        this.accountBalance -= amount;
+        return amount;
     }
 }

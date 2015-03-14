@@ -1,5 +1,6 @@
 package bank_interface;
 
+import acct.Account;
 import acct.AccountFactory;
 import bank_package.*;
 
@@ -32,11 +33,16 @@ public class CustomerInterface {
     private final uScanner CREDIT_BALANCE_SCANNER = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
     private final uScanner CREDIT_HISTORY_SCANNER = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
     private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
-    private final uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 0, 16);
+    private final uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
     private final uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.", 4, 16);
-    private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?", -1, 10);
+    private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?\nCHECKING, SAVINGS, MMA, IRA, CD", -1, 10);
     private final uScanner HAVE_ACCOUNT_SCANNER = new uScanner("Do you have an account with us? YES or NO?", -1, 4);
     private final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES or NO?", -1, 4);
+    private final uScanner INFORMATION_REQUEST_SCANNER = new uScanner("What would you like to know more about?\nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
+    private final uScanner TRANSACTION_REQUEST_SCANNER = new uScanner("What transaction would you like to process?\nDEPOSIT, WITHDRAW, TRANSFER, ACCOUNTS, RETURN", 2, 9);
+    private final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", 0, 200000000);
+
+
 
 
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
@@ -49,25 +55,37 @@ public class CustomerInterface {
         newCustID = new UUID(16, 16).randomUUID();
         String enteredPass;
         boolean customerHasAccount = hasAccount();
-        boolean wantsRegister = wantsToRegister();
 
-        if (!customerHasAccount && wantsRegister) {
+        if (!customerHasAccount) {
+
+            boolean wantsRegister = wantsToRegister();
          /*if the customer does NOT have an account and the customer WANTS to register, the new customer will be registered
          * the current newCustID of the instance will be set to the newly registered customer's UUID and the new customer is
          * added to the instance's customerHashTable*/
-            Customer newCustomer = registerNewCustomer();
-            newCustID = newCustomer.getUUID();
-            customerHashtable.put(newCustID.hashCode(), newCustomer);
-        } else if (!customerHasAccount && !wantsRegister) {
+            if (wantsRegister) {
+                Customer newCustomer = registerNewCustomer();
+                newCustID = newCustomer.getUUID();
+                customerHashtable.put(newCustID.hashCode(), newCustomer);
+                System.out.println("Congratulations, " + newCustomer.getName() + "! You have successfully registered.\nYour new Customer ID is " +
+                        newCustID + ". DO NOT LOSE THIS!\nYour password is " + newCustomer.getPASSWORD() + ". You may now log in and experience everything " +
+                        "we have to offer!");
+            /*TESTING PURPOSES ONLY...*/
+                getInstance(newBank);
+            } else if (!customerHasAccount && !wantsRegister) {
             /*if the customer does NOT have an account and they do NOT want to register, the system exits because
             * they are clearly up to no good.*/
-            System.exit(1);
-        } else {
+                System.out.println("You're clearly up to no good.");
+                System.exit(1);
+            } else {
+                System.out.println("Something went wrong. Exiting.");
+                System.exit(1);
+            }
+        }
+
+        if (customerHasAccount) {
             /*if they do have an account, they are requested to provide their UUID*/
             newCustID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
         }
-
-
         if (!customerHashtable.containsKey(newCustID.hashCode())) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
             * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
@@ -116,8 +134,9 @@ public class CustomerInterface {
         System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
                 " on file, " + realPass + "\nYou may now access your bank account information!");
 
-        initiateLoginProcesses(loggedIn);
+        initiateLoginProcesses(loggedIn, cust);
     }
+
 
     /*@getInstance
     * this Singleton class utilizes a private constructor and a public method, "getInstance". This method will return
@@ -134,10 +153,28 @@ public class CustomerInterface {
 
     }
 
-    private static void initiateLoginProcesses(boolean isLoggedIn) {
+    private void initiateLoginProcesses(boolean isLoggedIn, Customer loggedInCustomer) {
+        final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + loggedInCustomer.getName() + "?\nINFORMATION, TRANSACTION, ADDACCOUNT, EXIT", 3, 12);
 
-        /*Do stuff for the customer while they're logged in... IE
-        * add new account, start a new transaction, access their account information, etc..*/
+        while (isLoggedIn) {
+            String processRequest = PROCESS_REQUEST_SCANNER.stringGet();
+            if (processRequest.equalsIgnoreCase("INFORMATION"))
+                this.showCustomerAccountInformation(loggedInCustomer);
+            else if (processRequest.equalsIgnoreCase("TRANSACTION")) {
+                while (!(this.processTransaction(processRequest, loggedInCustomer) == 0))
+                    initiateLoginProcesses(true, loggedInCustomer);
+            } else if (processRequest.equalsIgnoreCase("ADDACCOUNT"))
+                this.addAccount(loggedInCustomer);
+            else if (processRequest.equalsIgnoreCase("EXIT")) {
+                isLoggedIn = false;
+                System.out.println("Exiting..");
+                System.exit(1);
+            } else {
+                System.out.println("Your request could not be processed, please try again.");
+                initiateLoginProcesses(true, loggedInCustomer);
+            }
+        }
+
 
     }
 
@@ -160,6 +197,7 @@ public class CustomerInterface {
         ChexSystems tempScore = new ChexSystems();
         final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 4, 16);
         String tempPassword = NEW_PASSWORD_SCANNER.stringGet();
+
         return new Customer(tempName, tempAge, tempPassword, tempCreditReport, tempScore);
     }
 
@@ -205,8 +243,13 @@ public class CustomerInterface {
     * @param void: not necessary. if the user gets to this point, their information is already saved in the instance so
     *              can access it without passing new parameters
     * @return void: adds the new bankAccount directly to the customer's account*/
-    private void addAccount() {
-        cust.addAccount(ACCOUNT_FACTORY.getAccount(ACCOUNT_REQUESTER_SCANNER.stringGet(), cust));
+    private void addAccount(Customer loggedInCustomer) {
+        Account tempAccount = ACCOUNT_FACTORY.getAccount(ACCOUNT_REQUESTER_SCANNER.stringGet(), loggedInCustomer);
+        loggedInCustomer.addAccount(tempAccount);
+        System.out.println("Congratulations, " + loggedInCustomer.getName() + "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
+                "Here is the information...\n");
+        System.out.println(getAccountHeaders());
+        System.out.println(tempAccount.toString());
     }
 
     /*@hasAccount
@@ -244,5 +287,83 @@ public class CustomerInterface {
             return false;
 
         else return false;
+    }
+
+    private void showCustomerAccountInformation(Customer loggedInCustomer) {
+
+        loggedInCustomer.printInformation(INFORMATION_REQUEST_SCANNER.stringGet());
+
+    }
+
+    private int processTransaction(String transactionChoice, Customer loggedInCustomer) {
+
+        if (transactionChoice.equalsIgnoreCase("DEPOSIT")) {
+            System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
+            Integer tempAccountNumber1 = ACCOUNT_NUMBER_SCANNER.intGet();
+            if ((tempAccountNumber1 == -1)) {
+                System.out.println("Returning.\n");
+                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+            }
+
+            Account temp = loggedInCustomer.getAccount(tempAccountNumber1);
+            uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
+            temp.deposit(TRANSACTION_SCANNER.doubleGet());
+            return 1;
+        } else if (transactionChoice.equalsIgnoreCase("WITHDRAW")) {
+            System.out.println("You have chosen " + transactionChoice + ". From which account would you like to " + transactionChoice + "?");
+            Integer tempAccountNumber2 = ACCOUNT_NUMBER_SCANNER.intGet();
+            if ((tempAccountNumber2 == -1)) {
+                System.out.println("Returning.");
+                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+            }
+            Account temp = loggedInCustomer.getAccount(tempAccountNumber2);
+
+            uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
+            temp.withdraw(TRANSACTION_SCANNER.doubleGet());
+            return 1;
+        } else if (transactionChoice.equalsIgnoreCase("TRANSFER")) {
+            System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
+
+
+            Integer tempAccountNumber3 = ACCOUNT_NUMBER_SCANNER.intGet();
+            if ((tempAccountNumber3 == -1)) {
+                System.out.println("Returning.");
+                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+            }
+            Account transferTo = loggedInCustomer.getAccount(tempAccountNumber3);
+
+
+            System.out.println("From which account would you like to " + transactionChoice + "?");
+            Integer tempAccountNumber4 = ACCOUNT_NUMBER_SCANNER.intGet();
+            if ((tempAccountNumber4 == -1)) {
+                System.out.println("Returning.");
+                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+            }
+            Account transferFrom = loggedInCustomer.getAccount(tempAccountNumber4);
+
+
+            uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
+            double transferAmount = TRANSACTION_SCANNER.doubleGet();
+            transferTo.deposit(transferAmount);
+            transferFrom.withdraw(transferAmount);
+            return 1;
+        } else if (transactionChoice.equalsIgnoreCase("ACCOUNTS")) {
+            loggedInCustomer.printInformation("ACCOUNTS");
+        } else if (transactionChoice.equalsIgnoreCase("RETURN")) {
+            System.out.println("Returning to previous menu.");
+            return 0;
+        } else {
+            System.out.println("Request could not be processed. Please try again.");
+            processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+            return 1;
+        }
+
+        return 0;
+
+    }
+
+    public String getAccountHeaders() {
+        return String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
+                "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
 }

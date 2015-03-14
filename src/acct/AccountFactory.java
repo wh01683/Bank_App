@@ -12,7 +12,7 @@ import java.util.Random;
 public class AccountFactory {
 
     private final uScanner termLengthScanner = new uScanner("Please enter desired term length. Please note, this is fixed.", 0, 49);
-    private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", -1, 2000000000);
+    private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", -1.0, 2000000000.0);
     private RandomGenerator random = new RandomGenerator();
     private Random r = new Random();
 

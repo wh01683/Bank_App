@@ -3,6 +3,7 @@ package bank_package;
 import acct.Account;
 import acct.AccountFactory;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class Customer {
     private final ChexSystems _score;
     private final int age;
     private final int ChexSystemsScore; //intialize to 0 indicating no prior history
+    private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
     private Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
     private AccountFactory testAccountFactory = new AccountFactory();
     private RandomGenerator random = new RandomGenerator();
@@ -74,12 +76,20 @@ public class Customer {
     }
 
 
-    /*public void printAllCustomerInformation() {
-        System.out.println("\n ID: " + this.CUSTOMER_ID + " Name: " + this.NAME + " Pass: " + this.PASSWORD + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
-                + " Chex: " + this.getChexSystemsScore() + " ");
-        this.printAccountInformation();
+    public void printAllCustomerInformation() {
 
-    }*/
+
+        System.out.println("------------------------------------------");
+        System.out.println(getCustomerHeaders());
+        System.out.println("------------------------------------------");
+        System.out.println(this.toString());
+        this.printAccountInformation();
+        System.out.println("Finished printing customer information...");
+        printInformation(REQUEST_SCANNER.stringGet());
+
+    }
+
+
 
     public void addAccount(Account newAccount) {
         if (!(newAccount == null))
@@ -87,22 +97,66 @@ public class Customer {
 
     }
 
-    /*void printAccountInformation() {
+    void printAccountInformation() {
 
         Enumeration<Integer> enumKeys = accountHashtable.keys();
+        int tempCount = 10;
 
         while (enumKeys.hasMoreElements()) {
-            Integer key = enumKeys.nextElement();
-            Account temp = accountHashtable.get(key);
-            System.out.println(" Type: " + temp.getType() + " acct #: " + key + " balance: " + temp.getBalance() + " ");
-        }
+            if (tempCount == 10) {
+                System.out.println("------------------------------------------");
+                System.out.println(getAccountHeaders());
+                System.out.println("------------------------------------------");
+                tempCount = 0;
+            }
 
-    }*/
+            Integer key = enumKeys.nextElement();
+            Account temp = this.accountHashtable.get(key);
+            System.out.println(temp.toString());
+            tempCount++;
+        }
+        System.out.println("Finished printing accounts.");
+    }
 
     @Override
     public String toString() {
         return String.format("%-36s %-20s %-20s %-3d %-4d %-4d", this.CUSTOMER_ID, this.NAME,
                 this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
+    }
+
+
+    public void printInformation(String request) {
+
+        if (request.equalsIgnoreCase("CHEX"))
+            System.out.println("Your ChexSystems score is currently " + this.getChexSystemsScore() + ".");
+        else if (request.equalsIgnoreCase("CREDIT"))
+            System.out.println("Your Credit Score is currently " + this.getCreditScore() + ".");
+        else if (request.equalsIgnoreCase("ACCOUNTS"))
+            this.printAccountInformation();
+        else if (request.equalsIgnoreCase("ALL"))
+            this.printAllCustomerInformation();
+        else if (request.equalsIgnoreCase("RETURN"))
+            System.out.println("Returning to previous menu.");
+        else {
+            System.out.println("Could not process your request: " + request + "Please try again");
+            printInformation(REQUEST_SCANNER.stringGet());
+        }
+    }
+
+    private String getAccountHeaders() {
+        return String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
+                "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
+    }
+
+    public String getCustomerHeaders() {
+        return String.format("%-36s %-20s %-20s %-3s %-4s %-4s", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
+    }
+
+    public Account getAccount(Integer accountNumber) {
+        if (this.accountHashtable.containsKey(accountNumber))
+            return this.accountHashtable.get(accountNumber);
+        else
+            return null;
     }
 
 }
