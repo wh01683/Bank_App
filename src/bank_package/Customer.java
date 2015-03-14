@@ -120,14 +120,6 @@ public class Customer {
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("Finished printing accounts.");
     }
-
-    @Override
-    public String toString() {
-        return String.format("%-36s %-20s %-20s %-3d %-4d %-4d", this.CUSTOMER_ID, this.NAME,
-                this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
-    }
-
-
     public void printInformation(String request) {
 
         if (request.equalsIgnoreCase("CHEX"))
@@ -153,6 +145,12 @@ public class Customer {
 
     public String getCustomerHeaders() {
         return String.format("||%-36s||%-20s||%-20s||%-3s||%-4s||%-4s||", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
+    }
+
+    @Override
+    public String toString() {
+        return String.format("||-36s||%-20s||%-20s||%-3d||%-4d||%-4d||", this.CUSTOMER_ID, this.NAME,
+                this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
     }
 
     public Account getAccount(Integer accountNumber) {

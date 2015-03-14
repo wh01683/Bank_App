@@ -30,7 +30,7 @@ public class CheckingAccount implements Account {
 
 
     public boolean checkWithdrawLimits(double withdrawal) {
-        if (withdrawal > (this.overDraftFee + this.accountBalance))
+        if (withdrawal >= (this.overDraftFee + this.accountBalance))
             return false;
         else
             return true;
@@ -39,7 +39,7 @@ public class CheckingAccount implements Account {
     @Override
     public String toString() {
 
-        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6.0f||%-4.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6.0f||%-7.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
                 this.OWNER.getName(), this.OWNER.getUUID().toString(), this.OWNER.getChexSystemsScore(), this.overDraftProtection, this.getMinRequiredBalance());
     }
 
@@ -98,8 +98,9 @@ public class CheckingAccount implements Account {
     }
     @Override
     public double withdraw(double amount) {
-
-        this.accountBalance -= amount;
-        return amount;
+        if (this.accountBalance >= (amount + overDraftProtection)) {
+            this.accountBalance -= amount;
+            return amount;
+        } else return -1;
     }
 }

@@ -166,7 +166,7 @@ public class CustomerInterface {
             if (processRequest.equalsIgnoreCase("INFORMATION"))
                 this.showCustomerAccountInformation(loggedInCustomer);
             else if (processRequest.equalsIgnoreCase("TRANSACTION")) {
-                while (!(this.processTransaction(processRequest, loggedInCustomer) == 0))
+                if (this.processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer) == 0)
                     initiateLoginProcesses(true, loggedInCustomer);
             } else if (processRequest.equalsIgnoreCase("ADDACCOUNT"))
                 this.addAccount(loggedInCustomer);
@@ -248,18 +248,27 @@ public class CustomerInterface {
     * @return void: adds the new bankAccount directly to the customer's account*/
     private void addAccount(Customer loggedInCustomer) {
         Account tempAccount = ACCOUNT_FACTORY.getAccount(ACCOUNT_REQUESTER_SCANNER.stringGet(), loggedInCustomer);
+
         if (tempAccount == null) {
             System.out.println("Account type invalid. Please try again.");
             addAccount(loggedInCustomer);
-        }
-        loggedInCustomer.addAccount(tempAccount);
-        System.out.println("Congratulations, " + loggedInCustomer.getName() + "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
-                "Here is the information...\n");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println(getAccountHeaders());
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println(tempAccount.toString());
-        System.out.println("\n");
+        } else if (!(tempAccount == null)) {
+            loggedInCustomer.addAccount(tempAccount);
+            System.out.println("Congratulations, " + loggedInCustomer.getName() + "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
+                    "Here is the information...\n");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(getAccountHeaders());
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(tempAccount.toString());
+            System.out.println("\n");
+            uScanner yesNo = new uScanner("Would you like to add more accounts?\nYES to create additonal accounts, NO to return.", 1, 4);
+            if (yesNo.stringGet().equalsIgnoreCase("YES"))
+                addAccount(loggedInCustomer);
+            else
+                initiateLoginProcesses(true, loggedInCustomer);
+        } else
+            System.out.println("Something bad happened. Exiting.");
+
 
     }
 
@@ -279,7 +288,10 @@ public class CustomerInterface {
         else if (answer.equalsIgnoreCase("NO"))
             return false;
 
-        else return false;
+        else {
+            System.out.println("Incorrect response.");
+            return hasAccount();
+        }
     }
 
     /*@hasAccount
@@ -297,7 +309,10 @@ public class CustomerInterface {
         else if (answer.equalsIgnoreCase("NO"))
             return false;
 
-        else return false;
+        else {
+            System.out.println("Incorrect response.");
+            return wantsToRegister();
+        }
     }
 
     private void showCustomerAccountInformation(Customer loggedInCustomer) {

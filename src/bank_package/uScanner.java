@@ -1,5 +1,6 @@
 package bank_package;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class uScanner {
@@ -27,7 +28,7 @@ public class uScanner {
         this.maxDouble = max;
     }
 
-    private int getInt() {
+    private int getInt() throws NoSuchElementException {
 
         System.out.println(this.prompt);
         while (!in.hasNextInt()) {
@@ -37,7 +38,7 @@ public class uScanner {
         return in.nextInt();
     }
 
-    public int intGet() {
+    public int intGet() throws NoSuchElementException {
         int val = getInt();
         while (val < this.minInt | val > this.maxInt) {
             System.out.println("Must be greater than " + this.minInt + " and lesser than " + this.maxInt);
@@ -46,7 +47,7 @@ public class uScanner {
         return val;
     }
 
-    public double doubleGet() {
+    public double doubleGet() throws NoSuchElementException {
         double val = getDouble();
 
         while (val < this.minDouble | val > this.maxDouble) {
@@ -56,7 +57,7 @@ public class uScanner {
         return val;
     }
 
-    public String stringGet() {
+    public String stringGet() throws NoSuchElementException {
         String val = getString();
 
         while (!val.matches("[a-zA-Z]+")) {
@@ -73,7 +74,7 @@ public class uScanner {
         return val;
     }
 
-    public String alphaNumericStringGet() {
+    public String alphaNumericStringGet() throws NoSuchElementException {
 
         String val = getString();
 
@@ -84,7 +85,7 @@ public class uScanner {
         return val;
     }
 
-    private double getDouble() {
+    private double getDouble() throws NoSuchElementException {
         System.out.println(this.prompt);
         while (!in.hasNextDouble()) {
             System.out.println("Must enter a numeric value.");
@@ -93,7 +94,7 @@ public class uScanner {
         return in.nextDouble();
     }
 
-    private String getString() {
+    private String getString() throws NoSuchElementException {
         System.out.println(this.prompt);
 
         while (!in.hasNext()) {
