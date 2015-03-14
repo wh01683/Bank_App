@@ -70,6 +70,7 @@ public class CustomerInterface {
                         newCustID + ". DO NOT LOSE THIS!\nYour password is " + newCustomer.getPASSWORD() + ". You may now log in and experience everything " +
                         "we have to offer!");
             /*TESTING PURPOSES ONLY...*/
+                customerHasAccount = true;
                 getInstance(newBank);
             } else if (!customerHasAccount && !wantsRegister) {
             /*if the customer does NOT have an account and they do NOT want to register, the system exits because
@@ -115,7 +116,7 @@ public class CustomerInterface {
         cust = customerHashtable.get(newCustID.hashCode());
         final String realPass = cust.getPASSWORD();
          /*the user is prompted for their password, which is stored in enteredPass*/
-        enteredPass = PASSWORD_SCANNER.stringGet();
+        enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();
         int attempts = 1;
         /*they will be prompted for their password as long as their REAL PASSWORD and their ENTERED PASSWORD do not match
         * and as long as their attempts do not exceed 4.*/
@@ -126,7 +127,7 @@ public class CustomerInterface {
             } else {
                 System.out.println("Invalid password. Try Again. " + attempts + " of 4 attempts exhausted.");
                 attempts++;
-                enteredPass = PASSWORD_SCANNER.stringGet();
+                enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();
             }
         }
 
@@ -174,8 +175,6 @@ public class CustomerInterface {
                 initiateLoginProcesses(true, loggedInCustomer);
             }
         }
-
-
     }
 
     /*@registerNewCustomer
@@ -195,8 +194,8 @@ public class CustomerInterface {
         else
             tempCreditReport = fillCredReportInformation(tempAge);
         ChexSystems tempScore = new ChexSystems();
-        final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 4, 16);
-        String tempPassword = NEW_PASSWORD_SCANNER.stringGet();
+        final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 5, 20);
+        String tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
 
         return new Customer(tempName, tempAge, tempPassword, tempCreditReport, tempScore);
     }
@@ -205,7 +204,7 @@ public class CustomerInterface {
     * This method is used when creating a new customer. This method is only called if the new customer is older than 17 years
     * old. They are requested to fill in their credit information.
     *
-    * @param tempAge: age passed to the fill credit report. An reallity, it is unnecessary because the user will never
+    * @param tempAge: age passed to the fill credit report. In reality, it is unnecessary because the user will never
     *                 see this method if their age is less than 18; the tempAge is printed purely for debugging and verification
     * @return new CreditReport: returns a new credit report for the customer, filled in with their provided information*/
     public CreditReport fillCredReportInformation(int tempAge) {
@@ -304,11 +303,16 @@ public class CustomerInterface {
                 System.out.println("Returning.\n");
                 processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
             }
-
             Account temp = loggedInCustomer.getAccount(tempAccountNumber1);
-            uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
-            temp.deposit(TRANSACTION_SCANNER.doubleGet());
-            return 1;
+            if (!(temp == null)) {
+                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
+                temp.deposit(TRANSACTION_SCANNER.doubleGet());
+                return 1;
+            } else if (temp == null) {
+                System.out.println("Account not found. Please re-enter your account number.");
+                processTransaction(transactionChoice, loggedInCustomer);
+            }
+
         } else if (transactionChoice.equalsIgnoreCase("WITHDRAW")) {
             System.out.println("You have chosen " + transactionChoice + ". From which account would you like to " + transactionChoice + "?");
             Integer tempAccountNumber2 = ACCOUNT_NUMBER_SCANNER.intGet();
@@ -317,36 +321,52 @@ public class CustomerInterface {
                 processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
             }
             Account temp = loggedInCustomer.getAccount(tempAccountNumber2);
+            if (!(temp == null)) {
+                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice + "?", 0.0, 200000000.0);
+                temp.withdraw(TRANSACTION_SCANNER.doubleGet());
+                return 1;
+            } else if (temp == null) {
+                System.out.println("Account not found. Please re-enter your account number.");
+                processTransaction(transactionChoice, loggedInCustomer);
+            }
 
-            uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
-            temp.withdraw(TRANSACTION_SCANNER.doubleGet());
-            return 1;
         } else if (transactionChoice.equalsIgnoreCase("TRANSFER")) {
             System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
-
-
             Integer tempAccountNumber3 = ACCOUNT_NUMBER_SCANNER.intGet();
+
             if ((tempAccountNumber3 == -1)) {
                 System.out.println("Returning.");
                 processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
             }
             Account transferTo = loggedInCustomer.getAccount(tempAccountNumber3);
+            if (!(transferTo == null)) {
+                System.out.println("From which account would you like to " + transactionChoice + "?");
+                Integer tempAccountNumber4 = ACCOUNT_NUMBER_SCANNER.intGet();
 
+                if ((tempAccountNumber4 == -1)) {
+                    System.out.println("Returning.");
+                    processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                }
 
-            System.out.println("From which account would you like to " + transactionChoice + "?");
-            Integer tempAccountNumber4 = ACCOUNT_NUMBER_SCANNER.intGet();
-            if ((tempAccountNumber4 == -1)) {
-                System.out.println("Returning.");
-                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                Account transferFrom = loggedInCustomer.getAccount(tempAccountNumber4);
+                if (!(transferFrom == null)) {
+                    uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
+                    double transferAmount = TRANSACTION_SCANNER.doubleGet();
+                    transferFrom.withdraw(transferAmount);
+                    transferTo.deposit(transferAmount);
+                    return 1;
+                } else if (transferFrom == null) {
+                    System.out.println("Account not found. Please re-enter your account number.");
+                    processTransaction(transactionChoice, loggedInCustomer);
+                }
+
+            } else if (transferTo == null) {
+                System.out.println("Account not found. Please re-enter your account number.");
+                processTransaction(transactionChoice, loggedInCustomer);
+
             }
-            Account transferFrom = loggedInCustomer.getAccount(tempAccountNumber4);
 
 
-            uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
-            double transferAmount = TRANSACTION_SCANNER.doubleGet();
-            transferTo.deposit(transferAmount);
-            transferFrom.withdraw(transferAmount);
-            return 1;
         } else if (transactionChoice.equalsIgnoreCase("ACCOUNTS")) {
             loggedInCustomer.printInformation("ACCOUNTS");
         } else if (transactionChoice.equalsIgnoreCase("RETURN")) {
