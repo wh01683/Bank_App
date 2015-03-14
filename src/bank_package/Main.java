@@ -11,19 +11,24 @@ package bank_package;
 
 class Main {
 
+
+    Bank randomBank = new Bank("Georgia", 5000, 5000);
+
     public static void main(String[] args) {
         Main test = new Main();
         int num = Integer.parseInt(args[0]);
-        String fileName = args[1];
-        test.work(num, fileName);
+        test.work(num);
     }
 
-    void work(int newArgs, String fileName) {
+    void work(int newArgs) {
 
-        Bank testBank = new Bank("Fred", 50, newArgs, true);
-        testBank.addCustomer(newArgs);
-        testBank.writeInfoToFile(fileName);
-
+        for (int i = 0; i < newArgs; i++) {
+            this.randomBank = randomBank.getRandomBank();
+            randomBank.addCustomer(newArgs);
+            randomBank.writeInfoToFile(System.getProperty("user.dir") + "\\Customer&AccountInformation" + i + ".txt");
+            randomBank.writeAccountInfoToFile(System.getProperty("user.dir") + "\\AccountInformation" + i + ".txt");
+            randomBank.writeCustomerInfoToFile(System.getProperty("user.dir") + "\\CustomerInformation" + i + ".txt");
+        }
     }
 
 }

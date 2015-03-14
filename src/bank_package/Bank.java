@@ -12,36 +12,35 @@ import java.util.Random;
 
 
 public class Bank {
-    private final boolean RANDOM_BANK;
+
     private final int numberCustomers;
     private final int numberAccounts;
-    private final int[] keyArray;
     File test = new File("tests.xml");
     PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
     private Random r = new Random();
+    private RandomGenerator random = new RandomGenerator();
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
     private AccountFactory testAccountFactory = new AccountFactory();
 
-    public Bank(String name, int numberAccounts, int numberCustomers, boolean random) {
+    public Bank(String name, int numberAccounts, int numberCustomers) {
         this.name = name;
         this.numberAccounts = numberAccounts;
         this.numberCustomers = numberCustomers;
-        this.RANDOM_BANK = random;
-        this.keyArray = new int[numberCustomers];
 
-        if (this.RANDOM_BANK) {
-            this.customerHashtable = new Hashtable<Integer, Customer>(this.numberCustomers * 2);
-            for (int i = 0; i < this.numberCustomers; ++i) {
-                Customer temp = new Customer(this.RANDOM_BANK);
-                customerHashtable.put(temp.getUUID().hashCode(), temp);
-                keyArray[i] = temp.getUUID().hashCode();
-            }
+    }
 
+    public Bank getRandomBank() {
 
+        Bank randomBank = new Bank(random.nameGen(0, 10), random.getInts(500, 5000), random.getInts(500, 5000));
+
+        randomBank.customerHashtable = new Hashtable<Integer, Customer>(randomBank.numberCustomers * 2);
+        for (int i = 0; i < randomBank.numberCustomers; ++i) {
+            Customer temp = new Customer(true);
+            randomBank.customerHashtable.put(temp.getUUID().hashCode(), temp);
         }
-
+        return randomBank;
     }
 
     public void addCustomer(int numberCustomers) {
@@ -142,8 +141,6 @@ public class Bank {
             writer.println(getCustomerHeaders());
 
         }
-        writeAccountInfoToFile(fileName);
-        writeCustomerInfoToFile(fileName);
 
         writer.close();
         System.out.println("Finished writing to file.");
@@ -178,7 +175,7 @@ public class Bank {
             writer.println(temp.toString());
             tempCount++;
         }
-        //writer.close();
+        writer.close();
         System.out.println("Finished writing customers to file.");
 
     }
@@ -206,7 +203,7 @@ public class Bank {
             tempCount++;
         }
 
-        //writer.close();
+        writer.close();
         System.out.println("Finished writing accounts to file.");
     }
 
