@@ -24,7 +24,7 @@ public class CustomerInterface {
     private static Bank bank;
     private static Hashtable<Integer, Customer> customerHashtable;
     private static CustomerInterface ourInstance;
-    private static boolean LOGGED_IN = false;
+    private static UUID newCustID;
     private final uScanner nameS = new uScanner("Please enter your name: ", 2, 50);
     private final uScanner ageS = new uScanner("Please enter your age: ", 14, 99);
     private final uScanner latePayments = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -43,25 +43,29 @@ public class CustomerInterface {
     private CustomerInterface(Bank newBank) {
         bank = newBank;
         customerHashtable = bank.getCustomerTable();
-        UUID newCustID;
+        newCustID = new UUID(16, 16).randomUUID();
         String realPass;
         String enteredPass;
         boolean customerHasAccount = hasAccount();
-
-        if (!customerHasAccount) {
+        boolean wantsRegister = wantsToRegister();
+        if (!customerHasAccount && wantsRegister) {
             Customer newCustomer = registerNewCustomer();
             newCustID = newCustomer.getUUID();
-        } else
+            customerHashtable.put(newCustID.hashCode(), newCustomer);
+        } else if (!customerHasAccount && !wantsRegister) {
+            System.exit(1);
+        } else {
             newCustID = UUID.fromString(uuid.alphaNumericStringGet());
+        }
 
         if (!customerHashtable.containsKey(newCustID.hashCode())) {
             System.out.println("We could not find your ID, please try again.");
-            boolean wantsRegister = wantsToRegister();
-            if (wantsRegister) {
+            boolean wantsRegister2 = wantsToRegister();
+            if (wantsRegister2) {
                 cust = registerNewCustomer();
                 newCustID = cust.getUUID();
                 /*ToDo: Must implement observer class to update bank's customer table before proceeding from here.*/
-            } else if (!wantsRegister)
+            } else if (!wantsRegister2)
                 newCustID = UUID.fromString(uuid.alphaNumericStringGet());
         }
 
@@ -71,20 +75,18 @@ public class CustomerInterface {
         int attempts = 0;
 
         while (!enteredPass.equals(realPass) && attempts < 6) {
-            LOGGED_IN = false;
             if (attempts == 5) {
                 System.out.println("Maximum attempts reached. Exiting.");
                 System.exit(1);
             } else {
                 System.out.println("Invalid password. Try Again. " + attempts + " attempts remaining.");
-                LOGGED_IN = false;
                 attempts++;
                 enteredPass = password.stringGet();
             }
         }
 
-        if (realPass.equals(enteredPass)) LOGGED_IN = true;
-
+        System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
+                " on file, " + realPass + "\nYou may now access your bank account information!");
     }
 
     public static CustomerInterface getInstance(Bank thisBank) {
@@ -131,12 +133,8 @@ public class CustomerInterface {
     }
 
     private void addAccount() {
-        if (!LOGGED_IN) {
-            System.out.println("User not logged in. Exiting.");
-            System.exit(1);
-        } else if (LOGGED_IN) {
-            cust.addAccount(accountFactory.getAccount(accountRequest.stringGet(), cust));
-        }
+        cust.addAccount(accountFactory.getAccount(accountRequest.stringGet(), cust));
+
     }
 
     private boolean hasAccount() {

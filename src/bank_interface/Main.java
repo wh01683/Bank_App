@@ -14,18 +14,21 @@ import bank_package.Bank;
 class Main {
 
 
-    Bank randomBank = new Bank("Georgia", 5000, 5000);
+    static Bank randomBank = new Bank("Georgia", 5000, 5000);
 
     public static void main(String[] args) {
-        Main test = new Main();
+        /*Main test = new Main();
         int num = Integer.parseInt(args[0]);
-        test.work(num);
+        test.work(num);*/
+
+        randomBank.addCustomer(500);
+        CustomerInterface test = CustomerInterface.getInstance(randomBank);
     }
 
     void work(int newArgs) {
 
         for (int i = 0; i < newArgs; i++) {
-            this.randomBank = randomBank.getRandomBank();
+            randomBank = randomBank.getRandomBank();
             randomBank.addCustomer(newArgs);
             /*randomBank.writeInfoToFile(System.getProperty("user.dir") + "\\Customer&AccountInformation" + i + ".txt");
             randomBank.writeAccountInfoToFile(System.getProperty("user.dir") + "\\AccountInformation" + i + ".txt");
