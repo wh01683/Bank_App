@@ -25,13 +25,22 @@ public class MoneyMarketAccount implements Account {
 
     @Override
     public String toString() {
-        return String.format("%-10s %-10d %-20.2f %-20s %-30s %-4d %-6d %-4.0f", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6d||%-4.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
                 this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
 
     }
 
     public Integer getACCOUNT_NUMBER() {
         return this.ACCOUNT_NUMBER;
+    }
+
+
+    public boolean checkWithdrawLimits(double withdrawal) {
+        if (withdrawal > this.accountBalance)
+            return false;
+
+        else
+            return true;
     }
 
     @Override
@@ -77,8 +86,12 @@ public class MoneyMarketAccount implements Account {
 
     @Override
     public double withdraw(double amount) {
-        this.accountBalance -= amount;
-        return amount;
-    }
 
+        if (checkWithdrawLimits(amount)) {
+            this.accountBalance -= amount;
+            return amount;
+        } else {
+            return -1;
+        }
+    }
 }

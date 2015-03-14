@@ -79,11 +79,13 @@ public class Customer {
     public void printAllCustomerInformation() {
 
 
-        System.out.println("------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println(getCustomerHeaders());
-        System.out.println("------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println(this.toString());
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         this.printAccountInformation();
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("Finished printing customer information...");
         printInformation(REQUEST_SCANNER.stringGet());
 
@@ -104,9 +106,9 @@ public class Customer {
 
         while (enumKeys.hasMoreElements()) {
             if (tempCount == 10) {
-                System.out.println("------------------------------------------");
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println(getAccountHeaders());
-                System.out.println("------------------------------------------");
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 tempCount = 0;
             }
 
@@ -115,6 +117,7 @@ public class Customer {
             System.out.println(temp.toString());
             tempCount++;
         }
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("Finished printing accounts.");
     }
 
@@ -143,13 +146,13 @@ public class Customer {
         }
     }
 
-    private String getAccountHeaders() {
-        return String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
+    public String getAccountHeaders() {
+        return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
 
     public String getCustomerHeaders() {
-        return String.format("%-36s %-20s %-20s %-3s %-4s %-4s", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
+        return String.format("||%-36s||%-20s||%-20s||%-3s||%-4s||%-4s||", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
     }
 
     public Account getAccount(Integer accountNumber) {

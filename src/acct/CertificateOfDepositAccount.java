@@ -19,7 +19,6 @@ public class CertificateOfDepositAccount implements Account {
     private final RandomGenerator random = new RandomGenerator();
     private double accountBalance;
 
-
     public CertificateOfDepositAccount(Customer customer, double openingBalance, int termLength) {
 
         this.OWNER = customer;
@@ -31,13 +30,22 @@ public class CertificateOfDepositAccount implements Account {
     }
 
     @Override
+    public boolean checkWithdrawLimits(double withdrawal) {
+        if (withdrawal > this.accountBalance)
+            return false;
+
+        else
+            return true;
+    }
+
+    @Override
     public Account getNewAccount(Customer owner, double openingBalance) {
         return new CertificateOfDepositAccount(owner, openingBalance, termLength.intGet());
     }
 
     @Override
     public String toString() {
-        return String.format("%-10s %-10d %-20.2f %-20s %-30s %-4d %-6d %-4.0f", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6d||%-4.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
                 this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
     }
 
@@ -104,8 +112,13 @@ public class CertificateOfDepositAccount implements Account {
 
     @Override
     public double withdraw(double amount) {
-        this.accountBalance -= amount;
-        return amount; //returns confirmation of amount withdrawn
+
+        if (checkWithdrawLimits(amount)) {
+            this.accountBalance -= amount;
+            return amount;
+        } else {
+            return -1;
+        }
     }
 
 }

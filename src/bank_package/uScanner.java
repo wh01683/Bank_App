@@ -128,8 +128,5 @@ public class uScanner {
         this.minLength = newMinLength;
     }
 
-    public String getAccountHeaders() {
-        return String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
-                "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
-    }
+
 }

@@ -69,6 +69,8 @@ public class CustomerInterface {
                 System.out.println("Congratulations, " + newCustomer.getName() + "! You have successfully registered.\nYour new Customer ID is " +
                         newCustID + ". DO NOT LOSE THIS!\nYour password is " + newCustomer.getPASSWORD() + ". You may now log in and experience everything " +
                         "we have to offer!");
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
             /*TESTING PURPOSES ONLY...*/
                 customerHasAccount = true;
                 getInstance(newBank);
@@ -97,6 +99,7 @@ public class CustomerInterface {
             while (!customerHashtable.containsKey(newCustID.hashCode()) && uuidCounter < 7) {
                 if (uuidCounter == 6) {
                     System.out.println("All attempts exhausted. System exiting.");
+
                     System.exit(1);
                 }
                 if (wantsRegister2) {
@@ -134,7 +137,7 @@ public class CustomerInterface {
         boolean loggedIn = enteredPass.equals(realPass);
         System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
                 " on file, " + realPass + "\nYou may now access your bank account information!");
-
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         initiateLoginProcesses(loggedIn, cust);
     }
 
@@ -156,6 +159,7 @@ public class CustomerInterface {
 
     private void initiateLoginProcesses(boolean isLoggedIn, Customer loggedInCustomer) {
         final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + loggedInCustomer.getName() + "?\nINFORMATION, TRANSACTION, ADDACCOUNT, EXIT", 3, 12);
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
         while (isLoggedIn) {
             String processRequest = PROCESS_REQUEST_SCANNER.stringGet();
@@ -244,11 +248,19 @@ public class CustomerInterface {
     * @return void: adds the new bankAccount directly to the customer's account*/
     private void addAccount(Customer loggedInCustomer) {
         Account tempAccount = ACCOUNT_FACTORY.getAccount(ACCOUNT_REQUESTER_SCANNER.stringGet(), loggedInCustomer);
+        if (tempAccount == null) {
+            System.out.println("Account type invalid. Please try again.");
+            addAccount(loggedInCustomer);
+        }
         loggedInCustomer.addAccount(tempAccount);
         System.out.println("Congratulations, " + loggedInCustomer.getName() + "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
                 "Here is the information...\n");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println(getAccountHeaders());
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println(tempAccount.toString());
+        System.out.println("\n");
+
     }
 
     /*@hasAccount
@@ -295,12 +307,12 @@ public class CustomerInterface {
     }
 
     private int processTransaction(String transactionChoice, Customer loggedInCustomer) {
-
+        /*DEPOSIT SECTION*/
         if (transactionChoice.equalsIgnoreCase("DEPOSIT")) {
             System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
             Integer tempAccountNumber1 = ACCOUNT_NUMBER_SCANNER.intGet();
             if ((tempAccountNumber1 == -1)) {
-                System.out.println("Returning.\n");
+                System.out.println("Returning.\n\n\n");
                 processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
             }
             Account temp = loggedInCustomer.getAccount(tempAccountNumber1);
@@ -313,7 +325,11 @@ public class CustomerInterface {
                 processTransaction(transactionChoice, loggedInCustomer);
             }
 
-        } else if (transactionChoice.equalsIgnoreCase("WITHDRAW")) {
+        }
+
+        /*WITHDRAW SECTION*/
+
+        else if (transactionChoice.equalsIgnoreCase("WITHDRAW")) {
             System.out.println("You have chosen " + transactionChoice + ". From which account would you like to " + transactionChoice + "?");
             Integer tempAccountNumber2 = ACCOUNT_NUMBER_SCANNER.intGet();
             if ((tempAccountNumber2 == -1)) {
@@ -323,14 +339,23 @@ public class CustomerInterface {
             Account temp = loggedInCustomer.getAccount(tempAccountNumber2);
             if (!(temp == null)) {
                 uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice + "?", 0.0, 200000000.0);
-                temp.withdraw(TRANSACTION_SCANNER.doubleGet());
-                return 1;
+                if ((temp.withdraw(TRANSACTION_SCANNER.doubleGet()) == -1)) {
+                    System.out.println("Insufficient funds. " + temp.getBalance() + " available.");
+                    return 0;
+                } else {
+                    return 1;
+                }
+
             } else if (temp == null) {
                 System.out.println("Account not found. Please re-enter your account number.");
                 processTransaction(transactionChoice, loggedInCustomer);
             }
 
-        } else if (transactionChoice.equalsIgnoreCase("TRANSFER")) {
+        }
+
+
+        /*TRANSFER SELECTION*/
+        else if (transactionChoice.equalsIgnoreCase("TRANSFER")) {
             System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
             Integer tempAccountNumber3 = ACCOUNT_NUMBER_SCANNER.intGet();
 
@@ -383,7 +408,7 @@ public class CustomerInterface {
     }
 
     public String getAccountHeaders() {
-        return String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
+        return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
 }

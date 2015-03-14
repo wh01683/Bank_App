@@ -29,4 +29,6 @@ public interface Account {
     public Account getNewAccount(Customer customer, double openingBalance);
 
     public Integer getACCOUNT_NUMBER();
+
+    public boolean checkWithdrawLimits(double withdrawal);
 }

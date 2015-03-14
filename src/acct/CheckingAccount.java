@@ -28,10 +28,18 @@ public class CheckingAccount implements Account {
         this.ACCOUNT_NUMBER = random.acctGen();
     }
 
+
+    public boolean checkWithdrawLimits(double withdrawal) {
+        if (withdrawal > (this.overDraftFee + this.accountBalance))
+            return false;
+        else
+            return true;
+    }
+
     @Override
     public String toString() {
 
-        return String.format("%-10s %-10d %-20.2f %-20s %-30s %-4d %-6.0f %-4.0f\n", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6.0f||%-4.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
                 this.OWNER.getName(), this.OWNER.getUUID().toString(), this.OWNER.getChexSystemsScore(), this.overDraftProtection, this.getMinRequiredBalance());
     }
 

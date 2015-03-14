@@ -29,13 +29,22 @@ public class IndividualRetirementAccount implements Account {
         return new IndividualRetirementAccount(customer, openingBalance);
     }
 
+
+    public boolean checkWithdrawLimits(double withdrawal) {
+        if (withdrawal > this.accountBalance)
+            return false;
+
+        else
+            return true;
+    }
+
     public Integer getACCOUNT_NUMBER() {
         return this.ACCOUNT_NUMBER;
     }
 
     @Override
     public String toString() {
-        return String.format("%-10s %-10d %-20.2f %-20s %-30s %-4d %-6d %-4.0f", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6d||%-4.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
                 this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
 
     }
@@ -76,17 +85,22 @@ public class IndividualRetirementAccount implements Account {
         return amount;
     }
 
-    @Override
-    public double withdraw(double amount) {
-        this.accountBalance -= amount;
-        return amount;
-    }
-
     private double calculateInterestRate() {
         if (this.accountBalance > 99999.0) {
             this.interestRate = .15;
             return .15;
         } else this.interestRate = .10;
         return .10;
+    }
+
+    @Override
+    public double withdraw(double amount) {
+
+        if (checkWithdrawLimits(amount)) {
+            this.accountBalance -= amount;
+            return amount;
+        } else {
+            return -1;
+        }
     }
 }

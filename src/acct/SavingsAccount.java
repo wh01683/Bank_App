@@ -22,6 +22,15 @@ public class SavingsAccount implements Account {
         this.ACCOUNT_NUMBER = random.acctGen();
     }
 
+
+    public boolean checkWithdrawLimits(double withdrawal) {
+        if (withdrawal > this.accountBalance)
+            return false;
+
+        else
+            return true;
+    }
+
     @Override
     public Account getNewAccount(Customer customer, double openingBalance) {
         return null;
@@ -33,7 +42,7 @@ public class SavingsAccount implements Account {
 
     @Override
     public String toString() {
-        return String.format("%-10s %-10d %-20.2f %-20s %-30s %-4d %-6d %-4.0f", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6d||%-4.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
                 this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
     }
 
@@ -75,7 +84,12 @@ public class SavingsAccount implements Account {
 
     @Override
     public double withdraw(double amount) {
-        this.accountBalance -= amount;
-        return amount;
+
+        if (checkWithdrawLimits(amount)) {
+            this.accountBalance -= amount;
+            return amount;
+        } else {
+            return -1;
+        }
     }
 }
