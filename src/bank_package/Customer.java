@@ -3,7 +3,6 @@ package bank_package;
 import acct.Account;
 import acct.AccountFactory;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.UUID;
@@ -75,12 +74,12 @@ public class Customer {
     }
 
 
-    public void printAllCustomerInformation() {
+    /*public void printAllCustomerInformation() {
         System.out.println("\n ID: " + this.CUSTOMER_ID + " Name: " + this.NAME + " Pass: " + this.PASSWORD + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
                 + " Chex: " + this.getChexSystemsScore() + " ");
         this.printAccountInformation();
 
-    }
+    }*/
 
     public void addAccount(Account newAccount) {
         if (!(newAccount == null))
@@ -88,7 +87,7 @@ public class Customer {
 
     }
 
-    void printAccountInformation() {
+    /*void printAccountInformation() {
 
         Enumeration<Integer> enumKeys = accountHashtable.keys();
 
@@ -98,13 +97,14 @@ public class Customer {
             System.out.println(" Type: " + temp.getType() + " acct #: " + key + " balance: " + temp.getBalance() + " ");
         }
 
-    }
+    }*/
 
     @Override
     public String toString() {
-        String temp = String.format("ID: %-20s Name: %-20s Pass: %-20s Age: %-3d " +
-                "Cred: %-4d Chex: %-4d", this.CUSTOMER_ID, this.NAME, this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
+        String temp = String.format("%-36s %-20s %-20s %-3d %-4d %-4d", this.CUSTOMER_ID, this.NAME,
+                this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
 
         return temp;
     }
+
 }

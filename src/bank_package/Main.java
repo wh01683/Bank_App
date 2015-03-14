@@ -23,10 +23,11 @@ class Main {
 
     void work() {
 
-        Bank testBank = new Bank("Fred", 50, 5, true);
+        Bank testBank = new Bank("Fred", 50, 500, true);
         testBank.addCustomer(500);
         testBank.writeInfoToFile("DEFAULT");
-
+        /*testBank.writeAccountInfoToFile("DEFAULT");
+        testBank.writeCustomerInfoToFile("DEFAULT");*/
     }
 
 }

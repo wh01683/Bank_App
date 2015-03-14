@@ -81,30 +81,7 @@ public class Bank {
         }
     }
 
-    public void printCustomerInfo() {
 
-        Enumeration<Integer> enumKeys = customerHashtable.keys();
-
-        while (enumKeys.hasMoreElements()) {
-            Integer key = enumKeys.nextElement();
-            Customer temp = customerHashtable.get(key);
-            System.out.println(temp.toString());
-            temp.printAccountInformation();
-        }
-
-    }
-
-    public void printAccountInfo() {
-
-        Enumeration<Integer> enumKeys = this.accountHashtable.keys();
-
-        while (enumKeys.hasMoreElements()) {
-            Integer key = enumKeys.nextElement();
-            Account temp = accountHashtable.get(key);
-            System.out.println(temp.toString());
-        }
-
-    }
     @Override
     public String toString() {
         return this.name + "-" + this.getNumberCustomers() + "-" + this.getNumberAccounts();
@@ -149,9 +126,10 @@ public class Bank {
             writer.println(temp.toString());
             Hashtable<Integer, Account> tempHash = temp.getAccountHashtable();
             Enumeration<Integer> acctKeys = tempHash.keys();
-
+            writer.println("------------------------------------------");
             writer.println("-------------CUSTOMER'S ACCOUNTS----------");
-            writer.println(getHeaders());
+            writer.println("------------------------------------------");
+            writer.println(getAccountHeaders());
 
             while (acctKeys.hasMoreElements()) {
                 Integer acctKey = acctKeys.nextElement();
@@ -159,20 +137,82 @@ public class Bank {
                 writer.println(tempAcct.toString());
             }
             writer.println("------------------------------------------");
-            writer.println("-------------NEW CUSTOMER BREAK-----------");
+            writer.println("-------------NEW CUSTOMER-----------------");
             writer.println("------------------------------------------");
+            writer.println(getCustomerHeaders());
 
         }
+        writeAccountInfoToFile(fileName);
+        writeCustomerInfoToFile(fileName);
+
         writer.close();
         System.out.println("Finished writing to file.");
     }
 
-    private String getHeaders() {
+    private String getAccountHeaders() {
 
         String temp = String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
 
         return temp;
+    }
+
+
+    public String getCustomerHeaders() {
+        String temp = String.format("%-36s %-20s %-20s %-3s %-4s %-4s", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
+
+        return temp;
+    }
+
+    public void writeCustomerInfoToFile(String fileName) {
+
+        if (!fileName.equalsIgnoreCase("DEFAULT"))
+            writer = getPW(fileName);
+
+        Enumeration<Integer> enumKeys = customerHashtable.keys();
+        int tempCount = 10;
+        while (enumKeys.hasMoreElements()) {
+            if (tempCount == 10) {
+                writer.println("------------------------------------------");
+                writer.println(getCustomerHeaders());
+                writer.println("------------------------------------------");
+                tempCount = 0;
+            }
+            Integer key = enumKeys.nextElement();
+            Customer temp = customerHashtable.get(key);
+            writer.println(temp.toString());
+            tempCount++;
+        }
+        //writer.close();
+        System.out.println("Finished writing customers to file.");
+
+    }
+
+    public void writeAccountInfoToFile(String fileName) {
+
+        if (!fileName.equalsIgnoreCase("DEFAULT"))
+            writer = getPW(fileName);
+
+
+        Enumeration<Integer> enumKeys = this.accountHashtable.keys();
+        int tempCount = 10;
+
+        while (enumKeys.hasMoreElements()) {
+            if (tempCount == 10) {
+                writer.println("------------------------------------------");
+                writer.println(getAccountHeaders());
+                writer.println("------------------------------------------");
+                tempCount = 0;
+            }
+
+            Integer key = enumKeys.nextElement();
+            Account temp = this.accountHashtable.get(key);
+            writer.println(temp.toString());
+            tempCount++;
+        }
+
+        //writer.close();
+        System.out.println("Finished writing accounts to file.");
     }
 
 }
