@@ -8,7 +8,7 @@ import bank_package.RandomGenerator;
  */
 public class SavingsAccount implements Account {
 
-    private final String TYPE = "SAVINGS ACCOUNT";
+    private final String TYPE = "SAVINGS";
     private final Integer ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 5;
     private final Customer OWNER;
@@ -33,8 +33,10 @@ public class SavingsAccount implements Account {
 
     @Override
     public String toString() {
-        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.accountBalance + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
-                this.OWNER.getChexSystemsScore() + "-" + this.interestRate + "-" + this.getMinRequiredBalance();
+
+        String temp = String.format("%-10s %-10d %-20.2f %-20s %-30s %-4d %-6d %-4.0f", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+                this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
+        return temp;
     }
 
     @Override

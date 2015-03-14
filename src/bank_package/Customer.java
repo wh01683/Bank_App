@@ -38,7 +38,7 @@ public class Customer {
     public Customer(boolean random) {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
         this.age = r.nextInt(100);
-        this.NAME = this.random.nameGen(2, r.nextInt(50));
+        this.NAME = this.random.nameGen(2, r.nextInt(20));
         this._cred = new CreditReport(this.age, true);
         this._score = new ChexSystems();
         this.PASSWORD = this.random.passwordGen(0, r.nextInt(15) + 5);
@@ -76,7 +76,7 @@ public class Customer {
 
 
     public void printAllCustomerInformation() {
-        System.out.println("\n ID: " + this.CUSTOMER_ID + " Pass: " + this.PASSWORD + " Name: " + this.NAME + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
+        System.out.println("\n ID: " + this.CUSTOMER_ID + " Name: " + this.NAME + " Pass: " + this.PASSWORD + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
                 + " Chex: " + this.getChexSystemsScore() + " ");
         this.printAccountInformation();
 
@@ -102,8 +102,9 @@ public class Customer {
 
     @Override
     public String toString() {
-        return ("\nID: " + this.CUSTOMER_ID + " Pass: " + this.PASSWORD + " Name: " + this.NAME + " Age: " + this.getAge() + " Cred: " + this.getCreditScore()
-                + " Chex: " + this.getChexSystemsScore() + " ");
+        String temp = String.format("ID: %-20s Name: %-20s Pass: %-20s Age: %-3d " +
+                "Cred: %-4d Chex: %-4d", this.CUSTOMER_ID, this.NAME, this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
 
+        return temp;
     }
 }

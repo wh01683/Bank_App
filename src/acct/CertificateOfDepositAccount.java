@@ -12,7 +12,7 @@ public class CertificateOfDepositAccount implements Account {
     private static final uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
     private final double INTEREST_RATE;
     private final Integer ACCOUNT_NUMBER;
-    private final String TYPE = "FIXED TERM CERTIFICATE OF DEPOSIT";
+    private final String TYPE = "FIXED CD";
     private final double MIN_BALANCE = 1000.00;
     private final int TERM_LENGTH;
     private final Customer OWNER;
@@ -37,8 +37,9 @@ public class CertificateOfDepositAccount implements Account {
 
     @Override
     public String toString() {
-        return TYPE + "-" + this.ACCOUNT_NUMBER + "-" + this.accountBalance + "-" + this.OWNER.getName() + "-" + this.OWNER.getUUID() + "-" +
-                this.OWNER.getChexSystemsScore() + "-" + this.getMinRequiredBalance() + "-" + this.TERM_LENGTH;
+        String temp = String.format("%-10s %-10d %-20.2f %-20s %-30s %-4d %-6d %-4.0f", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+                this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
+        return temp;
     }
 
     public Integer getACCOUNT_NUMBER() {

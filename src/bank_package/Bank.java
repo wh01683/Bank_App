@@ -150,15 +150,29 @@ public class Bank {
             Hashtable<Integer, Account> tempHash = temp.getAccountHashtable();
             Enumeration<Integer> acctKeys = tempHash.keys();
 
+            writer.println("-------------CUSTOMER'S ACCOUNTS----------");
+            writer.println(getHeaders());
+
             while (acctKeys.hasMoreElements()) {
                 Integer acctKey = acctKeys.nextElement();
                 Account tempAcct = tempHash.get(acctKey);
                 writer.println(tempAcct.toString());
-
             }
+            writer.println("------------------------------------------");
+            writer.println("-------------NEW CUSTOMER BREAK-----------");
+            writer.println("------------------------------------------");
+
         }
         writer.close();
+        System.out.println("Finished writing to file.");
     }
 
+    private String getHeaders() {
+
+        String temp = String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
+                "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
+
+        return temp;
+    }
 
 }
