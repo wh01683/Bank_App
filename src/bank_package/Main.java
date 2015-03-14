@@ -9,25 +9,21 @@ package bank_package;
  * information like ChexSystems report (the banking equivalent of a credit check), available balance
  * to open with, check basic customer information like age, etc*/
 
-import java.util.ArrayList;
-
 class Main {
 
-    private static ArrayList<String> argumentList;
     public static void main(String[] args) {
         Main test = new Main();
-
-        test.work();
-
+        int num = Integer.parseInt(args[0]);
+        String fileName = args[1];
+        test.work(num, fileName);
     }
 
-    void work() {
+    void work(int newArgs, String fileName) {
 
-        Bank testBank = new Bank("Fred", 50, 500, true);
-        testBank.addCustomer(500);
-        testBank.writeInfoToFile("DEFAULT");
-        /*testBank.writeAccountInfoToFile("DEFAULT");
-        testBank.writeCustomerInfoToFile("DEFAULT");*/
+        Bank testBank = new Bank("Fred", 50, newArgs, true);
+        testBank.addCustomer(newArgs);
+        testBank.writeInfoToFile(fileName);
+
     }
 
 }

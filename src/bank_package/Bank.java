@@ -17,7 +17,7 @@ public class Bank {
     private final int numberAccounts;
     private final int[] keyArray;
     File test = new File("tests.xml");
-    PrintWriter writer = getPW("C:\\Users\\robert\\Desktop\\bankinformation.txt");
+    PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
     private Random r = new Random();
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
@@ -150,18 +150,13 @@ public class Bank {
     }
 
     private String getAccountHeaders() {
-
-        String temp = String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
+        return String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
-
-        return temp;
     }
 
 
     public String getCustomerHeaders() {
-        String temp = String.format("%-36s %-20s %-20s %-3s %-4s %-4s", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
-
-        return temp;
+        return String.format("%-36s %-20s %-20s %-3s %-4s %-4s", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
     }
 
     public void writeCustomerInfoToFile(String fileName) {
