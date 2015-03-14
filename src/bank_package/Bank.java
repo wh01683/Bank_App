@@ -86,7 +86,7 @@ public class Bank {
         return this.name + "-" + this.getNumberCustomers() + "-" + this.getNumberAccounts();
     }
 
-    Hashtable getCustomerTable() {
+    public Hashtable getCustomerTable() {
         return this.customerHashtable;
     }
 

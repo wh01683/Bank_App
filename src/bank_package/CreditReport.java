@@ -3,7 +3,7 @@ package bank_package;
 import java.util.Random;
 import java.util.Scanner;
 
-class CreditReport {
+public class CreditReport {
     static Scanner in = new Scanner(System.in);
     private final int CREDIT_SCORE;
     private final int RECENT_LATE_PAYMENT_NUMBER;
@@ -118,7 +118,7 @@ class CreditReport {
         //max is 239.7
         int tempScore;
 
-        if (this.CREDIT_ACCOUNT_BALANCE == 0 || this.CREDIT_USED < 10) tempScore = 239;
+        if (this.CREDIT_ACCOUNT_BALANCE == 0 | this.CREDIT_USED < 10) tempScore = 239;
         if (this.CREDIT_USED < 20) tempScore = 200;
         if (this.CREDIT_USED < 50) tempScore = 100;
         else tempScore = 0;

@@ -1,4 +1,4 @@
-package bank_package;
+package bank_interface;
 /*The goal of the facade pattern is to simplify a group of subsystems
  * by making a unified interface to group all the subsystems. the implemented
  * Systems have no knowledge of the facade; they have no instance of the facade.*/
@@ -8,6 +8,8 @@ package bank_package;
  * checking account application class as the facade class. Subclasses will include bank account
  * information like ChexSystems report (the banking equivalent of a credit check), available balance
  * to open with, check basic customer information like age, etc*/
+
+import bank_package.Bank;
 
 class Main {
 
@@ -25,9 +27,9 @@ class Main {
         for (int i = 0; i < newArgs; i++) {
             this.randomBank = randomBank.getRandomBank();
             randomBank.addCustomer(newArgs);
-            randomBank.writeInfoToFile(System.getProperty("user.dir") + "\\Customer&AccountInformation" + i + ".txt");
+            /*randomBank.writeInfoToFile(System.getProperty("user.dir") + "\\Customer&AccountInformation" + i + ".txt");
             randomBank.writeAccountInfoToFile(System.getProperty("user.dir") + "\\AccountInformation" + i + ".txt");
-            randomBank.writeCustomerInfoToFile(System.getProperty("user.dir") + "\\CustomerInformation" + i + ".txt");
+            randomBank.writeCustomerInfoToFile(System.getProperty("user.dir") + "\\CustomerInformation" + i + ".txt");*/
         }
     }
 

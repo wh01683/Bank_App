@@ -1,6 +1,5 @@
 package acct;
 
-import bank_package.Bank;
 import bank_package.Customer;
 
 /**
@@ -10,7 +9,6 @@ public class SavingsAccountApplication implements AccountApplication {
 
     private static final double MIN_BALANCE = 5.0;
     private final Customer _cust;
-    private Bank _bank;
     private boolean approved;
 
     public SavingsAccountApplication(Customer newCustomer, double openingBalance) {
@@ -24,11 +22,10 @@ public class SavingsAccountApplication implements AccountApplication {
     }
 
     private boolean decideApproved(double openingBalance) {
-        if (openingBalance < MIN_BALANCE) this.approved = false;
-        else if (this._cust.getChexSystemsScore() < 300) this.approved = false;
-        else if (this._cust.getAge() < 11) this.approved = false;
-        else this.approved = true;
-
+        this.approved = true;
+        this.approved = !(openingBalance < MIN_BALANCE);
+        this.approved = !(this._cust.getChexSystemsScore() < 300);
+        this.approved = !(this._cust.getAge() < 11);
         return this.approved;
     }
 

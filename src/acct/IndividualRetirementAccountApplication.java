@@ -26,10 +26,9 @@ public class IndividualRetirementAccountApplication implements AccountApplicatio
     }
 
     private boolean decideApproved(double openingBalance) {
-        if (openingBalance < MIN_BALANCE) this.approved = false;
-        if (this._cust.getChexSystemsScore() < 300 | this._cust.getCreditScore() < 300) this.approved = false;
-        else this.approved = true;
-
+        this.approved = true;
+        this.approved = !(openingBalance < MIN_BALANCE);
+        this.approved = !(this._cust.getChexSystemsScore() < 300 | this._cust.getCreditScore() < 300);
         return this.approved;
 
     }

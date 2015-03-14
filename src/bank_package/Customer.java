@@ -101,10 +101,8 @@ public class Customer {
 
     @Override
     public String toString() {
-        String temp = String.format("%-36s %-20s %-20s %-3d %-4d %-4d", this.CUSTOMER_ID, this.NAME,
+        return String.format("%-36s %-20s %-20s %-3d %-4d %-4d", this.CUSTOMER_ID, this.NAME,
                 this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
-
-        return temp;
     }
 
 }

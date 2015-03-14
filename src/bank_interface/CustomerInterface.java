@@ -1,6 +1,7 @@
-package bank_package;
+package bank_interface;
 
 import acct.AccountFactory;
+import bank_package.*;
 
 import java.util.Hashtable;
 import java.util.UUID;
@@ -108,7 +109,7 @@ public class CustomerInterface {
 
     }
 
-    private CreditReport fillCredReportInformation(int tempAge) {
+    public CreditReport fillCredReportInformation(int tempAge) {
         System.out.println("Since you are " + tempAge + " years old, you must provide some credit information.");
         double credLimit = credLim.doubleGet();
         double amountOfLatePayments = 0;
