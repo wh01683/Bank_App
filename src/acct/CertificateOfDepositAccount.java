@@ -3,19 +3,15 @@ package acct;
 import bank_package.Customer;
 import bank_package.RandomGenerator;
 import bank_package.uScanner;
-
 import java.io.Serializable;
 
-/**
- * Created by robert on 3/12/2015.
- */
 
-class CertificateOfDepositAccount implements Account, Serializable {
+class CertificateOfDepositAccount implements Account, Serializable{
     private static final uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
     private final double INTEREST_RATE;
     private final Integer ACCOUNT_NUMBER;
     private final String TYPE = "FIXED CD";
-    private final double MIN_BALANCE = 1000.00;
+    private final double MINIMUM_REQUIRED_BALANCE = 1000.00;
     private final int TERM_LENGTH;
     private final Customer OWNER;
     private final RandomGenerator random = new RandomGenerator();
@@ -36,10 +32,6 @@ class CertificateOfDepositAccount implements Account, Serializable {
         return withdrawal <= this.accountBalance;
     }
 
-    @Override
-    public Account getNewAccount(Customer owner, double openingBalance) {
-        return new CertificateOfDepositAccount(owner, openingBalance, termLength.intGet());
-    }
 
     @Override
     public String toString() {
@@ -54,16 +46,6 @@ class CertificateOfDepositAccount implements Account, Serializable {
     @Override
     public double getBalance() {
         return this.accountBalance;
-    }
-
-    @Override
-    public void setBalance(double newBalance) {
-        //DOING NOTHING HERE PLEASE MOVE ALONG. THESE ARE NOT THE METHODS YOU'RE LOOKING FOR.
-    }
-
-    @Override
-    public double getInterest() {
-        return this.INTEREST_RATE;
     }
 
     private double calculateInterestRate(int termLength) {
@@ -93,13 +75,8 @@ class CertificateOfDepositAccount implements Account, Serializable {
     }
 
     @Override
-    public Customer getOwner() {
-        return this.OWNER;
-    }
-
-    @Override
     public double getMinRequiredBalance() {
-        return this.MIN_BALANCE;
+        return this.MINIMUM_REQUIRED_BALANCE;
     }
 
     @Override
@@ -119,4 +96,29 @@ class CertificateOfDepositAccount implements Account, Serializable {
         }
     }
 
+    public void update() {
+        this.accountBalance *= (this.INTEREST_RATE+1);
+    }
+
+    @Override
+    public Account applyForNewAccount(Customer customer, double openingBalance) {
+
+        int desiredTermLength = termLength.intGet();
+
+        if(decideApproved(customer, openingBalance, desiredTermLength)){
+            return new CertificateOfDepositAccount(customer, openingBalance, desiredTermLength);
+        }
+        else{
+            System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Fixed-Term Certificate of Deposit Account at this time.");
+            return null;
+        }
+
+    }
+
+    private boolean decideApproved(Customer customer,double openingBalance, int desiredTermLength) {
+        boolean tempApproved;
+        tempApproved = !((openingBalance < this.MINIMUM_REQUIRED_BALANCE) | (desiredTermLength<1) | (desiredTermLength>48));
+        tempApproved = !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300);
+        return tempApproved;
+    }
 }

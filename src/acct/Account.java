@@ -12,13 +12,7 @@ public interface Account {
 
     public double getBalance();
 
-    public void setBalance(double newBalance);
-
-    public double getInterest();
-
     public String getType();
-
-    public Customer getOwner();
 
     public double getMinRequiredBalance();
 
@@ -26,9 +20,9 @@ public interface Account {
 
     public double withdraw(double amount);
 
-    public Account getNewAccount(Customer customer, double openingBalance);
-
     public Integer getACCOUNT_NUMBER();
 
     public boolean checkWithdrawLimits(double withdrawal);
+
+    public Account applyForNewAccount(Customer customer, double openingBalance);
 }

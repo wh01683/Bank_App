@@ -15,19 +15,19 @@ public class Customer implements Serializable {
     private final String NAME;
     private final String PASSWORD;
     private final Random r = new Random();
-    private final CreditReport _cred;
+    private final CreditReport CREDIT_REPORT;
     private final ChexSystems _score = new ChexSystems();
     private final int age;
     private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
     private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
     private final RandomGenerator random = new RandomGenerator();
 
-    public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport, ChexSystems newScore) {
+    public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport) {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
 
         this.age = tempAge;
         this.NAME = tempName;
-        this._cred = newCreditReport;
+        this.CREDIT_REPORT = newCreditReport;
         this.PASSWORD = password;
 
     }
@@ -35,8 +35,8 @@ public class Customer implements Serializable {
     public Customer() {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
         this.NAME = this.random.nameGen(2, r.nextInt(20));
-        this._cred = new CreditReport();
-        this.age = _cred.getCUSTOMER_AGE();
+        this.CREDIT_REPORT = new CreditReport();
+        this.age = CREDIT_REPORT.getCUSTOMER_AGE();
         this.PASSWORD = this.random.passwordGen(0, r.nextInt(15) + 5);
 
 
@@ -53,10 +53,6 @@ public class Customer implements Serializable {
         return this.CUSTOMER_ID;
     }
 
-    public int getAge() {
-        return this.age;
-    }
-
     public String getName() {
         return this.NAME;
     }
@@ -66,7 +62,7 @@ public class Customer implements Serializable {
     }
 
     public int getCreditScore() {
-        return this._cred.getCreditScore();
+        return this.CREDIT_REPORT.getCreditScore();
     }
 
 
@@ -127,7 +123,7 @@ public class Customer implements Serializable {
         else if (request.equalsIgnoreCase("RETURN"))
             System.out.println("Returning to previous menu.");
         else {
-            System.out.println("Could not process your request: " + request + "Please try again");
+            System.out.println("Could not process your request: " + request + " Please try again");
             printInformation(REQUEST_SCANNER.stringGet());
         }
     }
@@ -148,10 +144,13 @@ public class Customer implements Serializable {
     }
 
     public Account getAccount(Integer accountNumber) {
+        final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", 0, 200000000);
         if (this.accountHashtable.containsKey(accountNumber))
             return this.accountHashtable.get(accountNumber);
-        else
-            return null;
+        else{
+            System.out.println("Could not locate your account. Please re-enter your account number.");
+            return getAccount(ACCOUNT_NUMBER_SCANNER.intGet());
+        }
     }
 
 }

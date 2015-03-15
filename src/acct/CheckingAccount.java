@@ -5,9 +5,8 @@ import bank_package.RandomGenerator;
 
 import java.io.Serializable;
 
-/**
- * Created by robert on 3/11/2015.
- */
+
+
 class CheckingAccount implements Account, Serializable {
 
     private final String TYPE = "CHECKING";
@@ -17,8 +16,7 @@ class CheckingAccount implements Account, Serializable {
     private final RandomGenerator random = new RandomGenerator();
     private final double overDraftFee = 35; //35 dollar default over draft fee... it's what my bank charges
     private double overDraftProtection = -750.0; //set to -750 dollars over draft protection allowed
-    private CheckingAccountApplication checkingAccountApplication;
-    private double interestRate;
+    private final double INTEREST_RATE = .01;
     private double accountBalance;
 
     public CheckingAccount(Customer owner, double openingBalance) {
@@ -45,10 +43,6 @@ class CheckingAccount implements Account, Serializable {
         return this.ACCOUNT_NUMBER;
     }
 
-    @Override
-    public Account getNewAccount(Customer customer, double openingBalance) {
-        return new CheckingAccount(customer, openingBalance);
-    }
 
     @Override
     public double getBalance() {
@@ -56,23 +50,8 @@ class CheckingAccount implements Account, Serializable {
     }
 
     @Override
-    public void setBalance(double newBalance) {
-        this.accountBalance = newBalance;
-    }
-
-    @Override
-    public double getInterest() {
-        return this.interestRate;
-    }
-
-    @Override
     public String getType() {
         return this.TYPE;
-    }
-
-    @Override
-    public Customer getOwner() {
-        return this.OWNER;
     }
 
     @Override
@@ -101,4 +80,28 @@ class CheckingAccount implements Account, Serializable {
             return amount;
         } else return -1;
     }
+
+    public void update() {
+        this.accountBalance *= (this.INTEREST_RATE+1);
+    }
+    @Override
+    public Account applyForNewAccount(Customer customer, double openingBalance) {
+
+        if(decideApproved(customer, openingBalance)){
+            return new CheckingAccount(customer, openingBalance);
+        }
+        else{
+            System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Savings Account at this time.");
+            return null;
+        }
+
+    }
+
+    private boolean decideApproved(Customer customer,double openingBalance) {
+        boolean tempApproved;
+        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
+        tempApproved = !(customer.getChexSystemsScore() < 300);
+        return tempApproved;
+    }
+
 }

@@ -196,7 +196,7 @@ public class CustomerInterface {
         final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 5, 20);
         String tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
 
-        return new Customer(tempName, tempAge, tempPassword, tempCreditReport, tempScore);
+        return new Customer(tempName, tempAge, tempPassword, tempCreditReport);
     }
 
     /*@fillCreditReportInformation

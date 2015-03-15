@@ -5,12 +5,10 @@ import bank_package.RandomGenerator;
 
 import java.io.Serializable;
 
-/**
- * Created by robert on 3/12/2015.
- */
+
 class IndividualRetirementAccount implements Account, Serializable {
 
-    private final double MIN_BALANCE = 100.00;
+    private final double MINIMUM_REQUIRED_BALANCE = 100.00;
     private final String TYPE = "MM-IRA";
     private final Integer ACCOUNT_NUMBER;
     private final Customer OWNER;
@@ -25,12 +23,6 @@ class IndividualRetirementAccount implements Account, Serializable {
         this.interestRate = calculateInterestRate();
         this.ACCOUNT_NUMBER = random.acctGen();
     }
-
-    @Override
-    public Account getNewAccount(Customer customer, double openingBalance) {
-        return new IndividualRetirementAccount(customer, openingBalance);
-    }
-
 
     public boolean checkWithdrawLimits(double withdrawal) {
         return withdrawal <= this.accountBalance;
@@ -53,28 +45,13 @@ class IndividualRetirementAccount implements Account, Serializable {
     }
 
     @Override
-    public void setBalance(double newBalance) {
-        this.accountBalance = newBalance;
-    }
-
-    @Override
-    public double getInterest() {
-        return this.interestRate;
-    }
-
-    @Override
     public String getType() {
         return this.TYPE;
     }
 
     @Override
-    public Customer getOwner() {
-        return this.OWNER;
-    }
-
-    @Override
     public double getMinRequiredBalance() {
-        return this.MIN_BALANCE;
+        return this.MINIMUM_REQUIRED_BALANCE;
     }
 
     @Override
@@ -101,4 +78,31 @@ class IndividualRetirementAccount implements Account, Serializable {
             return -1;
         }
     }
+
+    public void update() {
+        this.interestRate = calculateInterestRate();
+        this.accountBalance *= (this.interestRate+1);
+    }
+
+    @Override
+    public Account applyForNewAccount(Customer customer, double openingBalance) {
+
+        if(decideApproved(customer, openingBalance)){
+            return new IndividualRetirementAccount(customer, openingBalance);
+        }
+        else{
+            System.out.println("Sorry, " + customer.getName() + ". You do not qualify for an MM-IRA at this time.");
+            return null;
+        }
+
+    }
+
+    private boolean decideApproved(Customer customer,double openingBalance) {
+        boolean tempApproved;
+        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
+        tempApproved = !(customer.getChexSystemsScore() < 300 | customer.getCreditScore() < 300);
+        return tempApproved;
+    }
+
+
 }

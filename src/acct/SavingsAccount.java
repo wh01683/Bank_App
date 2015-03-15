@@ -5,17 +5,16 @@ import bank_package.RandomGenerator;
 
 import java.io.Serializable;
 
-/**
- * Created by robert on 3/11/2015.
- */
+
 class SavingsAccount implements Account, Serializable {
 
     private final String TYPE = "SAVINGS";
     private final Integer ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 5;
+
     private final Customer OWNER;
     private final RandomGenerator random = new RandomGenerator();
-    private final double interestRate = .0105;
+    private final double INTEREST_RATE = .0105;
     private double accountBalance;
 
     public SavingsAccount(Customer owner, double openingBalance) {
@@ -29,10 +28,6 @@ class SavingsAccount implements Account, Serializable {
         return withdrawal <= this.accountBalance;
     }
 
-    @Override
-    public Account getNewAccount(Customer customer, double openingBalance) {
-        return null;
-    }
 
     public Integer getACCOUNT_NUMBER() {
         return this.ACCOUNT_NUMBER;
@@ -50,23 +45,8 @@ class SavingsAccount implements Account, Serializable {
     }
 
     @Override
-    public void setBalance(double newBalance) {
-        this.accountBalance = newBalance;
-    }
-
-    @Override
-    public double getInterest() {
-        return this.interestRate;
-    }
-
-    @Override
     public String getType() {
         return this.TYPE;
-    }
-
-    @Override
-    public Customer getOwner() {
-        return this.OWNER;
     }
 
     @Override
@@ -89,5 +69,30 @@ class SavingsAccount implements Account, Serializable {
         } else {
             return -1;
         }
+    }
+
+    public void update() {
+        this.accountBalance *= (this.INTEREST_RATE+1);
+    }
+
+
+    @Override
+    public Account applyForNewAccount(Customer customer, double openingBalance) {
+
+        if(decideApproved(customer, openingBalance)){
+            return new SavingsAccount(customer, openingBalance);
+        }
+        else{
+            System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Savings Account at this time.");
+            return null;
+        }
+
+    }
+
+    private boolean decideApproved(Customer customer,double openingBalance) {
+        boolean tempApproved;
+        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
+        tempApproved = !(customer.getChexSystemsScore() < 300 | customer.getCreditScore() < 300);
+        return tempApproved;
     }
 }
