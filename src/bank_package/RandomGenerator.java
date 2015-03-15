@@ -41,6 +41,14 @@ public class RandomGenerator {
         return temp;
     }
 
+    public double getDubs(double min, double max) {
+        return ((r.nextDouble() * max) + min);
+    }
+
+    public int getInts(int min, int max) {
+        return ((r.nextInt(max)) + min);
+    }
+
     public String passwordGen(int minLength, int maxLength) {
         String temp = "";
         for (int i = minLength; i < maxLength; i++) {
@@ -69,12 +77,6 @@ public class RandomGenerator {
         return accounts[r.nextInt(4)];
     }
 
-    public double getDubs(double min, double max) {
-        return ((r.nextDouble() * max) + min);
-    }
 
-    public int getInts(int min, int max) {
-        return ((r.nextInt(max)) + min);
-    }
 
 }

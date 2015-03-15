@@ -30,9 +30,9 @@ public class CustomerInterface {
     private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
     private final uScanner NUM_LATE_PAYMENTS_SCANNER = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
     private final uScanner CREDIT_INQUIRIES_NUMBER = new uScanner("Please enter the number of recent credit inquiries: ", -1, 99);
-    private final uScanner CREDIT_BALANCE_SCANNER = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000.0);
+    private final uScanner CREDIT_BALANCE_SCANNER = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000);
     private final uScanner CREDIT_HISTORY_SCANNER = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
-    private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1.0, 2000000000.0);
+    private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1, 2000000000);
     private final uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
     private final uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.", 4, 16);
     private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?\nCHECKING, SAVINGS, MMA, IRA, CD", -1, 10);
@@ -229,7 +229,7 @@ public class CustomerInterface {
     * @return latePay.doubleGet(): returns a new double value with the total value of late payments on record*/
     private double getLatePaymentAmounts(int newNumberOfLatePayments) {
         uScanner latePay = new uScanner("You indicated you have " + newNumberOfLatePayments + " late payments on record.\n"
-                + "Please enter the total amount of the late payments.", 0.0, 2000000000.0);
+                + "Please enter the total amount of the late payments.", 0, 2000000000);
         return latePay.doubleGet();
     }
 
@@ -327,7 +327,7 @@ public class CustomerInterface {
             }
             Account temp = loggedInCustomer.getAccount(tempAccountNumber1);
             if (!(temp == null)) {
-                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
+                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0, 200000000);
                 temp.deposit(TRANSACTION_SCANNER.doubleGet());
                 return 1;
             } else if (temp == null) {
@@ -348,7 +348,7 @@ public class CustomerInterface {
             }
             Account temp = loggedInCustomer.getAccount(tempAccountNumber2);
             if (!(temp == null)) {
-                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice + "?", 0.0, 200000000.0);
+                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice + "?", 0, 200000000);
                 if ((temp.withdraw(TRANSACTION_SCANNER.doubleGet()) == -1)) {
                     System.out.println("Insufficient funds. " + temp.getBalance() + " available.");
                     return 0;
@@ -385,7 +385,7 @@ public class CustomerInterface {
 
                 Account transferFrom = loggedInCustomer.getAccount(tempAccountNumber4);
                 if (!(transferFrom == null)) {
-                    uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0.0, 200000000.0);
+                    uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0, 200000000);
                     double transferAmount = TRANSACTION_SCANNER.doubleGet();
                     transferFrom.withdraw(transferAmount);
                     transferTo.deposit(transferAmount);

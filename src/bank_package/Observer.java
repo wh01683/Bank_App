@@ -8,4 +8,6 @@ public interface Observer {
 
     public void update(double balanceChange, double interestChange);
 
+    public void addNewCustomer(Customer customer);
+
 }

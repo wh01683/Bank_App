@@ -7,26 +7,17 @@ public class uScanner {
 
     private static final Scanner in = new Scanner(System.in);
     private final String prompt;
-    private int maxInt;
-    private int minInt;
-    private double maxDouble;
-    private double minDouble;
-    private int minLength;
-    private int maxLength;
+    private final int MAX;
+    private final int MIN;
+
 
     public uScanner(String textPrompt, int min, int max) {
         this.prompt = textPrompt;
-        this.minInt = min;
-        this.maxInt = max;
-        this.minLength = min;
-        this.maxLength = max;
+        this.MIN = min;
+        this.MAX = max;
+
     }
 
-    public uScanner(String textPrompt, double min, double max) {
-        this.prompt = textPrompt;
-        this.minDouble = min;
-        this.maxDouble = max;
-    }
 
     private int getInt() throws NoSuchElementException {
 
@@ -40,8 +31,8 @@ public class uScanner {
 
     public int intGet() throws NoSuchElementException {
         int val = getInt();
-        while (val < this.minInt | val > this.maxInt) {
-            System.out.println("Must be greater than " + this.minInt + " and lesser than " + this.maxInt);
+        while (val < this.MIN | val > this.MAX) {
+            System.out.println("Must be greater than " + this.MIN + " and lesser than " + this.MAX);
             val = getInt();
         }
         return val;
@@ -50,8 +41,11 @@ public class uScanner {
     public double doubleGet() throws NoSuchElementException {
         double val = getDouble();
 
-        while (val < this.minDouble | val > this.maxDouble) {
-            System.out.println("Must be greater than " + this.minDouble + " and lesser than " + this.maxDouble);
+        double minDouble = this.MIN;
+        double maxDouble = this.MAX;
+
+        while (val < minDouble | val > maxDouble) {
+            System.out.println("Must be greater than " + minDouble + " and lesser than " + maxDouble);
             val = getDouble();
         }
         return val;
@@ -65,8 +59,8 @@ public class uScanner {
             System.out.println("Must enter letters only.");
             val = getString();
 
-            while (val.length() < this.minLength | val.length() > this.maxLength) {
-                System.out.println("Must be longer than " + this.minLength + " and shorter than " + this.maxLength + " characters long.");
+            while (val.length() < this.MIN | val.length() > this.MAX) {
+                System.out.println("Must be longer than " + this.MIN + " and shorter than " + this.MAX + " characters long.");
                 val = getString();
             }
         }
@@ -78,8 +72,8 @@ public class uScanner {
 
         String val = getString();
 
-        while (val.length() < this.minLength | val.length() > this.maxLength) {
-            System.out.println("Must be longer than " + this.minLength + " and shorter than " + this.maxLength + " characters long.");
+        while (val.length() < this.MIN | val.length() > this.MAX) {
+            System.out.println("Must be longer than " + this.MIN + " and shorter than " + this.MAX + " characters long.");
             val = getString();
         }
         return val;
