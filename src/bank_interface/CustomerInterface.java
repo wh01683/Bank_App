@@ -242,8 +242,8 @@ public class CustomerInterface {
     *              can access it without passing new parameters
     * @return void: adds the new bankAccount directly to the customer's account*/
     private void addAccount(Customer loggedInCustomer) {
-        Account tempAccount = ACCOUNT_FACTORY.getAccount(ACCOUNT_REQUESTER_SCANNER.stringGet(), loggedInCustomer);
 
+        Account tempAccount = ACCOUNT_FACTORY.getAccount(ACCOUNT_REQUESTER_SCANNER.stringGet(), loggedInCustomer);
         if (tempAccount == null) {
             System.out.println("Account type invalid. Please try again.");
             addAccount(loggedInCustomer);
@@ -317,105 +317,148 @@ public class CustomerInterface {
     }
 
     private int processTransaction(String transactionChoice, Customer loggedInCustomer) {
+
+        Hashtable<Integer, Account> customerAccountHashtable = loggedInCustomer.getAccountHashtable();
+
+        if (!customerAccountHashtable.isEmpty()) {
         /*DEPOSIT SECTION*/
-        if (transactionChoice.equalsIgnoreCase("DEPOSIT")) {
-            System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
-            Integer tempAccountNumber1 = ACCOUNT_NUMBER_SCANNER.intGet();
-            if ((tempAccountNumber1 == -1)) {
-                System.out.println("Returning.\n\n\n");
-                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
-            }
-            Account temp = loggedInCustomer.getAccount(tempAccountNumber1);
-            if (!(temp == null)) {
-                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0, 200000000);
-                temp.deposit(TRANSACTION_SCANNER.doubleGet());
-                return 1;
-            } else if (temp == null) {
-                System.out.println("Account not found. Please re-enter your account number.");
-                processTransaction(transactionChoice, loggedInCustomer);
-            }
-
-        }
-
-        /*WITHDRAW SECTION*/
-
-        else if (transactionChoice.equalsIgnoreCase("WITHDRAW")) {
-            System.out.println("You have chosen " + transactionChoice + ". From which account would you like to " + transactionChoice + "?");
-            Integer tempAccountNumber2 = ACCOUNT_NUMBER_SCANNER.intGet();
-            if ((tempAccountNumber2 == -1)) {
-                System.out.println("Returning.");
-                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
-            }
-            Account temp = loggedInCustomer.getAccount(tempAccountNumber2);
-            if (!(temp == null)) {
-                uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice + "?", 0, 200000000);
-                if ((temp.withdraw(TRANSACTION_SCANNER.doubleGet()) == -1)) {
-                    System.out.println("Insufficient funds. " + temp.getBalance() + " available.");
-                    return 0;
-                } else {
-                    return 1;
-                }
-
-            } else if (temp == null) {
-                System.out.println("Account not found. Please re-enter your account number.");
-                processTransaction(transactionChoice, loggedInCustomer);
-            }
-
-        }
-
-
-        /*TRANSFER SELECTION*/
-        else if (transactionChoice.equalsIgnoreCase("TRANSFER")) {
-            System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
-            Integer tempAccountNumber3 = ACCOUNT_NUMBER_SCANNER.intGet();
-
-            if ((tempAccountNumber3 == -1)) {
-                System.out.println("Returning.");
-                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
-            }
-            Account transferTo = loggedInCustomer.getAccount(tempAccountNumber3);
-            if (!(transferTo == null)) {
-                System.out.println("From which account would you like to " + transactionChoice + "?");
-                Integer tempAccountNumber4 = ACCOUNT_NUMBER_SCANNER.intGet();
-
-                if ((tempAccountNumber4 == -1)) {
-                    System.out.println("Returning.");
+            if (transactionChoice.equalsIgnoreCase("DEPOSIT")) {
+                System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
+                Integer tempDepositAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
+                if ((tempDepositAccountNumber == -1)) {
+                    System.out.println("Returning.\n\n\n");
                     processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
                 }
-
-                Account transferFrom = loggedInCustomer.getAccount(tempAccountNumber4);
-                if (!(transferFrom == null)) {
-                    uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 0, 200000000);
-                    double transferAmount = TRANSACTION_SCANNER.doubleGet();
-                    transferFrom.withdraw(transferAmount);
-                    transferTo.deposit(transferAmount);
-                    return 1;
-                } else if (transferFrom == null) {
+                Account temp = loggedInCustomer.getAccount(tempDepositAccountNumber);
+                if (!(temp == null)) {
+                    uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 1, 200000000);
+                    double tempDepositAmount = TRANSACTION_SCANNER.doubleGet();
+                    if (temp.getBalance() + tempDepositAmount > Integer.MAX_VALUE) {
+                        System.out.println("Current balance too large. Could not process your deposit...\nHave you considered" +
+                                "retiring?");
+                        processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                    }
+                    temp.deposit(tempDepositAmount);
+                    System.out.printf("Successfully deposited %.2f into %s account number %10d\nYour current balance is: %10.2f",
+                            tempDepositAmount, temp.getType(), temp.getACCOUNT_NUMBER(), temp.getBalance());
+                    processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                } else if (temp == null) {
                     System.out.println("Account not found. Please re-enter your account number.");
                     processTransaction(transactionChoice, loggedInCustomer);
                 }
 
-            } else if (transferTo == null) {
-                System.out.println("Account not found. Please re-enter your account number.");
-                processTransaction(transactionChoice, loggedInCustomer);
+            }
+
+        /*WITHDRAW SECTION*/
+
+            else if (transactionChoice.equalsIgnoreCase("WITHDRAW")) {
+                System.out.println("You have chosen " + transactionChoice + ". From which account would you like to " + transactionChoice + "?");
+                Integer tempWithdrawAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
+                if ((tempWithdrawAccountNumber == -1)) {
+                    System.out.println("Returning.");
+                    processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                }
+                Account temp = loggedInCustomer.getAccount(tempWithdrawAccountNumber);
+                if (!(temp == null)) {
+                    uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice + "?", 1, 200000000);
+                    double tempWithdrawAmount = TRANSACTION_SCANNER.doubleGet();
+                    if ((temp.withdraw(tempWithdrawAmount)) == -1) {
+                        System.out.printf("Insufficient funds, could not withdraw %.2f. You have %.2f funds available.",
+                                tempWithdrawAmount, temp.getBalance());
+                        processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                    } else {
+                        System.out.printf("You have successfully withdrawn %.2f from %s %10d.\nYour current balance is %.2f.",
+                                tempWithdrawAmount, temp.getType(), temp.getACCOUNT_NUMBER(), temp.getBalance());
+                        processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                    }
+
+                } else if (temp == null) {
+                    System.out.printf("Account %10d not found. Please re-enter your account number.", tempWithdrawAccountNumber);
+                    processTransaction(transactionChoice, loggedInCustomer);
+                }
 
             }
 
 
-        } else if (transactionChoice.equalsIgnoreCase("ACCOUNTS")) {
-            loggedInCustomer.printInformation("ACCOUNTS");
-        } else if (transactionChoice.equalsIgnoreCase("RETURN")) {
-            System.out.println("Returning to previous menu.");
-            return 0;
-        } else {
-            System.out.println("Request could not be processed. Please try again.");
-            processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
-            return 1;
+        /*TRANSFER SELECTION*/
+            else if (transactionChoice.equalsIgnoreCase("TRANSFER")) {
+                System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
+                Integer tempTransferToAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
+                boolean deposit = true;
+                boolean withdrew = true;
+
+                if ((tempTransferToAccountNumber == -1)) {
+                    System.out.println("Returning.");
+                    processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                }
+                Account transferTo = loggedInCustomer.getAccount(tempTransferToAccountNumber);
+                if (!(transferTo == null)) {
+                    System.out.println("From which account would you like to " + transactionChoice + "?");
+                    Integer tempTransferFromAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
+
+                    if ((tempTransferFromAccountNumber == -1)) {
+                        System.out.println("Returning.");
+                        processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                    }
+                    Account transferFrom = null;
+                    if (loggedInCustomer.getAccountHashtable().containsKey(tempTransferFromAccountNumber)) {
+                        transferFrom = loggedInCustomer.getAccount(tempTransferFromAccountNumber);
+                    } else {
+                        System.out.printf("Could not find desired account number %10d.. please try again.", tempTransferFromAccountNumber);
+                    }
+                    if (!(transferFrom == null)) {
+                        uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 1, 200000000);
+                        double transferAmount = TRANSACTION_SCANNER.doubleGet();
+                        if (transferFrom.withdraw(transferAmount) == -1) {
+                            System.out.printf("Insufficient funds, could not withdraw %.2f. You have %.2f funds available.",
+                                    transferAmount, transferFrom.getBalance());
+                            withdrew = false;
+                        } else {
+                            transferFrom.withdraw(transferAmount);
+                        }
+                        if (transferTo.getBalance() + transferAmount > Integer.MAX_VALUE) {
+                            System.out.println("Current balance too large. Could not process your transfer...\nHave you considered" +
+                                    "retiring?");
+                            transferFrom.deposit(transferAmount); //add funds back to old account.
+                            deposit = false;
+                            processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                        } else {
+                            transferTo.deposit(transferAmount);
+                        }
+
+                        if (withdrew && deposit) {
+                            System.out.printf("You successfully transferred %.2f from %s %10d into account %s %10d.\nYour" +
+                                            "current balances are %.2f and .2f respectively.", transferAmount, transferFrom.getType(), transferFrom.getACCOUNT_NUMBER(),
+                                    transferTo.getType(), transferTo.getACCOUNT_NUMBER(), transferFrom.getBalance(), transferTo.getBalance());
+                            processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                        }
+                        processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                    } else if (transferFrom == null) {
+                        System.out.println("Account not found. Please re-enter your account number.");
+                        processTransaction(transactionChoice, loggedInCustomer);
+                    }
+
+                } else if (transferTo == null) {
+                    System.out.println("Account not found. Please re-enter your account number.");
+                    processTransaction(transactionChoice, loggedInCustomer);
+                }
+            } else if (transactionChoice.equalsIgnoreCase("ACCOUNTS")) {
+                loggedInCustomer.printInformation("ACCOUNTS");
+            } else if (transactionChoice.equalsIgnoreCase("RETURN")) {
+                System.out.println("Returning to previous menu.");
+                return 0;
+            } else {
+                System.out.println("Request could not be processed. Please try again.");
+                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet(), loggedInCustomer);
+                return 1;
+            }
+
         }
 
         return 0;
 
     }
+
 
     String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",

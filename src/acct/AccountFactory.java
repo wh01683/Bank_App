@@ -4,13 +4,11 @@ import bank_package.Customer;
 import bank_package.RandomGenerator;
 import bank_package.uScanner;
 
-import java.util.Random;
-
 
 
 public class AccountFactory {
 
-    private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", -1.0, 2000000000.0);
+    private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", 0, 2000000000);
 
     private RandomGenerator randomGenerator = new RandomGenerator();
     private IndividualRetirementAccount tempIRA = new IndividualRetirementAccount(new Customer(), randomGenerator.getDubs(-50,500));
