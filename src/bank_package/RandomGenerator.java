@@ -72,7 +72,7 @@ public class RandomGenerator {
         return accounts[r.nextInt(5)];
     }
 
-    public String processGen() throws IndexOutOfBoundsException{
+    public String processGen(){
         String[] accounts = {"INFORMATION", "TRANSACTION", "ADDACCOUNT", "EXIT"};
         return accounts[r.nextInt(4)];
     }

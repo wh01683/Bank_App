@@ -14,7 +14,7 @@ import bank_package.Bank;
 class Main {
 
 
-    private static Bank randomBank = new Bank("Georgia", 5000, 5000);
+    private static Bank randomBank = new Bank("Georgia", 50, 50);
 
     public static void main(String[] args) {
         /*Main test = new Main();

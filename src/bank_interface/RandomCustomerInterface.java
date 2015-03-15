@@ -111,8 +111,9 @@ public class RandomCustomerInterface {
             System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
                     " on file, " + realPass + "\nYou may now access your bank account information!");
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            initiateLoginProcesses(true, CUSTOMER);
+
         }
-        initiateLoginProcesses(true, CUSTOMER);
 
         System.out.println("Ran out of customers.. exiting.");
         System.exit(1);
