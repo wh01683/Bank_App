@@ -60,7 +60,7 @@ public class AccountFactory {
                 return tempIRA.applyForNewAccount(customer, tempOpeningBalance);
             } else if (randomAccountType.equalsIgnoreCase("CD")) {
                 double tempOpeningBalance = randomGenerator.getDubs(20, 15000);
-                return new CertificateOfDepositAccount(customer,tempOpeningBalance,randomGenerator.getInts(-5,52));
+                return tempCD.applyForNewRandomAccount(customer, tempOpeningBalance);
             } else if (randomAccountType.equalsIgnoreCase("MMA")) {
                 double tempOpeningBalance = randomGenerator.getDubs(20, 15000);
                 return tempMMA.applyForNewAccount(customer, tempOpeningBalance);

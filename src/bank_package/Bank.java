@@ -29,7 +29,7 @@ public class Bank implements Serializable {
 
     }
 
-    public Bank getRandomBank() {
+    public Bank getNewRandomBank() {
 
         Bank randomBank = new Bank(random.nameGen(0, 10), random.getInts(500, 5000), random.getInts(500, 5000));
 

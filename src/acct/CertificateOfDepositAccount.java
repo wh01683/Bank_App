@@ -121,4 +121,18 @@ class CertificateOfDepositAccount implements Account, Serializable{
         tempApproved = !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300);
         return tempApproved;
     }
+
+    public Account applyForNewRandomAccount(Customer customer, double openingBalance) {
+
+        int desiredTermLength = random.getInts(-5,55);
+
+        if(decideApproved(customer, openingBalance, desiredTermLength)){
+            return new CertificateOfDepositAccount(customer, openingBalance, desiredTermLength);
+        }
+        else{
+            System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Fixed-Term Certificate of Deposit Account at this time.");
+            return null;
+        }
+
+    }
 }

@@ -28,7 +28,7 @@ class Main {
     void work(int newArgs) {
 
         for (int i = 0; i < newArgs; i++) {
-            randomBank = randomBank.getRandomBank();
+            randomBank = randomBank.getNewRandomBank();
             randomBank.addCustomer(newArgs);
             /*randomBank.writeInfoToFile(System.getProperty("user.dir") + "\\Customer&AccountInformation" + i + ".txt");
             randomBank.writeAccountInfoToFile(System.getProperty("user.dir") + "\\AccountInformation" + i + ".txt");
