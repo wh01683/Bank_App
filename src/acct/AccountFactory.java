@@ -13,11 +13,11 @@ public class AccountFactory {
     private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", -1.0, 2000000000.0);
 
     private RandomGenerator randomGenerator = new RandomGenerator();
-    private IndividualRetirementAccount tempIRA;
-    private CheckingAccount tempCheck;
-    private SavingsAccount tempSave;
-    private CertificateOfDepositAccount tempCD;
-    private MoneyMarketAccount tempMMA;
+    private IndividualRetirementAccount tempIRA = new IndividualRetirementAccount(new Customer(), randomGenerator.getDubs(-50,500));
+    private CheckingAccount tempCheck = new CheckingAccount(new Customer(), randomGenerator.getDubs(-50,500));
+    private SavingsAccount tempSave = new SavingsAccount(new Customer(), randomGenerator.getDubs(-50,500));
+    private CertificateOfDepositAccount tempCD = new CertificateOfDepositAccount(new Customer(), randomGenerator.getDubs(-50,500), randomGenerator.getInts(0,55));
+    private MoneyMarketAccount tempMMA = new MoneyMarketAccount(new Customer(), randomGenerator.getDubs(-50,500));
 
     /*Account factory for creating and applying to different types of accounts*/
 
@@ -45,29 +45,31 @@ public class AccountFactory {
     }
 
 
+
     public Account getRandomAccount(Customer customer) {
         String randomAccountType = randomGenerator.accountTypeGen();
         if (randomAccountType == null)
-                return null;
-            if (randomAccountType.equalsIgnoreCase("CHECKING")) {
-                double tempOpeningBalance = randomGenerator.getDubs(20, 15000);
-                return tempCheck.applyForNewAccount(customer, tempOpeningBalance);
-            } else if (randomAccountType.equalsIgnoreCase("SAVINGS")) {
-                double tempOpeningBalance = randomGenerator.getDubs(20, 15000);
-                return tempSave.applyForNewAccount(customer, tempOpeningBalance);
-            } else if (randomAccountType.equalsIgnoreCase("IRA")) {
-                double tempOpeningBalance = randomGenerator.getDubs(20, 15000);
-                return tempIRA.applyForNewAccount(customer, tempOpeningBalance);
-            } else if (randomAccountType.equalsIgnoreCase("CD")) {
-                double tempOpeningBalance = randomGenerator.getDubs(20, 15000);
-                return tempCD.applyForNewRandomAccount(customer, tempOpeningBalance);
-            } else if (randomAccountType.equalsIgnoreCase("MMA")) {
-                double tempOpeningBalance = randomGenerator.getDubs(20, 15000);
-                return tempMMA.applyForNewAccount(customer, tempOpeningBalance);
-            } else
-                return null;
-        }
+            return null;
+        if (randomAccountType.equalsIgnoreCase("CHECKING")) {
+            double tempOpeningBalance = randomGenerator.getDubs(20.0, 15000.0);
+            return tempCheck.applyForNewAccount(customer,tempOpeningBalance);
+        } else if (randomAccountType.equalsIgnoreCase("SAVINGS")) {
+            double tempOpeningBalance = randomGenerator.getDubs(20.0, 15000.0);
+            return tempSave.applyForNewAccount(customer, tempOpeningBalance);
+        } else if (randomAccountType.equalsIgnoreCase("IRA")) {
+            double tempOpeningBalance = randomGenerator.getDubs(20.0, 15000.0);
+            return tempIRA.applyForNewAccount(customer, tempOpeningBalance);
+        } else if (randomAccountType.equalsIgnoreCase("CD")) {
+            double tempOpeningBalance = randomGenerator.getDubs(20.0, 15000.0);
+            return tempCD.applyForNewRandomAccount(customer, tempOpeningBalance);
+        } else if (randomAccountType.equalsIgnoreCase("MMA")) {
+            double tempOpeningBalance = randomGenerator.getDubs(20.0, 15000.0);
+            return tempMMA.applyForNewAccount(customer, tempOpeningBalance);
+        } else if (randomAccountType.equalsIgnoreCase("RETURN"))
+            return null;
 
+        else return null;
+    }
 
 }
 

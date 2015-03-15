@@ -50,11 +50,10 @@ public class Bank implements Serializable {
 
             for (int k = 0; k < r.nextInt(10); k++) { //generates anywhere between 10 and 0 random accounts
                 Account tempAccount = testAccountFactory.getRandomAccount(tempCustomer);
-                tempCustomer.addAccount(tempAccount);
+                if(!(tempAccount == null))
+                    tempCustomer.addAccount(tempAccount);
             }
-
             updateAccountTable();
-
         }
     }
 
@@ -88,7 +87,7 @@ public class Bank implements Serializable {
         return this.customerHashtable;
     }
 
-    private void updateAccountTable() {
+    public void updateAccountTable() {
 
         Enumeration<Integer> enumKeys = customerHashtable.keys();
         while (enumKeys.hasMoreElements()) {

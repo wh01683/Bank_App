@@ -98,9 +98,9 @@ class IndividualRetirementAccount implements Account, Serializable {
     }
 
     private boolean decideApproved(Customer customer,double openingBalance) {
-        boolean tempApproved;
-        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
-        tempApproved = !(customer.getChexSystemsScore() < 300 | customer.getCreditScore() < 300);
+        boolean tempApproved = true;
+        //tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
+        //tempApproved = !(customer.getChexSystemsScore() < 200 | customer.getCreditScore() < 200);
         return tempApproved;
     }
 

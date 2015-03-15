@@ -116,15 +116,14 @@ class CertificateOfDepositAccount implements Account, Serializable{
     }
 
     private boolean decideApproved(Customer customer,double openingBalance, int desiredTermLength) {
-        boolean tempApproved;
-        tempApproved = !((openingBalance < this.MINIMUM_REQUIRED_BALANCE) | (desiredTermLength<1) | (desiredTermLength>48));
-        tempApproved = !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300);
+        boolean tempApproved = true;
+//        tempApproved = !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300);
         return tempApproved;
     }
 
     public Account applyForNewRandomAccount(Customer customer, double openingBalance) {
 
-        int desiredTermLength = random.getInts(-5,55);
+        int desiredTermLength = random.getInts(2,55);
 
         if(decideApproved(customer, openingBalance, desiredTermLength)){
             return new CertificateOfDepositAccount(customer, openingBalance, desiredTermLength);
@@ -133,6 +132,6 @@ class CertificateOfDepositAccount implements Account, Serializable{
             System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Fixed-Term Certificate of Deposit Account at this time.");
             return null;
         }
-
+    //return new CertificateOfDepositAccount(customer, openingBalance, desiredTermLength);
     }
 }

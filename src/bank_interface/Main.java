@@ -21,8 +21,9 @@ class Main {
         int num = Integer.parseInt(args[0]);
         test.work(num);*/
 
-        randomBank.addCustomer(500);
-        CustomerInterface test = CustomerInterface.getInstance(randomBank);
+        randomBank.addCustomer(5000);
+        randomBank.updateAccountTable();
+        RandomCustomerInterface test = RandomCustomerInterface.getInstance(randomBank);
     }
 
     void work(int newArgs) {

@@ -16,7 +16,7 @@ public class RandomGenerator {
     private final Vector<Integer> acctNumberList = new Vector<Integer>(50);
 
     public boolean getRandomBoolean() {
-        float temp = r.nextFloat();
+        double temp = r.nextDouble();
         return (temp < .50);
     }
 
@@ -50,8 +50,23 @@ public class RandomGenerator {
     }
 
     public String accountTypeGen() {
-        String[] accounts = {"SAVINGS", "CHECKING", "IRA", "CD", "MMA"};
+        String[] accounts = {"SAVINGS", "CHECKING", "IRA", "CD", "MMA", "RETURN"};
+        return accounts[r.nextInt(6)];
+    }
+
+    public String informationGen() {
+        String[] accounts = {"CHEX" , "CREDIT", "ACCOUNTS", "ALL", "RETURN"};
         return accounts[r.nextInt(5)];
+    }
+
+    public String transactionGen() {
+        String[] accounts = {"DEPOSIT", "WITHDRAW", "TRANSFER", "ACCOUNTS", "RETURN"};
+        return accounts[r.nextInt(5)];
+    }
+
+    public String processGen() throws IndexOutOfBoundsException{
+        String[] accounts = {"INFORMATION", "TRANSACTION", "ADDACCOUNT", "EXIT"};
+        return accounts[r.nextInt(4)];
     }
 
     public double getDubs(double min, double max) {

@@ -16,10 +16,10 @@ public class Customer implements Serializable {
     private final String PASSWORD;
     private final Random r = new Random();
     private final CreditReport CREDIT_REPORT;
-    private final ChexSystems _score = new ChexSystems();
+    private final ChexSystems CHEX_SCORE = new ChexSystems();
     private final int age;
     private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
-    private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
+    private Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
     private final RandomGenerator random = new RandomGenerator();
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport) {
@@ -58,7 +58,7 @@ public class Customer implements Serializable {
     }
 
     public int getChexSystemsScore() {
-        return this._score.getScore();
+        return this.CHEX_SCORE.getScore();
     }
 
     public int getCreditScore() {
@@ -77,10 +77,25 @@ public class Customer implements Serializable {
         this.printAccountInformation();
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("Finished printing customer information...");
-        printInformation(REQUEST_SCANNER.stringGet());
+        printInformation(random.informationGen());
 
     }
 
+/*
+    void printAllCustomerInformation() {
+
+
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(getCustomerHeaders());
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(this.toString());
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        this.printAccountInformation();
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("Finished printing customer information...");
+        printInformation(REQUEST_SCANNER.stringGet());
+
+    }*/
 
 
     public void addAccount(Account newAccount) {
@@ -109,6 +124,7 @@ public class Customer implements Serializable {
         }
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("Finished printing accounts.");
+        printInformation(random.informationGen());
     }
     public void printInformation(String request) {
 
@@ -127,6 +143,7 @@ public class Customer implements Serializable {
             printInformation(REQUEST_SCANNER.stringGet());
         }
     }
+
 
     String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
@@ -151,6 +168,10 @@ public class Customer implements Serializable {
             System.out.println("Could not locate your account. Please re-enter your account number.");
             return getAccount(ACCOUNT_NUMBER_SCANNER.intGet());
         }
+    }
+
+    public void setAccountHashtable(Hashtable<Integer, Account> newAccountHashTable){
+        this.accountHashtable = newAccountHashTable;
     }
 
 }
