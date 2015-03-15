@@ -51,22 +51,66 @@ public class Bank implements Serializable {
                 if(!(tempAccount == null))
                     tempCustomer.addAccount(tempAccount);
             }
-            updateAccountTable();
+            this.addCustomer(tempCustomer);
         }
     }
 
     public void addCustomer(Customer customer){
 
         this.customerHashtable.put(customer.getUUID().hashCode(), customer);
+        this.NUMBER_OF_CUSTOMERS++;
         Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
         while (acctKeys.hasMoreElements()) {
             Integer acctKey = acctKeys.nextElement();
             Account tempAcct = customer.getAccount(acctKey);
-            if (!(tempAcct == null))
+            if (!(tempAcct == null)){
                 this.accountHashtable.put(acctKey, tempAcct);
+                this.NUMBER_OF_ACCOUNTS++;
+            }
 
         }
 
+    }
+
+    public void addAccount(Account account){
+
+        this.accountHashtable.put(account.getACCOUNT_NUMBER(), account);
+        this.NUMBER_OF_ACCOUNTS++;
+    }
+
+    public boolean removeCustomer(Customer customer){
+        boolean removed;
+
+        if(this.accountHashtable.contains(customer)){
+            this.accountHashtable.remove(customer.getUUID().hashCode());
+            this.NUMBER_OF_CUSTOMERS--;
+
+            Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
+            while (acctKeys.hasMoreElements()) {
+                Integer acctKey = acctKeys.nextElement();
+                Account tempAcct = customer.getAccount(acctKey);
+                if (!(tempAcct == null)){
+                    this.accountHashtable.remove(acctKey);
+                    this.NUMBER_OF_ACCOUNTS--;
+                }
+
+            }
+            return true;
+        }
+
+        else
+            return false;
+
+    }
+    public boolean removeAccount(Integer accountNumber){
+        if(this.accountHashtable.containsKey(accountNumber)){
+            this.accountHashtable.remove(accountNumber);
+            this.NUMBER_OF_ACCOUNTS--;
+            return true;
+        }
+
+        else
+            return false;
     }
 
     public Customer requestCustomer(UUID customerID){

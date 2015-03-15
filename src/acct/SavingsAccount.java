@@ -13,13 +13,12 @@ class SavingsAccount implements Account, Serializable {
     private final double MINIMUM_REQUIRED_BALANCE = 5;
 
     private final Customer OWNER;
-    private final RandomGenerator random = new RandomGenerator();
-    private final double INTEREST_RATE = .0105;
     private double accountBalance;
 
     public SavingsAccount(Customer owner, double openingBalance) {
         this.OWNER = owner;
         this.accountBalance = openingBalance;
+        RandomGenerator random = new RandomGenerator();
         this.ACCOUNT_NUMBER = random.acctGen();
     }
 
@@ -72,7 +71,8 @@ class SavingsAccount implements Account, Serializable {
     }
 
     public void update() {
-        this.accountBalance *= (this.INTEREST_RATE+1);
+        double INTEREST_RATE = .0105;
+        this.accountBalance *= (INTEREST_RATE +1);
     }
 
 
@@ -90,9 +90,8 @@ class SavingsAccount implements Account, Serializable {
     }
 
     private boolean decideApproved(Customer customer,double openingBalance) {
-        boolean tempApproved = true;
-        //tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
-        //tempApproved = !(customer.getChexSystemsScore() < 300 | customer.getCreditScore() < 300);
+        boolean tempApproved;
+        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE | customer.getChexSystemsScore() < 300 | customer.getCreditScore() < 300);
         return tempApproved;
     }
 }

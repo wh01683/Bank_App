@@ -14,8 +14,6 @@ public class CreditReport implements Serializable {
     private final double CREDIT_ACCOUNT_BALANCE;
     private final double AMOUNT_OF_LATE_PAYMENTS;
 
-    private final Random r = new Random();
-
 
     public CreditReport(int age, int latePaymentsOnRecord, double amountOfLatePayments, int recentCredInquiries,
                         double credLimit, double accountBalance, int lenCredHistory) {
@@ -32,15 +30,16 @@ public class CreditReport implements Serializable {
     }
 
     public CreditReport() {
+        Random r = new Random();
         this.CUSTOMER_AGE = r.nextInt(120);
-        this.RECENT_LATE_PAYMENT_NUMBER = r.nextInt(100);
-        this.AMOUNT_OF_LATE_PAYMENTS = r.nextDouble() * 2000000000.0;
+        this.RECENT_LATE_PAYMENT_NUMBER = r.nextInt(50);
+        this.AMOUNT_OF_LATE_PAYMENTS = r.nextDouble() * 10000;
         this.RECENT_CREDIT_INQUIRIES = r.nextInt(100);
-        this.CREDIT_LIMIT = r.nextDouble() * 2000000000.0;
-        this.CREDIT_ACCOUNT_BALANCE = r.nextDouble() * 2000000000.0;
+        this.CREDIT_LIMIT = r.nextDouble() * 200000.0;
+        this.CREDIT_ACCOUNT_BALANCE = r.nextDouble() * 20000.0;
         this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
         this.LENGTH_OF_CREDIT_HISTORY = r.nextInt(100);
-        this.CREDIT_SCORE = calculateCreditScore();
+        this.CREDIT_SCORE = calculateCreditScore()+200;
 
     }
 
@@ -108,8 +107,8 @@ public class CreditReport implements Serializable {
         double latePaymentMultiplier = severity * this.AMOUNT_OF_LATE_PAYMENTS;
 
         if (latePaymentMultiplier == 0 | latePaymentMultiplier < 1000) tempScore = 279;
-        if (latePaymentMultiplier < 3000) tempScore = 200;
-        if (latePaymentMultiplier < 5000) tempScore = 100;
+        else if(latePaymentMultiplier < 3000) tempScore = 200;
+        else if (latePaymentMultiplier < 5000) tempScore = 100;
         else tempScore = 0;
 
         return tempScore;
@@ -121,8 +120,8 @@ public class CreditReport implements Serializable {
         int tempScore;
 
         if (this.CREDIT_ACCOUNT_BALANCE == 0 | this.CREDIT_USED < 10) tempScore = 239;
-        if (this.CREDIT_USED < 20) tempScore = 200;
-        if (this.CREDIT_USED < 50) tempScore = 100;
+        else if (this.CREDIT_USED < 20) tempScore = 200;
+        else if (this.CREDIT_USED < 50) tempScore = 100;
         else tempScore = 0;
 
         return tempScore;

@@ -12,7 +12,6 @@ class CertificateOfDepositAccount implements Account, Serializable{
     private final Integer ACCOUNT_NUMBER;
     private final String TYPE = "FIXED CD";
     private final double MINIMUM_REQUIRED_BALANCE = 1000.00;
-    private final int TERM_LENGTH;
     private final Customer OWNER;
     private final RandomGenerator random = new RandomGenerator();
     private double accountBalance;
@@ -22,7 +21,7 @@ class CertificateOfDepositAccount implements Account, Serializable{
         this.OWNER = customer;
         this.INTEREST_RATE = calculateInterestRate(termLength);
         this.accountBalance += openingBalance;
-        this.TERM_LENGTH = termLength;
+        int TERM_LENGTH = termLength;
         this.ACCOUNT_NUMBER = random.acctGen();
 
     }
@@ -116,8 +115,9 @@ class CertificateOfDepositAccount implements Account, Serializable{
     }
 
     private boolean decideApproved(Customer customer,double openingBalance, int desiredTermLength) {
-        boolean tempApproved = true;
-//        tempApproved = !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300);
+        boolean tempApproved;
+        tempApproved = !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300 | openingBalance < this.MINIMUM_REQUIRED_BALANCE |
+        desiredTermLength < 1 | desiredTermLength > 48);
         return tempApproved;
     }
 

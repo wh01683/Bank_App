@@ -13,10 +13,7 @@ class CheckingAccount implements Account, Serializable {
     private final int ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 0;
     private final Customer OWNER;
-    private final RandomGenerator random = new RandomGenerator();
-    private final double overDraftFee = 35; //35 dollar default over draft fee... it's what my bank charges
     private double overDraftProtection = -750.0; //set to -750 dollars over draft protection allowed
-    private final double INTEREST_RATE = .01;
     private double accountBalance;
 
     public CheckingAccount(Customer owner, double openingBalance) {
@@ -24,12 +21,14 @@ class CheckingAccount implements Account, Serializable {
         this.OWNER = owner;
         this.accountBalance = openingBalance;
         calculateOverdraftProtection();
+        RandomGenerator random = new RandomGenerator();
         this.ACCOUNT_NUMBER = random.acctGen();
     }
 
 
     public boolean checkWithdrawLimits(double withdrawal) {
-        return withdrawal < (this.overDraftFee + this.accountBalance);
+        double overDraftFee = 35;
+        return withdrawal < (overDraftFee + this.accountBalance);
     }
 
     @Override
@@ -82,7 +81,8 @@ class CheckingAccount implements Account, Serializable {
     }
 
     public void update() {
-        this.accountBalance *= (this.INTEREST_RATE+1);
+        double INTEREST_RATE = .01;
+        this.accountBalance *= (INTEREST_RATE +1);
     }
     @Override
     public Account applyForNewAccount(Customer customer, double openingBalance) {
@@ -98,9 +98,8 @@ class CheckingAccount implements Account, Serializable {
     }
 
     private boolean decideApproved(Customer customer,double openingBalance) {
-        boolean tempApproved = true;
-        //tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
-        //tempApproved = !(customer.getChexSystemsScore() < 300);
+        boolean tempApproved;
+        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE | customer.getChexSystemsScore() < 300);
         return tempApproved;
     }
 

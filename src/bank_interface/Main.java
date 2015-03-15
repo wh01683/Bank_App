@@ -14,15 +14,17 @@ import bank_package.Bank;
 class Main {
 
 
-    private static Bank randomBank = new Bank("Georgia", 50, 50);
-
     public static void main(String[] args) {
         /*Main test = new Main();
         int num = Integer.parseInt(args[0]);
         test.work(num);*/
 
-        randomBank.addRandomCustomers(50);
-        randomBank.updateAccountTable();
-        RandomCustomerInterface test = RandomCustomerInterface.getInstance(randomBank);
+        Bank newBank = new Bank("hello", 500, 50);
+        newBank.addRandomCustomers(50);
+        CustomerInterface test = CustomerInterface.getInstance(newBank);
+
+
+
+
     }
 }

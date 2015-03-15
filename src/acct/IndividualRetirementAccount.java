@@ -12,7 +12,6 @@ class IndividualRetirementAccount implements Account, Serializable {
     private final String TYPE = "MM-IRA";
     private final Integer ACCOUNT_NUMBER;
     private final Customer OWNER;
-    private final RandomGenerator random = new RandomGenerator();
     private double interestRate;
     private double accountBalance;
 
@@ -21,6 +20,7 @@ class IndividualRetirementAccount implements Account, Serializable {
         this.accountBalance = openingBalance;
         this.OWNER = owner;
         this.interestRate = calculateInterestRate();
+        RandomGenerator random = new RandomGenerator();
         this.ACCOUNT_NUMBER = random.acctGen();
     }
 
@@ -98,9 +98,9 @@ class IndividualRetirementAccount implements Account, Serializable {
     }
 
     private boolean decideApproved(Customer customer,double openingBalance) {
-        boolean tempApproved = true;
-        //tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
-        //tempApproved = !(customer.getChexSystemsScore() < 200 | customer.getCreditScore() < 200);
+        boolean tempApproved;
+        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE | customer.getChexSystemsScore() < 200 |
+                customer.getCreditScore() < 200);
         return tempApproved;
     }
 

@@ -13,11 +13,9 @@ public class Customer implements Serializable {
     private final UUID CUSTOMER_ID;
     private final String NAME;
     private final String PASSWORD;
-    private final Random r = new Random();
     private final CreditReport CREDIT_REPORT;
     private final ChexSystems CHEX_SCORE = new ChexSystems();
     private final int age;
-    private final RandomGenerator random = new RandomGenerator();
     private Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport) {
@@ -32,10 +30,12 @@ public class Customer implements Serializable {
 
     public Customer() {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
-        this.NAME = this.random.nameGen(2, r.nextInt(20));
+        RandomGenerator random = new RandomGenerator();
+        Random r = new Random();
+        this.NAME = random.nameGen(2, r.nextInt(20));
         this.CREDIT_REPORT = new CreditReport();
         this.age = CREDIT_REPORT.getCUSTOMER_AGE();
-        this.PASSWORD = this.random.passwordGen(0, r.nextInt(15) + 5);
+        this.PASSWORD = random.passwordGen(0, r.nextInt(15) + 5);
 
 
     }

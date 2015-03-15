@@ -31,12 +31,9 @@ public class RandomCustomerInterface {
 
     private static final AccountFactory ACCOUNT_FACTORY = new AccountFactory();
     private static Customer CUSTOMER;
-    private static Hashtable<Integer, Customer> customerHashtable;
-    private static Hashtable<Integer, Account> accountHashtable;
     private static RandomCustomerInterface SINGLETON_INSTANCE;
 
     private static Integer exitFailsafe = 0;
-    private static UUID CUSTOMER_ID;
     private static Bank bank;
     private static DataIO dataIO;
     private RandomGenerator r = new RandomGenerator();
@@ -73,8 +70,7 @@ public class RandomCustomerInterface {
         }
 
         bank = newBank;
-        customerHashtable = bank.getCustomerTable();
-        accountHashtable = bank.getCustomerTable();
+        Hashtable<Integer, Customer> customerHashtable = bank.getCustomerTable();
         bank.updateAccountTable();
         dataIO = new DataIO(bank);
 
@@ -85,7 +81,7 @@ public class RandomCustomerInterface {
         while (customerKeys.hasMoreElements()) {
 
             CUSTOMER = customerHashtable.get(customerKeys.nextElement());
-            CUSTOMER_ID = CUSTOMER.getUUID();
+            UUID CUSTOMER_ID = CUSTOMER.getUUID();
 
 
          /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
@@ -107,7 +103,6 @@ public class RandomCustomerInterface {
                 }
             }
 
-            boolean loggedIn = enteredPass.equals(realPass);
             System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
                     " on file, " + realPass + "\nYou may now access your bank account information!");
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -228,6 +223,7 @@ public class RandomCustomerInterface {
         }*/
 
         /*@addAccount
+
         *
         * This method is used by the customer to add various accounts to their customer ID. The accounts created are added to the
         * Bank's accountHashTable and also the customer's private accountHashTable
@@ -240,7 +236,7 @@ public class RandomCustomerInterface {
 
             if (tempAccount == null) {
                 System.out.println("Account type invalid. Please try again.");
-                addAccount(CUSTOMER);
+                initiateLoginProcesses(true, CUSTOMER);
             } else if (!(tempAccount == null)) {
                 CUSTOMER.addAccount(tempAccount);
                 System.out.println("Congratulations, " + CUSTOMER.getName() + "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
@@ -312,7 +308,7 @@ public class RandomCustomerInterface {
 
         }
 
-    public void printInformation(String request) {
+    void printInformation(String request) {
 
         if (request.equalsIgnoreCase("CHEX")) {
             System.out.println("Your ChexSystems score is currently " + CUSTOMER.getChexSystemsScore() + ".");

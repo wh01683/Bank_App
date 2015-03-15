@@ -12,14 +12,13 @@ class MoneyMarketAccount implements Account, Serializable {
     private final Integer ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 5000;
     private final Customer OWNER;
-    private final RandomGenerator random = new RandomGenerator();
-    private final double INTEREST_RATE = .01;
     private double accountBalance;
 
     public MoneyMarketAccount(Customer owner, double openingBalance) {
 
         this.OWNER = owner;
         this.accountBalance = openingBalance;
+        RandomGenerator random = new RandomGenerator();
         this.ACCOUNT_NUMBER = random.acctGen();
     }
 
@@ -71,7 +70,8 @@ class MoneyMarketAccount implements Account, Serializable {
         }
     }
     public void update() {
-        this.accountBalance *= (this.INTEREST_RATE+1);
+        double INTEREST_RATE = .01;
+        this.accountBalance *= (INTEREST_RATE +1);
     }
 
     @Override
@@ -88,9 +88,9 @@ class MoneyMarketAccount implements Account, Serializable {
     }
 
     private boolean decideApproved(Customer customer,double openingBalance) {
-        boolean tempApproved = true;
-        //tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE);
-        //tempApproved = !(customer.getChexSystemsScore() < 300 | customer.getCreditScore() < 300);
+        boolean tempApproved;
+        tempApproved = !(openingBalance < this.MINIMUM_REQUIRED_BALANCE | customer.getChexSystemsScore() < 300 |
+                customer.getCreditScore() < 300);
         return tempApproved;
     }
 }
