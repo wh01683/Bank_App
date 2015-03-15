@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
+import java.util.UUID;
 
 
 public class Bank implements Serializable {
@@ -52,6 +53,31 @@ public class Bank implements Serializable {
             }
             updateAccountTable();
         }
+    }
+
+    public void addCustomer(Customer customer){
+
+        this.customerHashtable.put(customer.getUUID().hashCode(), customer);
+        Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
+        while (acctKeys.hasMoreElements()) {
+            Integer acctKey = acctKeys.nextElement();
+            Account tempAcct = customer.getAccount(acctKey);
+            if (!(tempAcct == null))
+                this.accountHashtable.put(acctKey, tempAcct);
+
+        }
+
+    }
+
+    public Customer requestCustomer(UUID customerID){
+
+        if(this.customerHashtable.containsKey(customerID.hashCode())){
+            return customerHashtable.get(customerID.hashCode());
+        }
+        else{
+            return null;
+        }
+
     }
 
     int getNumberAccounts() {
