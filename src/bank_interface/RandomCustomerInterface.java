@@ -2,7 +2,9 @@ package bank_interface;
 
 import acct.Account;
 import acct.AccountFactory;
-import bank_package.*;
+import bank_package.Bank;
+import bank_package.Customer;
+import bank_package.RandomGenerator;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -29,11 +31,12 @@ public class RandomCustomerInterface {
 
         private static final AccountFactory ACCOUNT_FACTORY = new AccountFactory();
         private static Customer CUSTOMER;
-        private Bank bank;
         private static Hashtable<Integer, Customer> customerHashtable;
         private static Hashtable<Integer, Account> accountHashtable;
         private static RandomCustomerInterface SINGLETON_INSTANCE;
+    private static Integer exitFailsafe = 0;
         private static UUID CUSTOMER_ID;
+    private Bank bank;
         private RandomGenerator r = new RandomGenerator();
         /*private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
         private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
@@ -59,6 +62,14 @@ public class RandomCustomerInterface {
 
         /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
         private RandomCustomerInterface(Bank newBank) {
+            exitFailsafe++;
+            System.out.println("Exit Fail Safe = " + exitFailsafe);
+
+            if (exitFailsafe == 1000) {
+                System.out.println("Failsafe = " + exitFailsafe + " logging out.");
+                System.exit(0);
+            }
+
             bank = newBank;
             customerHashtable = bank.getCustomerTable();
             accountHashtable = bank.getCustomerTable();
@@ -194,8 +205,8 @@ public class RandomCustomerInterface {
                 else if (processRequest.equalsIgnoreCase("EXIT")) {
                     isLoggedIn = false;
                     System.out.println("Swiggity Swooty, I'm Coming For That Booty!");
-                    Bank newBank = new Bank("whatever", 5000, 1000);
-                    newBank.addCustomer(500);
+                    Bank newBank = new Bank("whatever", 50, 50);
+                    newBank.addCustomer(50);
                     newBank.updateAccountTable();
                     RandomCustomerInterface newOne = RandomCustomerInterface.getInstance(newBank);
 
