@@ -3,10 +3,12 @@ package acct;
 import bank_package.Customer;
 import bank_package.RandomGenerator;
 
+import java.io.Serializable;
+
 /**
  * Created by robert on 3/11/2015.
  */
-public class SavingsAccount implements Account {
+class SavingsAccount implements Account, Serializable {
 
     private final String TYPE = "SAVINGS";
     private final Integer ACCOUNT_NUMBER;

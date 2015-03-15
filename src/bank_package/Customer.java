@@ -2,13 +2,14 @@ package bank_package;
 
 import acct.Account;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.UUID;
 
 
-public class Customer {
+public class Customer implements Serializable {
 
     private final UUID CUSTOMER_ID;
     private final String NAME;

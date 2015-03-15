@@ -3,10 +3,12 @@ package acct;
 import bank_package.Customer;
 import bank_package.RandomGenerator;
 
+import java.io.Serializable;
+
 /**
  * Created by robert on 3/13/2015.
  */
-public class MoneyMarketAccount implements Account {
+class MoneyMarketAccount implements Account, Serializable {
 
     private final String TYPE = "MMA";
     private final Integer ACCOUNT_NUMBER;

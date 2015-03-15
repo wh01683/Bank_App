@@ -3,14 +3,13 @@ package bank_package;
 import acct.Account;
 import acct.AccountFactory;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 
 
-public class Bank {
+public class Bank implements Serializable {
 
     private final int numberCustomers;
     private final int numberAccounts;
@@ -18,6 +17,7 @@ public class Bank {
     private final RandomGenerator random = new RandomGenerator();
     private final AccountFactory testAccountFactory = new AccountFactory();
     private PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
+    private ObjectOutputStream bankDataWriter = getOS(getFS(System.getProperty("user.dir") + "\\bankInformation.txt"));
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
@@ -205,4 +205,63 @@ public class Bank {
         System.out.println("Finished writing accounts to file.");
     }
 
+    public void saveBankDataToFile(String fileName) throws IOException {
+        if (!(fileName.equalsIgnoreCase("DEFAULT")))
+            this.bankDataWriter = getOS(getFS(fileName));
+
+        Enumeration<Integer> enumKeys = customerHashtable.keys();
+        try {
+            while (enumKeys.hasMoreElements()) {
+                Integer key = enumKeys.nextElement();
+                Customer temp = customerHashtable.get(key);
+                this.bankDataWriter.writeObject(temp);
+                Hashtable<Integer, Account> tempHash = temp.getAccountHashtable();
+                Enumeration<Integer> acctKeys = tempHash.keys();
+                writer.println(getAccountHeaders());
+
+                while (acctKeys.hasMoreElements()) {
+                    Integer acctKey = acctKeys.nextElement();
+                    Account tempAcct = tempHash.get(acctKey);
+                    writer.println(tempAcct.toString());
+                }
+                writer.println("------------------------------------------");
+                writer.println("-------------NEW CUSTOMER-----------------");
+                writer.println("------------------------------------------");
+                writer.println(getCustomerHeaders());
+
+            }
+
+            writer.close();
+            System.out.println("Finished writing to file.");
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public ObjectOutputStream getOS(FileOutputStream out) {
+        ObjectOutputStream os;
+        try {
+            os = new ObjectOutputStream(out);
+
+            return os;
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
+    }
+
+    public FileOutputStream getFS(String fileName) {
+        FileOutputStream fs;
+        try {
+            fs = new FileOutputStream(fileName);
+
+            return fs;
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
+    }
 }

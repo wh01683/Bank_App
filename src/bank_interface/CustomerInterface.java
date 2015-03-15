@@ -167,7 +167,7 @@ public class CustomerInterface {
                 this.addAccount(loggedInCustomer);
             else if (processRequest.equalsIgnoreCase("EXIT")) {
                 isLoggedIn = false;
-                System.out.println("Exiting..");
+                System.out.println("Swiggity Swooty, I'm Coming For That Booty!");
                 System.exit(0);
             } else {
                 System.out.println("Your request could not be processed, please try again.");

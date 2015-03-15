@@ -5,7 +5,7 @@ import bank_package.Customer;
 /**
  * Created by robert on 3/11/2015.
  */
-public class IndividualRetirementAccountApplication implements AccountApplication {
+class IndividualRetirementAccountApplication implements AccountApplication {
     private static final double MIN_BALANCE = 100.0;
     private final Customer _cust;
     private boolean approved;

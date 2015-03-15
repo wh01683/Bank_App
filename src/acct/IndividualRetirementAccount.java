@@ -3,10 +3,12 @@ package acct;
 import bank_package.Customer;
 import bank_package.RandomGenerator;
 
+import java.io.Serializable;
+
 /**
  * Created by robert on 3/12/2015.
  */
-public class IndividualRetirementAccount implements Account {
+class IndividualRetirementAccount implements Account, Serializable {
 
     private final double MIN_BALANCE = 100.00;
     private final String TYPE = "MM-IRA";

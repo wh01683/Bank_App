@@ -1,8 +1,9 @@
 package bank_package;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class CreditReport {
+public class CreditReport implements Serializable {
     private final int CREDIT_SCORE;
     private final int RECENT_LATE_PAYMENT_NUMBER;
     private final int CUSTOMER_AGE;

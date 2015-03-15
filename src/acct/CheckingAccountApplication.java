@@ -2,7 +2,7 @@ package acct;
 
 import bank_package.Customer;
 
-public class CheckingAccountApplication implements AccountApplication {
+class CheckingAccountApplication implements AccountApplication {
 
     private static final double MIN_BALANCE = 0;
     private final Customer _cust;

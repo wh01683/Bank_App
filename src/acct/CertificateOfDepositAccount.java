@@ -4,11 +4,13 @@ import bank_package.Customer;
 import bank_package.RandomGenerator;
 import bank_package.uScanner;
 
+import java.io.Serializable;
+
 /**
  * Created by robert on 3/12/2015.
  */
 
-public class CertificateOfDepositAccount implements Account {
+class CertificateOfDepositAccount implements Account, Serializable {
     private static final uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
     private final double INTEREST_RATE;
     private final Integer ACCOUNT_NUMBER;
