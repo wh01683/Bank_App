@@ -29,15 +29,17 @@ public class RandomCustomerInterface {
     */
 
 
-        private static final AccountFactory ACCOUNT_FACTORY = new AccountFactory();
-        private static Customer CUSTOMER;
-        private static Hashtable<Integer, Customer> customerHashtable;
-        private static Hashtable<Integer, Account> accountHashtable;
-        private static RandomCustomerInterface SINGLETON_INSTANCE;
+    private static final AccountFactory ACCOUNT_FACTORY = new AccountFactory();
+    private static Customer CUSTOMER;
+    private static Hashtable<Integer, Customer> customerHashtable;
+    private static Hashtable<Integer, Account> accountHashtable;
+    private static RandomCustomerInterface SINGLETON_INSTANCE;
+
     private static Integer exitFailsafe = 0;
-        private static UUID CUSTOMER_ID;
-    private Bank bank;
-        private RandomGenerator r = new RandomGenerator();
+    private static UUID CUSTOMER_ID;
+    private static Bank bank;
+    private static DataIO dataIO;
+    private RandomGenerator r = new RandomGenerator();
         /*private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
         private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
         private final uScanner NUM_LATE_PAYMENTS_SCANNER = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -60,116 +62,61 @@ public class RandomCustomerInterface {
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
 
-        /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
-        private RandomCustomerInterface(Bank newBank) {
-            exitFailsafe++;
-            System.out.println("Exit Fail Safe = " + exitFailsafe);
+    /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
+    private RandomCustomerInterface(Bank newBank) {
+        exitFailsafe++;
+        System.out.println("Exit Fail Safe = " + exitFailsafe);
 
-            if (exitFailsafe == 1000) {
-                System.out.println("Failsafe = " + exitFailsafe + " logging out.");
-                System.exit(0);
-            }
+        if (exitFailsafe == 1000) {
+            System.out.println("Failsafe = " + exitFailsafe + " logging out.");
+            System.exit(0);
+        }
 
-            bank = newBank;
-            customerHashtable = bank.getCustomerTable();
-            accountHashtable = bank.getCustomerTable();
-            bank.updateAccountTable();
+        bank = newBank;
+        customerHashtable = bank.getCustomerTable();
+        accountHashtable = bank.getCustomerTable();
+        bank.updateAccountTable();
+        dataIO = new DataIO(bank);
 
-            boolean wantsRegister = r.getRandomBoolean();
-            boolean hasAccount = true;
+        String enteredPass;
 
-            String enteredPass;
+        Enumeration<Integer> customerKeys = customerHashtable.keys();
 
-            Enumeration<Integer> customerKeys = customerHashtable.keys();
+        while (customerKeys.hasMoreElements()) {
 
-            while (customerKeys.hasMoreElements()) {
-
-                CUSTOMER = customerHashtable.get(customerKeys.nextElement());
-                CUSTOMER_ID = CUSTOMER.getUUID();
-
-                if (!hasAccount) {
-
-         /*if the customer does NOT have an account and the customer WANTS to register, the new customer will be registered
-         * the current newCustID of the instance will be set to the newly registered customer's UUID and the new customer is
-         * added to the instance's customerHashTable*/
-                    /*if (wantsRegister) {
-                        Customer newCustomer = new Customer();
-                        newCustID = newCustomer.getUUID();
-                        customerHashtable.put(newCustID.hashCode(), newCustomer);
-                        System.out.println("Congratulations, " + newCustomer.getName() + "! You have successfully registered.\nYour new Customer ID is " +
-                                newCustID + ". DO NOT LOSE THIS!\nYour password is " + newCustomer.getPASSWORD() + ". You may now log in and experience everything " +
-                                "we have to offer!");
-                        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
-            *//*TESTING PURPOSES ONLY...*//*
-                        //getInstance(newBank);
-                    } else {
-            *//*if the customer does NOT have an account and they do NOT want to register, the system exits because
-            * they are clearly up to no good.*//*
-                        System.out.println("You're clearly up to no good.");
-                        System.exit(1);
-                    }
-                }*/
-
-
-
-        /*if they do have an account, they are requested to provide their UUID*/
-                    //newCustID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
-                /*if (!customerHashtable.containsKey(customerKeys.nextElement())) {
-            *//*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
-            * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
-            * They are given 5 attempts total before the system exits.*//*
-                    System.out.println("We could not find your ID, please try again.");
-                    int uuidCounter = 1;
-                    while (!customerHashtable.containsKey(CUSTOMER_ID.hashCode()) && uuidCounter < 7) {
-                        if (uuidCounter == 6) {
-                            System.out.println("All attempts exhausted. System exiting.");
-
-                            System.exit(1);
-                        }
-                        if (true) {
-                            CUSTOMER = new Customer();
-                            newCustID = CUSTOMER.getUUID();
-                    *//*ToDo: Must implement observer class to update bank's customer table before proceeding from here.*//*
-                        } else if (uuidCounter < 6) {
-                            System.out.println(uuidCounter + " attempts remaining of 5. Please try again.");
-                            //newCustID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
-                        }
-                        uuidCounter++;
-                    }
-                }*/
+            CUSTOMER = customerHashtable.get(customerKeys.nextElement());
+            CUSTOMER_ID = CUSTOMER.getUUID();
 
 
          /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
          * their password ON RECORD is set to a final String "realPass"*/
-                    final String realPass = CUSTOMER.getPASSWORD();
+            final String realPass = CUSTOMER.getPASSWORD();
          /*the user is prompted for their password, which is stored in enteredPass*/
-                    enteredPass = CUSTOMER.getPASSWORD();
-                    int attempts = 1;
+            enteredPass = CUSTOMER.getPASSWORD();
+            int attempts = 1;
         /*they will be prompted for their password as long as their REAL PASSWORD and their ENTERED PASSWORD do not match
         * and as long as their attempts do not exceed 4.*/
-                    while (!enteredPass.equals(realPass) && attempts < 6) {
-                        if (attempts == 5) {
-                            System.out.println("Maximum attempts reached. Exiting.");
-                            System.exit(1);
-                        } else {
-                            System.out.println("Invalid password. Try Again. " + attempts + " of 4 attempts exhausted.");
-                            attempts++;
-                            enteredPass = CUSTOMER.getPASSWORD();
-                        }
-                    }
-
-                    boolean loggedIn = enteredPass.equals(realPass);
-                    System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
-                            " on file, " + realPass + "\nYou may now access your bank account information!");
-                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            while (!enteredPass.equals(realPass) && attempts < 6) {
+                if (attempts == 5) {
+                    System.out.println("Maximum attempts reached. Exiting.");
+                    System.exit(1);
+                } else {
+                    System.out.println("Invalid password. Try Again. " + attempts + " of 4 attempts exhausted.");
+                    attempts++;
+                    enteredPass = CUSTOMER.getPASSWORD();
                 }
-                initiateLoginProcesses(true, CUSTOMER);
-
             }
-            System.out.println("Ran out of customers.. exiting.");
-            System.exit(1);
+
+            boolean loggedIn = enteredPass.equals(realPass);
+            System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
+                    " on file, " + realPass + "\nYou may now access your bank account information!");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
+        initiateLoginProcesses(true, CUSTOMER);
+
+        System.out.println("Ran out of customers.. exiting.");
+        System.exit(1);
+    }
 
 
         /*@getInstance
@@ -182,6 +129,7 @@ public class RandomCustomerInterface {
         public static RandomCustomerInterface getInstance(Bank thisBank) {
             if (!(SINGLETON_INSTANCE == null)) {
                 CUSTOMER = null;
+                dataIO = new DataIO(thisBank);
                 return SINGLETON_INSTANCE;
             }
             else
@@ -189,30 +137,34 @@ public class RandomCustomerInterface {
 
         }
 
-        private void initiateLoginProcesses(boolean isLoggedIn, Customer loggedInCustomer) {
-            /*final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + loggedInCustomer.getName() + "?\nINFORMATION, TRANSACTION, ADDACCOUNT, EXIT", 3, 12);
+    private void initiateLoginProcesses(boolean isLoggedIn, Customer CUSTOMER) {
+            /*final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + CUSTOMER.getName() + "?\nINFORMATION, TRANSACTION, ADDACCOUNT, EXIT", 3, 12);
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 */
             while (isLoggedIn) {
                 String processRequest = r.processGen();
-                if (processRequest.equalsIgnoreCase("INFORMATION"))
-                    this.showCustomerAccountInformation(loggedInCustomer);
+                if (processRequest.equalsIgnoreCase("INFORMATION")) {
+                    this.showCustomerAccountInformation(CUSTOMER);
+                    initiateLoginProcesses(true, CUSTOMER);
+                }
                 else if (processRequest.equalsIgnoreCase("TRANSACTION")) {
-                    if (this.processTransaction(r.transactionGen(), loggedInCustomer) == 0)
-                        initiateLoginProcesses(true, loggedInCustomer);
-                } else if (processRequest.equalsIgnoreCase("ADDACCOUNT"))
-                    this.addAccount(loggedInCustomer);
+                    if (this.processTransaction(r.transactionGen(), CUSTOMER) == 0)
+                        initiateLoginProcesses(true, CUSTOMER);
+                } else if (processRequest.equalsIgnoreCase("ADDACCOUNT")) {
+                    this.addAccount(CUSTOMER);
+                    initiateLoginProcesses(true, CUSTOMER);
+                }
                 else if (processRequest.equalsIgnoreCase("EXIT")) {
                     isLoggedIn = false;
                     System.out.println("Swiggity Swooty, I'm Coming For That Booty!");
                     Bank newBank = new Bank("whatever", 50, 50);
-                    newBank.addCustomer(50);
+                    newBank.addRandomCustomers(50);
                     newBank.updateAccountTable();
                     RandomCustomerInterface newOne = RandomCustomerInterface.getInstance(newBank);
 
                 } else {
                     System.out.println("Your request could not be processed, please try again.");
-                    initiateLoginProcesses(true, loggedInCustomer);
+                    initiateLoginProcesses(true, CUSTOMER);
                 }
             }
         }
@@ -282,26 +234,27 @@ public class RandomCustomerInterface {
         * @param void: not necessary. if the user gets to this point, their information is already saved in the instance so
         *              can access it without passing new parameters
         * @return void: adds the new bankAccount directly to the customer's account*/
-        private void addAccount(Customer loggedInCustomer) {
-            Account tempAccount = ACCOUNT_FACTORY.getRandomAccount(loggedInCustomer);
+        private void addAccount(Customer CUSTOMER) {
+            Account tempAccount = ACCOUNT_FACTORY.getRandomAccount(CUSTOMER);
 
             if (tempAccount == null) {
                 System.out.println("Account type invalid. Please try again.");
-                addAccount(loggedInCustomer);
+                addAccount(CUSTOMER);
             } else if (!(tempAccount == null)) {
-                loggedInCustomer.addAccount(tempAccount);
-                System.out.println("Congratulations, " + loggedInCustomer.getName() + "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
+                CUSTOMER.addAccount(tempAccount);
+                System.out.println("Congratulations, " + CUSTOMER.getName() + "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
                         "Here is the information...\n");
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println(getAccountHeaders());
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println(tempAccount.toString());
                 System.out.println("\n");
+                bank.updateAccountTable();
                 //uScanner yesNo = new uScanner("Would you like to add more accounts?\nYES to create additional accounts, NO to return.", 1, 4);
                 if (r.getRandomBoolean())
-                    addAccount(loggedInCustomer);
+                    addAccount(CUSTOMER);
                 else
-                    initiateLoginProcesses(true, loggedInCustomer);
+                    initiateLoginProcesses(true, CUSTOMER);
             } else
                 System.out.println("Something bad happened. Exiting.");
 
@@ -353,11 +306,35 @@ public class RandomCustomerInterface {
 
         private void showCustomerAccountInformation(Customer loggedInCustomer) {
 
-            loggedInCustomer.printInformation(r.informationGen());
+            printInformation(r.informationGen());
             initiateLoginProcesses(true, loggedInCustomer);
 
         }
 
+    public void printInformation(String request) {
+
+        if (request.equalsIgnoreCase("CHEX")) {
+            System.out.println("Your ChexSystems score is currently " + CUSTOMER.getChexSystemsScore() + ".");
+            printInformation(r.informationGen());
+        } else if (request.equalsIgnoreCase("CREDIT")) {
+            System.out.println("Your Credit Score is currently " + CUSTOMER.getCreditScore() + ".");
+            printInformation(r.informationGen());
+        } else if (request.equalsIgnoreCase("ACCOUNTS")) {
+            if (!(CUSTOMER.getAccountHashtable().equals(null)))
+                dataIO.printAccountInformation(CUSTOMER.getAccountHashtable());
+            else
+                printInformation(r.informationGen());
+        } else if (request.equalsIgnoreCase("ALL")) {
+            dataIO.printAllCustomerPrivateInformation(CUSTOMER.getUUID().hashCode(), CUSTOMER.getAccountHashtable());
+            printInformation(r.informationGen());
+        } else if (request.equalsIgnoreCase("RETURN")) {
+            System.out.println("Returning to previous menu.");
+            initiateLoginProcesses(true, CUSTOMER);
+        } else {
+            System.out.println("Could not process your request: " + request + " Please try again");
+            printInformation(r.informationGen());
+        }
+    }
         private int processTransaction(String transactionChoice, Customer loggedInCustomer) {
         /*DEPOSIT SECTION*/
 
@@ -458,17 +435,18 @@ public class RandomCustomerInterface {
 
 
                 } else if (transactionChoice.equalsIgnoreCase("ACCOUNTS")) {
-                    loggedInCustomer.printInformation("ACCOUNTS");
-                    return 0;
+                    printInformation("ACCOUNTS");
+                    initiateLoginProcesses(true, loggedInCustomer);
                 } else if (transactionChoice.equalsIgnoreCase("RETURN")) {
                     System.out.println("Returning to previous menu.");
-                    return 0;
+                    initiateLoginProcesses(true, loggedInCustomer);
                 } else {
                     System.out.println("Request could not be processed. Please try again.");
                     processTransaction(r.transactionGen(), loggedInCustomer);
                     return 1;
                 }
             }
+            initiateLoginProcesses(true, loggedInCustomer);
             return 0;
         }
 

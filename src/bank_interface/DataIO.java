@@ -9,29 +9,65 @@ import java.util.Hashtable;
 
 /*DATA Input/Output class for storing all the write -to-file methods and headers, etc.*/
 public class DataIO {
-    private final Bank THIS_BANK;
-    private final Hashtable customerHashTable;
-    private final Hashtable accountHashTable;
+    private Bank THIS_BANK = new Bank("temporary", 500, 50);
+    private Hashtable customerHashTable = new Hashtable(50);
+    private Hashtable accountHashTable = new Hashtable(500);
     private PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
     private ObjectOutputStream bankDataWriter = getOS(getFS(System.getProperty("user.dir") + "\\bankInformation.txt"));
 
     public DataIO(Bank bank) {
         this.THIS_BANK = bank;
-        this.customerHashTable = this.THIS_BANK.getCustomerTable();
-        this.accountHashTable = this.THIS_BANK.getAccountHashTable();
+        this.customerHashTable = THIS_BANK.getCustomerTable();
+        this.accountHashTable = THIS_BANK.getAccountHashTable();
     }
 
-    private PrintWriter getPW(String fileName) {
-        PrintWriter pw;
-        try {
-            pw = new PrintWriter(fileName);
-            return pw;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
-            return null;
+    void printAllCustomerPrivateInformation(Integer customerHashKey, Hashtable customerAccounts) {
+
+        Enumeration<Integer> accountHashKeysEnumeration = customerAccounts.keys();
+
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(getCustomerHeaders());
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(this.customerHashTable.get(customerHashKey).toString());
+
+        while (accountHashKeysEnumeration.hasMoreElements()) {
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            printAccountInformation(customerAccounts);
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("Finished printing customer information...");
         }
+
+
     }
+
+    void printAccountInformation(Hashtable customerAccounts) {
+
+        int tempCount = 10;
+        Enumeration<Integer> enumr = customerAccounts.keys();
+
+        while (enumr.hasMoreElements()) {
+            if (tempCount == 10) {
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println(getAccountHeaders());
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                tempCount = 0;
+            }
+
+            Integer tempKey = enumr.nextElement();
+
+            if (customerAccounts.containsKey(tempKey)) {
+                System.out.println(customerAccounts.get(tempKey).toString());
+            } else if (!customerAccounts.containsKey(tempKey) && !customerAccounts.isEmpty())
+                System.out.println("Wrong key.");
+
+            else
+                System.out.println("Something else happened.");
+            tempCount++;
+        }
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("Finished printing accounts.");
+    }
+
 
     public void writeCustomerAndAccountInformationToFile(String fileName) {
 
@@ -39,7 +75,7 @@ public class DataIO {
             writer = getPW(fileName);
         }
         Enumeration<Integer> enumKeys = this.customerHashTable.keys();
-        while (enumKeys.hasMoreElements()) {
+        while (enumKeys.hasMoreElements() && !(this.accountHashTable.equals(null))) {
             Integer key = enumKeys.nextElement();
             writer.println(customerHashTable.get(key).toString());
             Enumeration<Integer> acctKeys = this.accountHashTable.keys();
@@ -48,7 +84,7 @@ public class DataIO {
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             writer.println(getAccountHeaders());
 
-            while (acctKeys.hasMoreElements()) {
+            while (acctKeys.hasMoreElements() && !(this.accountHashTable.equals(null))) {
                 Integer acctKey = acctKeys.nextElement();
                 writer.println(this.accountHashTable.get(acctKey).toString());
             }
@@ -137,6 +173,17 @@ public class DataIO {
         }
     }
 
+    private PrintWriter getPW(String fileName) {
+        PrintWriter pw;
+        try {
+            pw = new PrintWriter(fileName);
+            return pw;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
+    }
     public ObjectOutputStream getOS(FileOutputStream out) {
         ObjectOutputStream os;
         try {
@@ -162,6 +209,7 @@ public class DataIO {
             return null;
         }
     }
+
 
     String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-7s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",

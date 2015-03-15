@@ -33,17 +33,12 @@ public class Bank implements Serializable {
 
     public Bank getNewRandomBank() {
 
-        Bank randomBank = new Bank(random.nameGen(0, 10), random.getInts(500, 5000), random.getInts(500, 5000));
-
-        randomBank.customerHashtable = new Hashtable<Integer, Customer>(randomBank.NUMBER_OF_CUSTOMERS * 2);
-        for (int i = 0; i < randomBank.NUMBER_OF_CUSTOMERS; ++i) {
-            Customer temp = new Customer();
-            randomBank.customerHashtable.put(temp.getUUID().hashCode(), temp);
-        }
+        Bank randomBank = new Bank(random.nameGen(0, 10), random.getInts(50, 500), random.getInts(50, 500));
+        addRandomCustomers(random.getInts(50, 500));
         return randomBank;
     }
 
-    public void addCustomer(int numberCustomers) {
+    public void addRandomCustomers(int numberCustomers) {
         this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
         this.accountHashtable = new Hashtable<Integer, Account>(numberCustomers * 10);
         for (int i = 0; i < numberCustomers; i++) {

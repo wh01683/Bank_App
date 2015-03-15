@@ -2,7 +2,10 @@ package bank_interface;
 
 import acct.Account;
 import acct.AccountFactory;
-import bank_package.*;
+import bank_package.Bank;
+import bank_package.CreditReport;
+import bank_package.Customer;
+import bank_package.uScanner;
 
 import java.util.Hashtable;
 import java.util.UUID;
@@ -19,13 +22,16 @@ import java.util.UUID;
 *
 */
 public class CustomerInterface {
-
     private static final AccountFactory ACCOUNT_FACTORY = new AccountFactory();
     private static Customer cust;
     private static Bank bank;
+    private static DataIO dataIO = new DataIO(bank);
     private static Hashtable<Integer, Customer> customerHashtable;
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID newCustID;
+    /*
+    * SCANNERS
+    * */
     private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
     private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
     private final uScanner NUM_LATE_PAYMENTS_SCANNER = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -35,15 +41,17 @@ public class CustomerInterface {
     private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1, 2000000000);
     private final uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
     private final uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.", 4, 16);
+
+    /*
+    * SCANNERS END
+    * */
     private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?\nCHECKING, SAVINGS, MMA, IRA, CD", -1, 10);
     private final uScanner HAVE_ACCOUNT_SCANNER = new uScanner("Do you have an account with us? YES, NO, RETURN, EXIT", 2, 6);
     private final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, RETURN, EXIT", 2, 6);
     private final uScanner INFORMATION_REQUEST_SCANNER = new uScanner("What would you like to know more about?\nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
     private final uScanner TRANSACTION_REQUEST_SCANNER = new uScanner("What transaction would you like to process?\nDEPOSIT, WITHDRAW, TRANSFER, ACCOUNTS, RETURN", 2, 9);
     private final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", 0, 200000000);
-
-
-
+    private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
 
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
@@ -51,6 +59,7 @@ public class CustomerInterface {
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
     private CustomerInterface(Bank newBank) {
         bank = newBank;
+        dataIO = new DataIO(bank);
         customerHashtable = bank.getCustomerTable();
         newCustID = new UUID(16, 16).randomUUID();
         String enteredPass;
@@ -72,7 +81,7 @@ public class CustomerInterface {
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             /*TESTING PURPOSES ONLY...*/
-                getInstance(newBank); //brings user back to the beginning to allow a normal login attempt
+                getInstance(bank); //brings user back to the beginning to allow a normal login attempt
             } else {
             /*if the customer does NOT have an account and they do NOT want to register, the system exits because
             * they are clearly up to no good.*/
@@ -187,6 +196,25 @@ public class CustomerInterface {
         }
     }
 
+    public void printInformation(String request) {
+
+        if (request.equalsIgnoreCase("CHEX"))
+            System.out.println("Your ChexSystems score is currently " + cust.getChexSystemsScore() + ".");
+        else if (request.equalsIgnoreCase("CREDIT"))
+            System.out.println("Your Credit Score is currently " + cust.getCreditScore() + ".");
+        else if (request.equalsIgnoreCase("ACCOUNTS")) {
+            dataIO.printAccountInformation(cust.getAccountHashtable());
+
+        } else if (request.equalsIgnoreCase("ALL"))
+            dataIO.printAllCustomerPrivateInformation(cust.getUUID().hashCode(), cust.getAccountHashtable());
+        else if (request.equalsIgnoreCase("RETURN"))
+            System.out.println("Returning to previous menu.");
+        else {
+            System.out.println("Could not process your request: " + request + " Please try again");
+            printInformation(REQUEST_SCANNER.stringGet());
+        }
+    }
+
     /*@registerNewCustomer
     *
     * Method used to get information from a new user without an UUID.
@@ -203,7 +231,6 @@ public class CustomerInterface {
             tempCreditReport = new CreditReport(0);
         else
             tempCreditReport = fillCredReportInformation(tempAge);
-        ChexSystems tempScore = new ChexSystems();
         final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 5, 20);
         String tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
 
@@ -334,7 +361,7 @@ public class CustomerInterface {
 
     private void showCustomerAccountInformation(Customer loggedInCustomer) {
 
-        loggedInCustomer.printInformation(INFORMATION_REQUEST_SCANNER.stringGet());
+        printInformation(INFORMATION_REQUEST_SCANNER.stringGet());
 
     }
 
@@ -465,7 +492,7 @@ public class CustomerInterface {
                     processTransaction(transactionChoice, loggedInCustomer);
                 }
             } else if (transactionChoice.equalsIgnoreCase("ACCOUNTS")) {
-                loggedInCustomer.printInformation("ACCOUNTS");
+                printInformation("ACCOUNTS");
             } else if (transactionChoice.equalsIgnoreCase("RETURN")) {
                 System.out.println("Returning to previous menu.");
                 initiateLoginProcesses(true, loggedInCustomer);
