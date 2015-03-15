@@ -13,7 +13,7 @@ public class RandomGenerator {
     private final String ALPHA_NUMERIC = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final int LENGTH_OF_ALPHA_NUMERIC = ALPHA_NUMERIC.length();
     private final int NUM_IN_ALPHABET = ALPHABET.length();
-    private Vector<Integer> acctNumberList = new Vector<Integer>(50);
+    private final Vector<Integer> acctNumberList = new Vector<Integer>(50);
 
     public boolean getRandomBoolean() {
         float temp = r.nextFloat();

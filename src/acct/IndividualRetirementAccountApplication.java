@@ -15,11 +15,6 @@ public class IndividualRetirementAccountApplication implements AccountApplicatio
         this._cust = newCustomer;
         this.approved = decideApproved(openingBalance);
     }
-
-    public double getMinBalance() {
-        return MIN_BALANCE;
-    }
-
     public boolean screeningResult() {
 
         return this.approved;

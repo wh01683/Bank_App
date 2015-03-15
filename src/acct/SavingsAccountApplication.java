@@ -29,7 +29,4 @@ public class SavingsAccountApplication implements AccountApplication {
         return this.approved;
     }
 
-    public double getMinBalance() {
-        return MIN_BALANCE;
-    }
 }

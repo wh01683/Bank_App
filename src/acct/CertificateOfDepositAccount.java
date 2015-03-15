@@ -31,11 +31,7 @@ public class CertificateOfDepositAccount implements Account {
 
     @Override
     public boolean checkWithdrawLimits(double withdrawal) {
-        if (withdrawal > this.accountBalance)
-            return false;
-
-        else
-            return true;
+        return withdrawal <= this.accountBalance;
     }
 
     @Override

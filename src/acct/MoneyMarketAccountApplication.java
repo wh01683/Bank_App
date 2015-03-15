@@ -17,10 +17,6 @@ public class MoneyMarketAccountApplication implements AccountApplication {
         this.approved = decideApproved(openingBalance);
     }
 
-    public double getMinBalance() {
-        return MIN_BALANCE;
-    }
-
     public boolean screeningResult() {
 
         return this.approved;

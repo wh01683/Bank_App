@@ -12,8 +12,8 @@ public class MoneyMarketAccount implements Account {
     private final Integer ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 5000;
     private final Customer OWNER;
-    private RandomGenerator random = new RandomGenerator();
-    private double interestRate = .01;
+    private final RandomGenerator random = new RandomGenerator();
+    private final double interestRate = .01;
     private double accountBalance;
 
     public MoneyMarketAccount(Customer owner, double openingBalance) {
@@ -36,11 +36,7 @@ public class MoneyMarketAccount implements Account {
 
 
     public boolean checkWithdrawLimits(double withdrawal) {
-        if (withdrawal > this.accountBalance)
-            return false;
-
-        else
-            return true;
+        return withdrawal <= this.accountBalance;
     }
 
     @Override

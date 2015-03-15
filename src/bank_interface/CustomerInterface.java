@@ -74,21 +74,16 @@ public class CustomerInterface {
             /*TESTING PURPOSES ONLY...*/
                 customerHasAccount = true;
                 getInstance(newBank);
-            } else if (!customerHasAccount && !wantsRegister) {
+            } else {
             /*if the customer does NOT have an account and they do NOT want to register, the system exits because
             * they are clearly up to no good.*/
                 System.out.println("You're clearly up to no good.");
                 System.exit(1);
-            } else {
-                System.out.println("Something went wrong. Exiting.");
-                System.exit(1);
             }
         }
 
-        if (customerHasAccount) {
-            /*if they do have an account, they are requested to provide their UUID*/
-            newCustID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
-        }
+        /*if they do have an account, they are requested to provide their UUID*/
+        newCustID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
         if (!customerHashtable.containsKey(newCustID.hashCode())) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
             * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
@@ -106,7 +101,7 @@ public class CustomerInterface {
                     cust = registerNewCustomer();
                     newCustID = cust.getUUID();
                     /*ToDo: Must implement observer class to update bank's customer table before proceeding from here.*/
-                } else if (!wantsRegister2 && uuidCounter < 6) {
+                } else if (uuidCounter < 6) {
                     System.out.println(uuidCounter + " attempts remaining of 5. Please try again.");
                     newCustID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
                 }
@@ -173,7 +168,7 @@ public class CustomerInterface {
             else if (processRequest.equalsIgnoreCase("EXIT")) {
                 isLoggedIn = false;
                 System.out.println("Exiting..");
-                System.exit(1);
+                System.exit(0);
             } else {
                 System.out.println("Your request could not be processed, please try again.");
                 initiateLoginProcesses(true, loggedInCustomer);
@@ -211,7 +206,7 @@ public class CustomerInterface {
     * @param tempAge: age passed to the fill credit report. In reality, it is unnecessary because the user will never
     *                 see this method if their age is less than 18; the tempAge is printed purely for debugging and verification
     * @return new CreditReport: returns a new credit report for the customer, filled in with their provided information*/
-    public CreditReport fillCredReportInformation(int tempAge) {
+    CreditReport fillCredReportInformation(int tempAge) {
         double amountOfLatePayments = 0;
 
         System.out.println("Since you are " + tempAge + " years old, you must provide some credit information.");
@@ -261,7 +256,7 @@ public class CustomerInterface {
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println(tempAccount.toString());
             System.out.println("\n");
-            uScanner yesNo = new uScanner("Would you like to add more accounts?\nYES to create additonal accounts, NO to return.", 1, 4);
+            uScanner yesNo = new uScanner("Would you like to add more accounts?\nYES to create additional accounts, NO to return.", 1, 4);
             if (yesNo.stringGet().equalsIgnoreCase("YES"))
                 addAccount(loggedInCustomer);
             else
@@ -422,7 +417,7 @@ public class CustomerInterface {
 
     }
 
-    public String getAccountHeaders() {
+    String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }

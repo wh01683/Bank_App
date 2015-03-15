@@ -1,10 +1,8 @@
 package bank_package;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class CreditReport {
-    static Scanner in = new Scanner(System.in);
     private final int CREDIT_SCORE;
     private final int RECENT_LATE_PAYMENT_NUMBER;
     private final int CUSTOMER_AGE;
@@ -32,8 +30,8 @@ public class CreditReport {
         this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
     }
 
-    public CreditReport(int age, boolean random) {
-        this.CUSTOMER_AGE = age;
+    public CreditReport() {
+        this.CUSTOMER_AGE = r.nextInt(120);
         this.RECENT_LATE_PAYMENT_NUMBER = r.nextInt(100);
         this.AMOUNT_OF_LATE_PAYMENTS = r.nextDouble() * 2000000000.0;
         this.RECENT_CREDIT_INQUIRIES = r.nextInt(100);
@@ -74,6 +72,9 @@ public class CreditReport {
         return tempScore;
     }
 
+    public int getCUSTOMER_AGE() {
+        return this.CUSTOMER_AGE;
+    }
     private int calcNewCreditScore() {
         if (this.RECENT_CREDIT_INQUIRIES < 8)
             return 80 - (this.RECENT_CREDIT_INQUIRIES * 10);
@@ -105,7 +106,7 @@ public class CreditReport {
 
         double latePaymentMultiplier = severity * this.AMOUNT_OF_LATE_PAYMENTS;
 
-        if (latePaymentMultiplier == 0 || latePaymentMultiplier < 1000) tempScore = 279;
+        if (latePaymentMultiplier == 0 | latePaymentMultiplier < 1000) tempScore = 279;
         if (latePaymentMultiplier < 3000) tempScore = 200;
         if (latePaymentMultiplier < 5000) tempScore = 100;
         else tempScore = 0;

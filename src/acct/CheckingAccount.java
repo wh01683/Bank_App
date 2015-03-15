@@ -12,10 +12,9 @@ public class CheckingAccount implements Account {
     private final int ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 0;
     private final Customer OWNER;
-    private RandomGenerator random = new RandomGenerator();
-
+    private final RandomGenerator random = new RandomGenerator();
+    private final double overDraftFee = 35; //35 dollar default over draft fee... it's what my bank charges
     private double overDraftProtection = -750.0; //set to -750 dollars over draft protection allowed
-    private double overDraftFee = 35; //35 dollar default over draft fee... it's what my bank charges
     private CheckingAccountApplication checkingAccountApplication;
     private double interestRate;
     private double accountBalance;
@@ -30,10 +29,7 @@ public class CheckingAccount implements Account {
 
 
     public boolean checkWithdrawLimits(double withdrawal) {
-        if (withdrawal >= (this.overDraftFee + this.accountBalance))
-            return false;
-        else
-            return true;
+        return withdrawal < (this.overDraftFee + this.accountBalance);
     }
 
     @Override

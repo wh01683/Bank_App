@@ -12,8 +12,8 @@ public class SavingsAccount implements Account {
     private final Integer ACCOUNT_NUMBER;
     private final double MINIMUM_REQUIRED_BALANCE = 5;
     private final Customer OWNER;
-    private RandomGenerator random = new RandomGenerator();
-    private double interestRate = .0105;
+    private final RandomGenerator random = new RandomGenerator();
+    private final double interestRate = .0105;
     private double accountBalance;
 
     public SavingsAccount(Customer owner, double openingBalance) {
@@ -24,11 +24,7 @@ public class SavingsAccount implements Account {
 
 
     public boolean checkWithdrawLimits(double withdrawal) {
-        if (withdrawal > this.accountBalance)
-            return false;
-
-        else
-            return true;
+        return withdrawal <= this.accountBalance;
     }
 
     @Override

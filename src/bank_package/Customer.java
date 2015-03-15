@@ -1,7 +1,6 @@
 package bank_package;
 
 import acct.Account;
-import acct.AccountFactory;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -16,13 +15,11 @@ public class Customer {
     private final String PASSWORD;
     private final Random r = new Random();
     private final CreditReport _cred;
-    private final ChexSystems _score;
+    private final ChexSystems _score = new ChexSystems();
     private final int age;
-    private final int ChexSystemsScore; //intialize to 0 indicating no prior history
     private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
-    private Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
-    private AccountFactory testAccountFactory = new AccountFactory();
-    private RandomGenerator random = new RandomGenerator();
+    private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
+    private final RandomGenerator random = new RandomGenerator();
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport, ChexSystems newScore) {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
@@ -30,20 +27,16 @@ public class Customer {
         this.age = tempAge;
         this.NAME = tempName;
         this._cred = newCreditReport;
-        this._score = newScore;
         this.PASSWORD = password;
-        this.ChexSystemsScore = _score.getScore();
 
     }
 
-    public Customer(boolean random) {
+    public Customer() {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
-        this.age = r.nextInt(100);
         this.NAME = this.random.nameGen(2, r.nextInt(20));
-        this._cred = new CreditReport(this.age, true);
-        this._score = new ChexSystems();
+        this._cred = new CreditReport();
+        this.age = _cred.getCUSTOMER_AGE();
         this.PASSWORD = this.random.passwordGen(0, r.nextInt(15) + 5);
-        this.ChexSystemsScore = _score.getScore();
 
 
     }
@@ -76,7 +69,7 @@ public class Customer {
     }
 
 
-    public void printAllCustomerInformation() {
+    void printAllCustomerInformation() {
 
 
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -138,18 +131,18 @@ public class Customer {
         }
     }
 
-    public String getAccountHeaders() {
+    String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
 
-    public String getCustomerHeaders() {
+    String getCustomerHeaders() {
         return String.format("||%-36s||%-20s||%-20s||%-3s||%-4s||%-4s||", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
     }
 
     @Override
     public String toString() {
-        return String.format("||-36s||%-20s||%-20s||%-3d||%-4d||%-4d||", this.CUSTOMER_ID, this.NAME,
+        return String.format("||%-36s||%-20s||%-20s||%-3d||%-4d||%-4d||", this.CUSTOMER_ID, this.NAME,
                 this.PASSWORD, this.age, this.getCreditScore(), this.getChexSystemsScore());
     }
 

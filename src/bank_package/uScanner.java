@@ -103,31 +103,4 @@ public class uScanner {
         }
         return in.next();
     }
-
-
-    public void setMinInt(int newMinInt) {
-        this.minInt = newMinInt;
-    }
-
-    public void setMinDouble(double newMinDouble) {
-        this.minDouble = newMinDouble;
-    }
-
-    public void setMaxInt(int newMaxInt) {
-        this.maxInt = newMaxInt;
-    }
-
-    public void setMaxDouble(double newMaxDouble) {
-        this.maxDouble = newMaxDouble;
-    }
-
-    public void setMaxLength(int newMaxLength) {
-        this.maxLength = newMaxLength;
-    }
-
-    public void setMinLength(int newMinLength) {
-        this.minLength = newMinLength;
-    }
-
-
 }

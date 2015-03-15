@@ -1,7 +1,7 @@
 package bank_package;
 import java.util.Random;
 
-/*ToDo: make a more realisitc ChexSystems class that calculates ChexSystems score based on customer history (like CreditScore)*/
+/*ToDo: make a more realistic ChexSystems class that calculates ChexSystems score based on customer history (like CreditScore)*/
 public class ChexSystems {
     private final int CHEX_SYSTEMS_SCORE;
     private final Random r = new Random();

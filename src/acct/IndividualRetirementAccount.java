@@ -12,7 +12,7 @@ public class IndividualRetirementAccount implements Account {
     private final String TYPE = "MM-IRA";
     private final Integer ACCOUNT_NUMBER;
     private final Customer OWNER;
-    private RandomGenerator random = new RandomGenerator();
+    private final RandomGenerator random = new RandomGenerator();
     private double interestRate;
     private double accountBalance;
 
@@ -31,11 +31,7 @@ public class IndividualRetirementAccount implements Account {
 
 
     public boolean checkWithdrawLimits(double withdrawal) {
-        if (withdrawal > this.accountBalance)
-            return false;
-
-        else
-            return true;
+        return withdrawal <= this.accountBalance;
     }
 
     public Integer getACCOUNT_NUMBER() {

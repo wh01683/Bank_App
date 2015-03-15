@@ -3,7 +3,6 @@ package bank_package;
 import acct.Account;
 import acct.AccountFactory;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
@@ -15,14 +14,13 @@ public class Bank {
 
     private final int numberCustomers;
     private final int numberAccounts;
-    File test = new File("tests.xml");
-    PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
-    private Random r = new Random();
-    private RandomGenerator random = new RandomGenerator();
+    private final Random r = new Random();
+    private final RandomGenerator random = new RandomGenerator();
+    private final AccountFactory testAccountFactory = new AccountFactory();
+    private PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
-    private AccountFactory testAccountFactory = new AccountFactory();
 
     public Bank(String name, int numberAccounts, int numberCustomers) {
         this.name = name;
@@ -37,7 +35,7 @@ public class Bank {
 
         randomBank.customerHashtable = new Hashtable<Integer, Customer>(randomBank.numberCustomers * 2);
         for (int i = 0; i < randomBank.numberCustomers; ++i) {
-            Customer temp = new Customer(true);
+            Customer temp = new Customer();
             randomBank.customerHashtable.put(temp.getUUID().hashCode(), temp);
         }
         return randomBank;
@@ -47,7 +45,7 @@ public class Bank {
         this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
         this.accountHashtable = new Hashtable<Integer, Account>(numberCustomers * 10);
         for (int i = 0; i < numberCustomers; i++) {
-            Customer tempCustomer = new Customer(true);
+            Customer tempCustomer = new Customer();
             this.customerHashtable.put(tempCustomer.getUUID().hashCode(), tempCustomer);
 
             for (int k = 0; k < r.nextInt(10); k++) { //generates anywhere between 10 and 0 random accounts
@@ -60,11 +58,11 @@ public class Bank {
         }
     }
 
-    public int getNumberAccounts() {
+    int getNumberAccounts() {
         return this.numberAccounts;
     }
 
-    public int getNumberCustomers() {
+    int getNumberCustomers() {
         return this.numberCustomers;
     }
 
@@ -146,13 +144,13 @@ public class Bank {
         System.out.println("Finished writing to file.");
     }
 
-    public String getAccountHeaders() {
+    String getAccountHeaders() {
         return String.format("%-10s %-10s %-20s %-20s %-36s %-4s %-6s %-4s", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
 
 
-    public String getCustomerHeaders() {
+    String getCustomerHeaders() {
         return String.format("%-36s %-20s %-20s %-3s %-4s %-4s", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
     }
 
