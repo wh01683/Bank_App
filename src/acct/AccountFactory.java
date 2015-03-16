@@ -4,9 +4,10 @@ import bank_package.Customer;
 import utility.RandomGenerator;
 import utility.uScanner;
 
+import java.io.Serializable;
 
 
-public class AccountFactory {
+public class AccountFactory implements Serializable {
 
     private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", 0, 2000000000);
 

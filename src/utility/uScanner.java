@@ -1,9 +1,10 @@
 package utility;
 
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class uScanner {
+public class uScanner implements Serializable {
 
     private static final Scanner in = new Scanner(System.in);
     private final String prompt;

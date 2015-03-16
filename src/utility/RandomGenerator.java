@@ -1,9 +1,10 @@
 package utility;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Vector;
 
-public class RandomGenerator {
+public class RandomGenerator implements Serializable {
 
     private static int currentIndex;
     private final Random r = new Random();
@@ -75,6 +76,13 @@ public class RandomGenerator {
     public String processGen() throws IndexOutOfBoundsException{
         String[] accounts = {"INFORMATION", "TRANSACTION", "ADDACCOUNT", "EXIT"};
         return accounts[r.nextInt(4)];
+    }
+
+    public String emailGen(){
+        String email = "";
+        email = passwordGen(5, 10);
+        email+="@";
+        return email;
     }
 
 

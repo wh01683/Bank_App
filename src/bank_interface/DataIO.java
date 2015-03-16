@@ -3,10 +3,7 @@ package bank_interface;
 
 import bank_package.RealBank;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -17,10 +14,14 @@ class DataIO {
     private Hashtable accountHashTable = new Hashtable(500);
     private PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
     private ObjectOutputStream bankDataWriter = getOS(getFS(System.getProperty("user.dir") + "\\bankInformation.txt"));
+    private ObjectInputStream bankDataReader = getIS(getFIS(System.getProperty("user.dir") + "\\bankInformation.txt"));
+    private RealBank realBank;
 
-    public DataIO(RealBank bank) {
-        this.customerHashTable = bank.getCustomerTable();
-        this.accountHashTable = bank.getAccountHashTable();
+    public DataIO(RealBank newRealBank) {
+        this.realBank = newRealBank;
+        this.customerHashTable = newRealBank.getCustomerTable();
+        this.accountHashTable = newRealBank.getAccountHashTable();
+
     }
 
     void printAllCustomerPrivateInformation(Integer customerHashKey, Hashtable customerAccounts) {
@@ -187,24 +188,42 @@ class DataIO {
 
         Enumeration<Integer> enumKeys = customerHashTable.keys();
         try {
-            while (enumKeys.hasMoreElements()) {
-                Integer key = enumKeys.nextElement();
-                this.bankDataWriter.writeObject(customerHashTable.get(key));
 
-                Enumeration<Integer> acctKeys = accountHashTable.keys();
-                writer.println(getAccountHeaders());
-
-                while (acctKeys.hasMoreElements()) {
-                    writer.println(accountHashTable.get(acctKeys.nextElement()).toString());
-                }
-
-            }
+            this.bankDataWriter.writeObject(this.realBank);
+            bankDataWriter.close();
 /*NOT FINISHED
         * ToDo: learn how to write and read objects from file without losing data*/
         } catch (java.io.IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
+
+    }
+
+    public void readAllBankDataFromFile(String fileName){
+
+        if (!(fileName.equalsIgnoreCase("DEFAULT")))
+            this.bankDataReader = getIS(getFIS(fileName));
+
+        Enumeration<Integer> enumKeys = customerHashTable.keys();
+        try {
+
+            this.realBank = (RealBank)this.bankDataReader.readObject();
+            this.bankDataReader.close();
+/*NOT FINISHED
+        * ToDo: learn how to write and read objects from file without losing data*/
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        } catch (ClassNotFoundException k){
+            k.printStackTrace();
+            System.exit(1);
+        }
+
+    }
+
+    public RealBank getRealBank(){
+        return this.realBank;
     }
 
     private PrintWriter getPW(String fileName) {
@@ -232,12 +251,37 @@ class DataIO {
         }
     }
 
+    ObjectInputStream getIS(FileInputStream inputStream) {
+        ObjectInputStream is;
+        try {
+            is = new ObjectInputStream(inputStream);
+
+            return is;
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
+    }
+
     FileOutputStream getFS(String fileName) {
         FileOutputStream fs;
         try {
             fs = new FileOutputStream(fileName);
 
             return fs;
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
+    }
+    FileInputStream getFIS(String fileName) {
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(fileName);
+
+            return fis;
         } catch (java.io.IOException e) {
             e.printStackTrace();
             System.exit(1);

@@ -5,9 +5,7 @@ import acct.Account;
 import java.util.Hashtable;
 import java.util.UUID;
 
-/**
- * Created by robert on 3/16/2015.
- */
+
 public class BankProxy implements Bank {
 
     private final RealBank realBank;

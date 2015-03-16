@@ -77,9 +77,6 @@ class CustomerInterface {
 
         START();
 
-
-
-
     }
 
     public UUID getCustomerUUID() {

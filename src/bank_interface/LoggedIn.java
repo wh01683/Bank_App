@@ -227,86 +227,113 @@ class LoggedIn implements CustomerInterfaceState {
         /*TRANSFER SELECTION*/
             else if (transactionChoice.equalsIgnoreCase("TRANSFER")) {
                 System.out.println("You have chosen " + transactionChoice + ". To which account would you like to " + transactionChoice + "?");
+
+
                 Integer tempTransferToAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
                 boolean deposit = true;
                 boolean withdrew = true;
 
-                if ((tempTransferToAccountNumber == -1)) {
+
+                if ((tempTransferToAccountNumber == -1)) { /*return request back to transaction selection*/
                     System.out.println("Returning.");
                     processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
-                }
-                if (!(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null)) {
+                } else if (bankProxy.hasAccount(tempTransferToAccountNumber)) { /*checks to make sure account exists*/
                     System.out.println("From which account would you like to " + transactionChoice + "?");
                     Integer tempTransferFromAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
 
-                    if ((tempTransferFromAccountNumber == -1)) {
+
+                    if ((tempTransferFromAccountNumber == -1)) { /*if TO account exists, user is prompted for their FROM account #. checks for return request*/
                         System.out.println("Returning.");
                         processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
-                    } else if ((bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber) == null)) {
+
+
+                    } else if ((!bankProxy.hasAccount(tempTransferFromAccountNumber))) { /*if FROM account does not exist, go back*/
                         System.out.printf("Could not find desired account number %d... please try again.", tempTransferFromAccountNumber);
                         processTransaction(transactionChoice);
-                        } else if (tempTransferFromAccountNumber.equals(tempTransferToAccountNumber)) {
+
+
+                    } else if (tempTransferFromAccountNumber == tempTransferToAccountNumber) { /*checks for the same account number*/
                         System.out.println("You may not transfer to the same account.");
                         startTransaction();
-                    } else {
-                        if (!(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null)) {
-                            uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 1, 200000000);
-                            double transferAmount = TRANSACTION_SCANNER.doubleGet();
-                            if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount) == -1) {
-                                System.out.printf("Insufficient funds, could not withdraw %.2f. You have %.2f funds available.\n",
-                                        transferAmount, bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance());
-                                withdrew = false;
-                            } else {
-                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount);
-                            }
-                            if ((bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance() + transferAmount) > Integer.MAX_VALUE) {
-                                System.out.println("Current balance too large. Could not process your transfer...\nHave you considered" +
-                                        "retiring?");
-                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).deposit(transferAmount); //add funds back to old account.
-                                deposit = false;
-                                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
-                            } else {
-                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).deposit(transferAmount);
-                            }
 
-                            if (withdrew && deposit) {
-                                System.out.printf("You successfully transferred %.2f from %s %d into account %s %d.\nYour " +
-                                                "current balances are %.2f and %.2f respectively.\n", transferAmount,
-                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getType(),
-                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getACCOUNT_NUMBER(),
-                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getType(),
-                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getACCOUNT_NUMBER(),
-                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance(),
-                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance());
-                                processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
-                            }
-                            processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
 
-                        } else if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber) == null) {
-                            System.out.println("Account not found. Please re-enter your account number.");
-                            processTransaction(transactionChoice);
+                    } else if (bankProxy.hasAccount(tempTransferFromAccountNumber)) { /*checks From account again*/
+
+                        uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 1, 200000000);
+                        double transferAmount = TRANSACTION_SCANNER.doubleGet();
+
+                        if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount) == -1) {
+                                /*if withdrawal will result in a negative 1 balance, will not let them withdraw*/
+                            System.out.printf("Insufficient funds, could not withdraw %.2f. You have %.2f funds available.\n",
+                                    transferAmount, bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance());
+                            bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable().get(tempTransferFromAccountNumber).deposit(transferAmount);
+                            withdrew = false; /*transfer will not continue if this is false*/
+
+
+                        } else { /*if they CAN withdraw, they make it here*/
+                            bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount);
+                        }/*if they have too much money, they cannot deposit and thus cannot withdraw.*/
+
+
+                        if ((bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance() + transferAmount) > Integer.MAX_VALUE) {
+                            System.out.println("Current balance too large. Could not process your transfer...\nHave you considered" +
+                                    "retiring?");
+                            deposit = false; /*since funds added back to FROM account and customer cannot deposit, both set to false*/
+                            withdrew = false;
+                            processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet()); /*sends them back to menu*/
+                        } else {/*if they CAN deposit, they get here*/
+                            bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).deposit(transferAmount);
+                            withdrew = true; /*if they make it here, they processed both a deposit into TO account and a withdraw*/
+                            deposit = true; /**/
                         }
+
+
+                        if (withdrew && deposit) {
+                            System.out.printf("You successfully transferred %.2f from %s %d into account %s %d.\nYour " +
+                                            "current balances are %.2f and %.2f respectively.\n", transferAmount,
+                                    bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getType(),
+                                    bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getACCOUNT_NUMBER(),
+                                    bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getType(),
+                                    bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getACCOUNT_NUMBER(),
+                                    bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance(),
+                                    bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance());
+                            processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
+                        }
+
+                    } else if (bankProxy.hasAccount(tempTransferFromAccountNumber)) {
+                        System.out.println("Account not found. Please re-enter your account number.");
+                        processTransaction(transactionChoice);
                     }
 
-                } else if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null) {
+
+                } else if (!bankProxy.hasAccount(tempTransferToAccountNumber)) {
                     System.out.println("Account not found. Please re-enter your account number.");
                     processTransaction(transactionChoice);
                 }
+
+
             } else if (transactionChoice.equalsIgnoreCase("ACCOUNTS")) {
                 printInformation("ACCOUNTS");
+
+
             } else if (transactionChoice.equalsIgnoreCase("RETURN")) {
                 System.out.println("Returning to previous menu.");
                 initiateLoginProcesses();
+
+
             } else {
                 System.out.println("Request could not be processed. Please try again.");
                 processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
+                initiateLoginProcesses();
             }
 
         }
 
-        initiateLoginProcesses();
+        processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
 
     }
+
+
 
 
     String getAccountHeaders() {
