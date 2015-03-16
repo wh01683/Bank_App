@@ -4,7 +4,7 @@ import bank_package.Customer;
 import utility.RandomGenerator;
 
 import java.io.Serializable;
-
+import java.util.UUID;
 
 
 class CheckingAccount implements Account, Serializable {
@@ -94,6 +94,12 @@ class CheckingAccount implements Account, Serializable {
             System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Savings Account at this time.");
             return null;
         }
+
+    }
+
+    @Override
+    public UUID getOwner() {
+        return this.OWNER.getUUID();
 
     }
 

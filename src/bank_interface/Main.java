@@ -9,7 +9,7 @@ package bank_interface;
  * information like ChexSystems report (the banking equivalent of a credit check), available balance
  * to open with, check basic customer information like age, etc*/
 
-import bank_package.Bank;
+import bank_package.RealBank;
 
 class Main {
 
@@ -19,7 +19,7 @@ class Main {
         int num = Integer.parseInt(args[0]);
         test.work(num);*/
 
-        Bank newBank = new Bank("hello", 500, 50);
+        RealBank newBank = new RealBank("hello", 500, 50);
         newBank.addRandomCustomers(50);
         CustomerInterface test = CustomerInterface.getInstance(newBank);
         test.START();

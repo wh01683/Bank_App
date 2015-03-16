@@ -1,7 +1,7 @@
 package bank_interface;
 
 
-import bank_package.Bank;
+import bank_package.RealBank;
 import utility.uScanner;
 
 class LoggedOff implements CustomerInterfaceState {
@@ -9,7 +9,7 @@ class LoggedOff implements CustomerInterfaceState {
     private static final uScanner logInOrRegister = new uScanner("Hello. do you have an account?\nYES, NO", 2, 3);
     private final CustomerInterface customerInterface;
 
-    public LoggedOff(CustomerInterface newCustomerInterface, Bank newBank) {
+    public LoggedOff(CustomerInterface newCustomerInterface, RealBank newBank) {
         this.customerInterface = newCustomerInterface;
     }
 

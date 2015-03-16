@@ -2,8 +2,8 @@ package bank_interface;
 
 import acct.Account;
 import acct.AccountFactory;
-import bank_package.Bank;
 import bank_package.Customer;
+import bank_package.RealBank;
 import utility.RandomGenerator;
 
 import java.util.Enumeration;
@@ -33,7 +33,7 @@ class RandomCustomerInterface {
     private static RandomCustomerInterface SINGLETON_INSTANCE;
 
     private static Integer exitFailsafe = 0;
-    private static Bank bank;
+    private static RealBank bank;
     private static DataIO dataIO;
     private final RandomGenerator r = new RandomGenerator();
         /*private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
@@ -59,7 +59,7 @@ class RandomCustomerInterface {
     * and the customer's unique ID also passed through param.*/
 
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
-    private RandomCustomerInterface(Bank newBank) {
+    private RandomCustomerInterface(RealBank newBank) {
         exitFailsafe++;
         System.out.println("Exit Fail Safe = " + exitFailsafe);
 
@@ -119,7 +119,7 @@ class RandomCustomerInterface {
         *
         * @param Bank thisBank: needed for construction of the new instance
         * @return new CustomerInterface: returns new instance of CustomerInterface if their is no current instance in existence*/
-        private static RandomCustomerInterface getInstance(Bank thisBank) {
+        private static RandomCustomerInterface getInstance(RealBank thisBank) {
             if (!(SINGLETON_INSTANCE == null)) {
                 CUSTOMER = null;
                 dataIO = new DataIO(thisBank);
@@ -150,7 +150,7 @@ class RandomCustomerInterface {
                 else if (processRequest.equalsIgnoreCase("EXIT")) {
                     isLoggedIn = false;
                     System.out.println("Swiggity Swooty, I'm Coming For That Booty!");
-                    Bank newBank = new Bank("whatever", 50, 50);
+                    RealBank newBank = new RealBank("whatever", 50, 50);
                     newBank.addRandomCustomers(50);
                     newBank.updateAccountTable();
                     RandomCustomerInterface newOne = RandomCustomerInterface.getInstance(newBank);
@@ -314,7 +314,7 @@ class RandomCustomerInterface {
             System.out.println("Your Credit Score is currently " + CUSTOMER.getCreditScore() + ".");
             printInformation(r.informationGen());
         } else if (request.equalsIgnoreCase("ACCOUNTS")) {
-            if (!(CUSTOMER.getAccountHashtable().equals(null)))
+            if (!(CUSTOMER.getAccountHashtable() == null))
                 dataIO.printAccountInformation(CUSTOMER.getAccountHashtable());
             else
                 printInformation(r.informationGen());

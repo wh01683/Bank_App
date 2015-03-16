@@ -5,6 +5,7 @@ import utility.RandomGenerator;
 import utility.uScanner;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 
 class CertificateOfDepositAccount implements Account, Serializable{
@@ -111,6 +112,12 @@ class CertificateOfDepositAccount implements Account, Serializable{
             System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Fixed-Term Certificate of Deposit Account at this time.");
             return null;
         }
+
+    }
+
+    @Override
+    public UUID getOwner() {
+        return this.OWNER.getUUID();
 
     }
 

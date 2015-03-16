@@ -2,6 +2,8 @@ package acct;
 
 import bank_package.Customer;
 
+import java.util.UUID;
+
 /**
 
  * Created by robert on 3/10/2015.
@@ -25,4 +27,6 @@ public interface Account {
     public boolean checkWithdrawLimits(double withdrawal);
 
     public Account applyForNewAccount(Customer customer, double openingBalance);
+
+    public UUID getOwner();
 }

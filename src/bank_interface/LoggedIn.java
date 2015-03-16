@@ -2,7 +2,8 @@ package bank_interface;
 
 import acct.Account;
 import acct.AccountFactory;
-import bank_package.Bank;
+import bank_package.BankProxy;
+import bank_package.RealBank;
 import utility.uScanner;
 
 import java.util.Hashtable;
@@ -12,7 +13,8 @@ import java.util.Hashtable;
  */
 class LoggedIn implements CustomerInterfaceState {
 
-    private static Bank bank;
+    private static RealBank realBank;
+    private static BankProxy bankProxy;
     private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?\nCHECKING, SAVINGS, MMA, IRA, CD, RETURN", -1, 10);
     private final uScanner INFORMATION_REQUEST_SCANNER = new uScanner("What would you like to know more about?\nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
     private final uScanner TRANSACTION_REQUEST_SCANNER = new uScanner("What transaction would you like to process?\nDEPOSIT, WITHDRAW, TRANSFER, ACCOUNTS, RETURN", 2, 9);
@@ -22,10 +24,12 @@ class LoggedIn implements CustomerInterfaceState {
     private final DataIO dataIO;
     private final AccountFactory accountFactory = new AccountFactory();
 
-    public LoggedIn(CustomerInterface newCustomerInterface, Bank newBank) {
-        bank = newBank;
+
+    public LoggedIn(CustomerInterface newCustomerInterface, RealBank newRealBank) {
+        realBank = newRealBank;
+        bankProxy = new BankProxy(newRealBank);
         this.customerInterface = newCustomerInterface;
-        dataIO = new DataIO(newBank);
+        dataIO = new DataIO(newRealBank);
     }
 
 
@@ -68,14 +72,14 @@ class LoggedIn implements CustomerInterfaceState {
             customerInterface.requestInformation();
         } else {
 
-            Account tempAccount = accountFactory.getAccount(accountRequest, bank.requestCustomer(customerInterface.getCustomerUUID()));
-            if (tempAccount.equals(null)) {
+            Account tempAccount = accountFactory.getAccount(accountRequest, bankProxy.requestCustomer(customerInterface.getCustomerUUID()));
+            if (tempAccount == null) {
                 System.out.println("Account type invalid. Please try again.");
                 addAccount();
             } else if (!(tempAccount == null)) {
-                bank.addAccount(tempAccount);
-                bank.requestCustomer(customerInterface.getCustomerUUID()).addAccount(tempAccount);
-                System.out.println("Congratulations, " + bank.requestCustomer(customerInterface.getCustomerUUID()).getName() +
+                bankProxy.addAccount(tempAccount);
+                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).addAccount(tempAccount);
+                System.out.println("Congratulations, " + bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getName() +
                         "!" + "You successfully added a " + tempAccount.getType() + " account under your name.\n" +
                         "Here is the information...\n");
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -96,7 +100,8 @@ class LoggedIn implements CustomerInterfaceState {
     }
 
     private void initiateLoginProcesses() {
-        final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + customerInterface.getBANK().requestCustomer(customerInterface.getCustomerUUID()).getName() + "?\nINFORMATION, TRANSACTION, MKACCT, RMACCT, RMYOURSELF EXIT", 3, 12);
+        final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + customerInterface.getBANK().requestCustomer(customerInterface.getCustomerUUID()).getName() +
+                "?\nINFORMATION, TRANSACTION, MKACCT, RMACCT, EXIT", 3, 12);
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             /*essentially an infinite loop only ending when the customer exits, runs in to an exit-worthy error, or
@@ -112,27 +117,15 @@ class LoggedIn implements CustomerInterfaceState {
             this.addAccount();
             initiateLoginProcesses();
         } else if (processRequest.equalsIgnoreCase("RMACCT")) {
+            System.out.println("Which account would you like to remove?");
             Integer rmAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
-            if (bank.removeAccount(rmAccountNumber)) {
-                System.out.printf("Account %10d was successfully removed.", rmAccountNumber);
+            if (bankProxy.removeAccount(rmAccountNumber)) {
+
+                System.out.printf("Account %10d was successfully removed.\n", rmAccountNumber);
                 initiateLoginProcesses();
             } else {
-                System.out.println("Account not found, try again.");
-                bank.removeAccount(ACCOUNT_NUMBER_SCANNER.intGet());
-
-            }
-        } else if (processRequest.equalsIgnoreCase("RMYOURSELF")) {
-            if (bank.removeCustomer(bank.requestCustomer(customerInterface.getCustomerUUID()))) {
-                System.out.printf("%s has been successfully removed from our database along with all of your accounts.\n" +
-                        "If this was an error, please type UNDO now.", bank.requestCustomer(customerInterface.getCustomerUUID()).getName());
-                uScanner UNDO_SCANNER = new uScanner("Stay with us? UNDO", 4, 4);
-                if (UNDO_SCANNER.stringGet().equalsIgnoreCase("UNDO")) {
-                    bank.addCustomer(bank.requestCustomer(customerInterface.getCustomerUUID()));
-                } else {
-                    System.out.println("We will miss you, Goodbye.");
-                    customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
-                    customerInterface.requestInformation();
-                }
+                System.out.println("Account not found, try again.\n");
+                bankProxy.removeAccount(ACCOUNT_NUMBER_SCANNER.intGet());
             }
         } else if (processRequest.equalsIgnoreCase("EXIT")) {
             System.out.println("Swiggity Swooty, I'm Coming For That Booty!"); /*a unit exit message, telling me
@@ -149,16 +142,16 @@ class LoggedIn implements CustomerInterfaceState {
     void printInformation(String request) {
 
         if (request.equalsIgnoreCase("CHEX")) {
-            System.out.println("Your ChexSystems score is currently " + bank.requestCustomer(customerInterface.getCustomerUUID()).getChexSystemsScore() + ".");
+            System.out.println("Your ChexSystems score is currently " + bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getChexSystemsScore() + ".");
             printInformation(REQUEST_SCANNER.stringGet());
         } else if (request.equalsIgnoreCase("CREDIT")) {
-            System.out.println("Your Credit Score is currently " + bank.requestCustomer(customerInterface.getCustomerUUID()).getCreditScore() + ".");
+            System.out.println("Your Credit Score is currently " + bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getCreditScore() + ".");
             printInformation(REQUEST_SCANNER.stringGet());
         } else if (request.equalsIgnoreCase("ACCOUNTS")) {
-            dataIO.printAccountInformation(bank.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
+            dataIO.printAccountInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
             printInformation(REQUEST_SCANNER.stringGet());
         } else if (request.equalsIgnoreCase("ALL")) {
-            dataIO.printAllCustomerPrivateInformation(bank.requestCustomer(customerInterface.getCustomerUUID()).getUUID().hashCode(), bank.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
+            dataIO.printAllCustomerPrivateInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getUUID().hashCode(), bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
             printInformation(REQUEST_SCANNER.stringGet());
         } else if (request.equalsIgnoreCase("RETURN")) {
             System.out.println("Returning to previous menu.");
@@ -171,7 +164,7 @@ class LoggedIn implements CustomerInterfaceState {
 
     private void processTransaction(String transactionChoice) {
 
-        Hashtable customerAccountHashtable = bank.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable();
+        Hashtable customerAccountHashtable = bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable();
 
         if (!customerAccountHashtable.isEmpty()) {
         /*DEPOSIT SECTION*/
@@ -182,21 +175,21 @@ class LoggedIn implements CustomerInterfaceState {
                     System.out.println("Returning.\n\n\n");
                     processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                 }
-                if (!(bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null)) {
+                if (!(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null)) {
                     uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 1, 200000000);
                     double tempDepositAmount = TRANSACTION_SCANNER.doubleGet();
-                    if (bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance() + tempDepositAmount > Integer.MAX_VALUE) {
+                    if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance() + tempDepositAmount > Integer.MAX_VALUE) {
                         System.out.println("Current balance too large. Could not process your deposit...\nHave you considered" +
                                 "retiring?");
                         processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                     }
-                    bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).deposit(tempDepositAmount);
+                    bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).deposit(tempDepositAmount);
                     System.out.printf("Successfully deposited %.2f into %s account number %10d\nYour current balance is: %10.2f",
-                            tempDepositAmount, bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getType(),
-                            bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getACCOUNT_NUMBER(),
-                            bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance());
+                            tempDepositAmount, bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getType(),
+                            bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getACCOUNT_NUMBER(),
+                            bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance());
                     processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
-                } else if (bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null) {
+                } else if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null) {
                     System.out.println("Account not found. Please re-enter your account number.");
                     processTransaction(transactionChoice);
                 }
@@ -212,22 +205,22 @@ class LoggedIn implements CustomerInterfaceState {
                     System.out.println("Returning.");
                     processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                 }
-                if (!(bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null)) {
+                if (!(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null)) {
                     uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice + "?", 1, 200000000);
                     double tempWithdrawAmount = TRANSACTION_SCANNER.doubleGet();
-                    if ((bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).withdraw(tempWithdrawAmount)) == -1) {
+                    if ((bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).withdraw(tempWithdrawAmount)) == -1) {
                         System.out.printf("Insufficient funds, could not withdraw %.2f. You have %.2f funds available.",
-                                tempWithdrawAmount, bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance());
+                                tempWithdrawAmount, bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance());
                         processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                     } else {
                         System.out.printf("You have successfully withdrawn %.2f from %s %10d.\nYour current balance is %.2f.",
-                                tempWithdrawAmount, bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getType(),
-                                bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getACCOUNT_NUMBER(),
-                                bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance());
+                                tempWithdrawAmount, bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getType(),
+                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getACCOUNT_NUMBER(),
+                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber).getBalance());
                         processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                     }
 
-                } else if (bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null) {
+                } else if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempWithdrawAccountNumber) == null) {
                     System.out.printf("Account %10d not found. Please re-enter your account number.", tempWithdrawAccountNumber);
                     processTransaction(transactionChoice);
                 }
@@ -246,58 +239,58 @@ class LoggedIn implements CustomerInterfaceState {
                     System.out.println("Returning.");
                     processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                 }
-                if (!(bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null)) {
+                if (!(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null)) {
                     System.out.println("From which account would you like to " + transactionChoice + "?");
                     Integer tempTransferFromAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
 
                     if ((tempTransferFromAccountNumber == -1)) {
                         System.out.println("Returning.");
                         processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
-                    } else if (!bank.getAccountHashTable().containsKey(tempTransferFromAccountNumber)) {
+                    } else if (!(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber) == null)) {
                         System.out.printf("Could not find desired account number %10d... please try again.", tempTransferFromAccountNumber);
                         } else if (tempTransferFromAccountNumber.equals(tempTransferToAccountNumber)) {
                         System.out.println("You may not transfer to the same account.");
                         startTransaction();
                     } else {
-                        if (bank.getAccountHashTable().containsKey(tempTransferFromAccountNumber)) {
+                        if (!(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null)) {
                             uScanner TRANSACTION_SCANNER = new uScanner("How much would you like to " + transactionChoice, 1, 200000000);
                             double transferAmount = TRANSACTION_SCANNER.doubleGet();
-                            if (bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount) == -1) {
+                            if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount) == -1) {
                                 System.out.printf("Insufficient funds, could not withdraw %.2f. You have %.2f funds available.\n",
-                                        transferAmount, bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance());
+                                        transferAmount, bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance());
                                 withdrew = false;
                             } else {
-                                bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount);
+                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).withdraw(transferAmount);
                             }
-                            if (bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance() + transferAmount > Integer.MAX_VALUE) {
+                            if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance() + transferAmount > Integer.MAX_VALUE) {
                                 System.out.println("Current balance too large. Could not process your transfer...\nHave you considered" +
                                         "retiring?");
-                                bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).deposit(transferAmount); //add funds back to old account.
+                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).deposit(transferAmount); //add funds back to old account.
                                 deposit = false;
                                 processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                             } else {
-                                bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).deposit(transferAmount);
+                                bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).deposit(transferAmount);
                             }
 
                             if (withdrew && deposit) {
                                 System.out.printf("You successfully transferred %.2f from %s %10d into account %s %10d.\nYour " +
                                                 "current balances are %.2f and %.2f respectively.\n", transferAmount,
-                                        bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getType(),
-                                        bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getACCOUNT_NUMBER(),
-                                        bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getType(),
-                                        bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getACCOUNT_NUMBER(),
-                                        bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance(),
-                                        bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance());
+                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getType(),
+                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getACCOUNT_NUMBER(),
+                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getType(),
+                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getACCOUNT_NUMBER(),
+                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber).getBalance(),
+                                        bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber).getBalance());
                                 processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
                             }
                             processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
-                        } else if (bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber) == null) {
+                        } else if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferFromAccountNumber) == null) {
                             System.out.println("Account not found. Please re-enter your account number.");
                             processTransaction(transactionChoice);
                         }
                     }
 
-                } else if (bank.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null) {
+                } else if (bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccount(tempTransferToAccountNumber) == null) {
                     System.out.println("Account not found. Please re-enter your account number.");
                     processTransaction(transactionChoice);
                 }

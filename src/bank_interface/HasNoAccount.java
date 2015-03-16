@@ -1,13 +1,13 @@
 package bank_interface;
 
-import bank_package.Bank;
 import bank_package.CreditReport;
 import bank_package.Customer;
+import bank_package.RealBank;
 import utility.uScanner;
 
 class HasNoAccount implements CustomerInterfaceState {
 
-    private static Bank bank;
+    private static RealBank bank;
     private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
     private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
     private final uScanner NUM_LATE_PAYMENTS_SCANNER = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -17,7 +17,7 @@ class HasNoAccount implements CustomerInterfaceState {
     private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1, 2000000000);
     private final CustomerInterface customerInterface;
 
-    public HasNoAccount(CustomerInterface customerInterface, Bank bank) {
+    public HasNoAccount(CustomerInterface customerInterface, RealBank bank) {
         this.customerInterface = customerInterface;
         HasNoAccount.bank = bank;
     }

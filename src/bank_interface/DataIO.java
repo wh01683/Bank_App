@@ -1,20 +1,24 @@
 package bank_interface;
 
 
-import bank_package.Bank;
+import bank_package.RealBank;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 /*DATA Input/Output class for storing all the write -to-file methods and headers, etc.*/
 class DataIO {
+    String hiding = "ishallpass";
     private Hashtable customerHashTable = new Hashtable(50);
     private Hashtable accountHashTable = new Hashtable(500);
     private PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
     private ObjectOutputStream bankDataWriter = getOS(getFS(System.getProperty("user.dir") + "\\bankInformation.txt"));
 
-    public DataIO(Bank bank) {
+    public DataIO(RealBank bank) {
         this.customerHashTable = bank.getCustomerTable();
         this.accountHashTable = bank.getAccountHashTable();
     }
@@ -63,7 +67,6 @@ class DataIO {
         System.out.println("Finished printing accounts.");
     }
 
-
     public void writeCustomerAndAccountInformationToFile(String fileName) {
 
         if (!fileName.equalsIgnoreCase("DEFAULT")) {
@@ -93,7 +96,6 @@ class DataIO {
         writer.close();
         System.out.println("Finished writing to file.");
     }
-
 
     public void printAllCustomerInformation() {
 
@@ -216,6 +218,7 @@ class DataIO {
             return null;
         }
     }
+
     ObjectOutputStream getOS(FileOutputStream out) {
         ObjectOutputStream os;
         try {
@@ -242,17 +245,13 @@ class DataIO {
         }
     }
 
-
     String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-7s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
 
-
     String getCustomerHeaders() {
         return String.format("||%-36s||%-20s||%-20s||%-3s||%-4s||%-4s||", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
     }
-
-    String hiding = "ishallpass";
 
 }

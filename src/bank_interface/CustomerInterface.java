@@ -1,6 +1,7 @@
 package bank_interface;
 
-import bank_package.Bank;
+import bank_package.BankProxy;
+import bank_package.RealBank;
 
 import java.util.UUID;
 
@@ -16,7 +17,8 @@ import java.util.UUID;
 *
 */
 class CustomerInterface {
-    private static Bank BANK;
+    private static RealBank realBank;
+    private static BankProxy bankProxy;
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID CustomerUUID;
 
@@ -34,23 +36,24 @@ class CustomerInterface {
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
     private CustomerInterfaceState currentCustomerInterfaceState;
 
-    private CustomerInterface(Bank newBank) {
-        BANK = newBank;
+    private CustomerInterface(RealBank newRealBank) {
+        realBank = newRealBank;
+        bankProxy = new BankProxy(newRealBank);
         //uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
 
-        loggedOff = new LoggedOff(this, newBank);
-        hasAccount = new HasAccount(this, newBank);
-        hasNoAccount = new HasNoAccount(this, newBank);
-        hasCorrectUUID = new HasCorrectUUID(this, newBank);
-        hasIncorrectUUID = new HasIncorrectUUID(this, newBank);
-        loggedIn = new LoggedIn(this, newBank);
+        loggedOff = new LoggedOff(this, newRealBank);
+        hasAccount = new HasAccount(this, newRealBank);
+        hasNoAccount = new HasNoAccount(this, newRealBank);
+        hasCorrectUUID = new HasCorrectUUID(this, newRealBank);
+        hasIncorrectUUID = new HasIncorrectUUID(this, newRealBank);
+        loggedIn = new LoggedIn(this, newRealBank);
 
         currentCustomerInterfaceState = loggedOff;
 
 
     }
 
-    public static CustomerInterface getInstance(Bank thisBank) {
+    public static CustomerInterface getInstance(RealBank thisBank) {
         if (!(SINGLETON_INSTANCE == null)) {
             return SINGLETON_INSTANCE;
         } else
@@ -113,8 +116,8 @@ class CustomerInterface {
         currentCustomerInterfaceState.addAccount();
     }
 
-    public Bank getBANK() {
-        return BANK;
+    public RealBank getBANK() {
+        return realBank;
     }
 
 

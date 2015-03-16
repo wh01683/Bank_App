@@ -4,6 +4,7 @@ import bank_package.Customer;
 import utility.RandomGenerator;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 
 class SavingsAccount implements Account, Serializable {
@@ -87,6 +88,11 @@ class SavingsAccount implements Account, Serializable {
             return null;
         }
 
+    }
+
+    @Override
+    public UUID getOwner() {
+        return this.OWNER.getUUID();
     }
 
     private boolean decideApproved(Customer customer,double openingBalance) {

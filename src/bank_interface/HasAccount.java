@@ -1,6 +1,6 @@
 package bank_interface;
 
-import bank_package.Bank;
+import bank_package.RealBank;
 import utility.uScanner;
 
 import java.util.UUID;
@@ -10,10 +10,10 @@ import java.util.UUID;
  */
 class HasAccount implements CustomerInterfaceState {
 
-    private static Bank bank;
+    private static RealBank bank;
     private final CustomerInterface customerInterface;
 
-    public HasAccount(CustomerInterface newCustomerInterface, Bank newBank) {
+    public HasAccount(CustomerInterface newCustomerInterface, RealBank newBank) {
 
         this.customerInterface = newCustomerInterface;
         bank = newBank;
@@ -25,7 +25,7 @@ class HasAccount implements CustomerInterfaceState {
         uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
         UUID newCustomerUUID;
         newCustomerUUID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
-        if (bank.requestCustomer(newCustomerUUID).equals(null)) {
+        if (bank.requestCustomer(newCustomerUUID) == null) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
             * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
             * They are given 5 attempts total before the system exits.*/
@@ -33,7 +33,7 @@ class HasAccount implements CustomerInterfaceState {
             boolean wantsToRegister = wantsToRegister();
             int uuidCounter = 1;
 
-            while (bank.requestCustomer(newCustomerUUID).equals(null) && uuidCounter < 7) {
+            while (bank.requestCustomer(newCustomerUUID) == null && uuidCounter < 7) {
                 if (uuidCounter == 6) {
                     System.out.println("All attempts exhausted. System exiting.");
                     System.exit(1);

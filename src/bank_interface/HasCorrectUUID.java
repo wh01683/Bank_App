@@ -1,6 +1,6 @@
 package bank_interface;
 
-import bank_package.Bank;
+import bank_package.RealBank;
 import utility.uScanner;
 
 /**
@@ -8,10 +8,10 @@ import utility.uScanner;
  */
 class HasCorrectUUID implements CustomerInterfaceState {
 
-    private static Bank bank;
+    private static RealBank bank;
     private final CustomerInterface customerInterface;
 
-    public HasCorrectUUID(CustomerInterface newCustomerInterface, Bank newBank) {
+    public HasCorrectUUID(CustomerInterface newCustomerInterface, RealBank newBank) {
         bank = newBank;
         this.customerInterface = newCustomerInterface;
 

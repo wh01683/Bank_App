@@ -4,6 +4,7 @@ import bank_package.Customer;
 import utility.RandomGenerator;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 
 class IndividualRetirementAccount implements Account, Serializable {
@@ -94,6 +95,12 @@ class IndividualRetirementAccount implements Account, Serializable {
             System.out.println("Sorry, " + customer.getName() + ". You do not qualify for an MM-IRA at this time.");
             return null;
         }
+
+    }
+
+    @Override
+    public UUID getOwner() {
+        return this.OWNER.getUUID();
 
     }
 
