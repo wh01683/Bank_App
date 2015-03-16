@@ -117,8 +117,7 @@ public class RealBank implements Serializable, Bank {
 
         if(this.accountHashtable.containsKey(accountNumber)){
             Account tempAccountToBeRemoved = this.accountHashtable.get(accountNumber);
-            this.customerHashtable.get(this.accountHashtable.get(accountNumber).getOwner().hashCode()).getAccountHashtable().remove(accountNumber, tempAccountToBeRemoved);
-            this.accountHashtable.remove(accountNumber, tempAccountToBeRemoved);
+            this.customerHashtable.get(this.accountHashtable.get(accountNumber).getOwner().hashCode()).getAccountHashtable().remove(accountNumber);
             this.accountHashtable.remove(accountNumber);
             this.NUMBER_OF_ACCOUNTS--;
             return true;
