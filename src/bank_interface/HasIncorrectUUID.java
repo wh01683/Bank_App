@@ -1,14 +1,14 @@
 package bank_interface;
 
 import bank_package.Bank;
-import bank_package.uScanner;
+import utility.uScanner;
 
 import java.util.UUID;
 
 /**
  * Created by robert on 3/15/2015.
  */
-public class HasIncorrectUUID implements CustomerInterfaceState {
+class HasIncorrectUUID implements CustomerInterfaceState {
 
     private static Bank bank;
     private final CustomerInterface customerInterface;

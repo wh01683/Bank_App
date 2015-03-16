@@ -1,4 +1,4 @@
-package bank_package;
+package utility;
 
 import java.util.Random;
 import java.util.Vector;

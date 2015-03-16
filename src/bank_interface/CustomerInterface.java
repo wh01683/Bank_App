@@ -15,7 +15,7 @@ import java.util.UUID;
 * withdraw money from their accounts and transfer money between accounts.
 *
 */
-public class CustomerInterface {
+class CustomerInterface {
     private static Bank BANK;
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID CustomerUUID;

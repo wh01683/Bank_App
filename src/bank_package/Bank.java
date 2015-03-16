@@ -2,6 +2,7 @@ package bank_package;
 
 import acct.Account;
 import acct.AccountFactory;
+import utility.RandomGenerator;
 
 import java.io.Serializable;
 import java.util.Enumeration;

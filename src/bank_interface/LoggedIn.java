@@ -3,14 +3,14 @@ package bank_interface;
 import acct.Account;
 import acct.AccountFactory;
 import bank_package.Bank;
-import bank_package.uScanner;
+import utility.uScanner;
 
 import java.util.Hashtable;
 
 /**
  * Created by robert on 3/15/2015.
  */
-public class LoggedIn implements CustomerInterfaceState {
+class LoggedIn implements CustomerInterfaceState {
 
     private static Bank bank;
     private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?\nCHECKING, SAVINGS, MMA, IRA, CD, RETURN", -1, 10);

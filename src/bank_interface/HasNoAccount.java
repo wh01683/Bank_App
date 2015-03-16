@@ -3,9 +3,9 @@ package bank_interface;
 import bank_package.Bank;
 import bank_package.CreditReport;
 import bank_package.Customer;
-import bank_package.uScanner;
+import utility.uScanner;
 
-public class HasNoAccount implements CustomerInterfaceState {
+class HasNoAccount implements CustomerInterfaceState {
 
     private static Bank bank;
     private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
@@ -92,6 +92,9 @@ public class HasNoAccount implements CustomerInterfaceState {
             customerInterface.getBANK().addCustomer(newCustomer);
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
             customerInterface.setCustomerUUID(newCustomer.getUUID());
+        } else {
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.hasAccount(false);
         }
     }
 

@@ -1,12 +1,12 @@
 package bank_interface;
 
 import bank_package.Bank;
-import bank_package.uScanner;
+import utility.uScanner;
 
 /**
  * Created by robert on 3/15/2015.
  */
-public class HasCorrectUUID implements CustomerInterfaceState {
+class HasCorrectUUID implements CustomerInterfaceState {
 
     private static Bank bank;
     private final CustomerInterface customerInterface;

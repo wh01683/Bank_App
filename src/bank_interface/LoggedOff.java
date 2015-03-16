@@ -2,9 +2,9 @@ package bank_interface;
 
 
 import bank_package.Bank;
-import bank_package.uScanner;
+import utility.uScanner;
 
-public class LoggedOff implements CustomerInterfaceState {
+class LoggedOff implements CustomerInterfaceState {
 
     private static final uScanner logInOrRegister = new uScanner("Hello. do you have an account?\nYES, NO", 2, 3);
     private final CustomerInterface customerInterface;

@@ -1,8 +1,8 @@
 package acct;
 
 import bank_package.Customer;
-import bank_package.RandomGenerator;
-import bank_package.uScanner;
+import utility.RandomGenerator;
+import utility.uScanner;
 
 import java.io.Serializable;
 

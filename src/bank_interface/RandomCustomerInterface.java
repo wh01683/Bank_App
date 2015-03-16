@@ -4,7 +4,7 @@ import acct.Account;
 import acct.AccountFactory;
 import bank_package.Bank;
 import bank_package.Customer;
-import bank_package.RandomGenerator;
+import utility.RandomGenerator;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -12,7 +12,7 @@ import java.util.Hashtable;
 /**
  * Created by robert on 3/14/15.
  */
-public class RandomCustomerInterface {
+class RandomCustomerInterface {
 
 
     /*This "CustomerInterface" class will be the class which primarily interacts with the customer. When the customer

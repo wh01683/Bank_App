@@ -1,6 +1,8 @@
 package bank_package;
 
 import acct.Account;
+import utility.RandomGenerator;
+import utility.uScanner;
 
 import java.io.Serializable;
 import java.util.Hashtable;
@@ -16,7 +18,7 @@ public class Customer implements Serializable {
     private final CreditReport CREDIT_REPORT;
     private final ChexSystems CHEX_SCORE = new ChexSystems();
     private final int age;
-    private Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
+    private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(400);
 
     public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport) {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
