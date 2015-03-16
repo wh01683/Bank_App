@@ -16,24 +16,23 @@ import java.util.UUID;
 *
 */
 public class CustomerInterface {
-    static boolean CustomerHasAccount = false;
     private static Bank BANK;
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID CustomerUUID;
 
-    CustomerInterfaceState loggedOff;
-    CustomerInterfaceState loggedIn;
-    CustomerInterfaceState hasAccount;
-    CustomerInterfaceState hasNoAccount;
-    CustomerInterfaceState hasCorrectUUID;
-    CustomerInterfaceState hasIncorrectUUID;
+    final CustomerInterfaceState loggedOff;
+    final CustomerInterfaceState loggedIn;
+    final CustomerInterfaceState hasAccount;
+    final CustomerInterfaceState hasNoAccount;
+    final CustomerInterfaceState hasCorrectUUID;
+    final CustomerInterfaceState hasIncorrectUUID;
 
 
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
 
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
-    CustomerInterfaceState currentCustomerInterfaceState;
+    private CustomerInterfaceState currentCustomerInterfaceState;
 
     private CustomerInterface(Bank newBank) {
         BANK = newBank;
@@ -100,10 +99,6 @@ public class CustomerInterface {
 
     public void hasAccount(boolean hasAccount) {
         currentCustomerInterfaceState.hasAccount(hasAccount);
-    }
-
-    public void logOff() {
-        currentCustomerInterfaceState.logOff();
     }
 
     public void requestInformation() {

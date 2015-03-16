@@ -15,7 +15,7 @@ public class HasNoAccount implements CustomerInterfaceState {
     private final uScanner CREDIT_BALANCE_SCANNER = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000);
     private final uScanner CREDIT_HISTORY_SCANNER = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
     private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1, 2000000000);
-    private CustomerInterface customerInterface;
+    private final CustomerInterface customerInterface;
 
     public HasNoAccount(CustomerInterface customerInterface, Bank bank) {
         this.customerInterface = customerInterface;
@@ -75,7 +75,7 @@ public class HasNoAccount implements CustomerInterfaceState {
     }
 
 
-    public void registerNewCustomer() {
+    void registerNewCustomer() {
 
         boolean wantsRegister = wantsToRegister();
          /*if the customer does NOT have an account and the customer WANTS to register, the new customer will be registered

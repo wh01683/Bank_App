@@ -3,6 +3,7 @@ package acct;
 import bank_package.Customer;
 import bank_package.RandomGenerator;
 import bank_package.uScanner;
+
 import java.io.Serializable;
 
 
@@ -21,7 +22,6 @@ class CertificateOfDepositAccount implements Account, Serializable{
         this.OWNER = customer;
         this.INTEREST_RATE = calculateInterestRate(termLength);
         this.accountBalance += openingBalance;
-        int TERM_LENGTH = termLength;
         this.ACCOUNT_NUMBER = random.acctGen();
 
     }

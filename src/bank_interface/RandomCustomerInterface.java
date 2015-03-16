@@ -8,7 +8,6 @@ import bank_package.RandomGenerator;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.UUID;
 
 /**
  * Created by robert on 3/14/15.
@@ -36,7 +35,7 @@ public class RandomCustomerInterface {
     private static Integer exitFailsafe = 0;
     private static Bank bank;
     private static DataIO dataIO;
-    private RandomGenerator r = new RandomGenerator();
+    private final RandomGenerator r = new RandomGenerator();
         /*private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
         private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
         private final uScanner NUM_LATE_PAYMENTS_SCANNER = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -81,8 +80,6 @@ public class RandomCustomerInterface {
         while (customerKeys.hasMoreElements()) {
 
             CUSTOMER = customerHashtable.get(customerKeys.nextElement());
-            UUID CUSTOMER_ID = CUSTOMER.getUUID();
-
 
          /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
          * their password ON RECORD is set to a final String "realPass"*/
@@ -122,7 +119,7 @@ public class RandomCustomerInterface {
         *
         * @param Bank thisBank: needed for construction of the new instance
         * @return new CustomerInterface: returns new instance of CustomerInterface if their is no current instance in existence*/
-        public static RandomCustomerInterface getInstance(Bank thisBank) {
+        private static RandomCustomerInterface getInstance(Bank thisBank) {
             if (!(SINGLETON_INSTANCE == null)) {
                 CUSTOMER = null;
                 dataIO = new DataIO(thisBank);

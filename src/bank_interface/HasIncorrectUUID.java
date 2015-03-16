@@ -11,7 +11,7 @@ import java.util.UUID;
 public class HasIncorrectUUID implements CustomerInterfaceState {
 
     private static Bank bank;
-    CustomerInterface customerInterface;
+    private final CustomerInterface customerInterface;
 
     public HasIncorrectUUID(CustomerInterface newCustomerInterface, Bank newBank) {
 

@@ -10,12 +10,12 @@ public class AccountFactory {
 
     private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", 0, 2000000000);
 
-    private RandomGenerator randomGenerator = new RandomGenerator();
-    private IndividualRetirementAccount tempIRA = new IndividualRetirementAccount(new Customer(), randomGenerator.getDubs(-50,500));
-    private CheckingAccount tempCheck = new CheckingAccount(new Customer(), randomGenerator.getDubs(-50,500));
-    private SavingsAccount tempSave = new SavingsAccount(new Customer(), randomGenerator.getDubs(-50,500));
-    private CertificateOfDepositAccount tempCD = new CertificateOfDepositAccount(new Customer(), randomGenerator.getDubs(-50,500), randomGenerator.getInts(0,55));
-    private MoneyMarketAccount tempMMA = new MoneyMarketAccount(new Customer(), randomGenerator.getDubs(-50,500));
+    private final RandomGenerator randomGenerator = new RandomGenerator();
+    private final IndividualRetirementAccount tempIRA = new IndividualRetirementAccount(new Customer(), randomGenerator.getDubs(-50, 500));
+    private final CheckingAccount tempCheck = new CheckingAccount(new Customer(), randomGenerator.getDubs(-50, 500));
+    private final SavingsAccount tempSave = new SavingsAccount(new Customer(), randomGenerator.getDubs(-50, 500));
+    private final CertificateOfDepositAccount tempCD = new CertificateOfDepositAccount(new Customer(), randomGenerator.getDubs(-50, 500), randomGenerator.getInts(0, 55));
+    private final MoneyMarketAccount tempMMA = new MoneyMarketAccount(new Customer(), randomGenerator.getDubs(-50, 500));
 
     /*Account factory for creating and applying to different types of accounts*/
 

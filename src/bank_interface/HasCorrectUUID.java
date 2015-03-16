@@ -9,7 +9,7 @@ import bank_package.uScanner;
 public class HasCorrectUUID implements CustomerInterfaceState {
 
     private static Bank bank;
-    CustomerInterface customerInterface;
+    private final CustomerInterface customerInterface;
 
     public HasCorrectUUID(CustomerInterface newCustomerInterface, Bank newBank) {
         bank = newBank;

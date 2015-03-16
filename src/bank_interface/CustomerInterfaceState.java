@@ -1,7 +1,7 @@
 package bank_interface;
 
 
-public interface CustomerInterfaceState {
+interface CustomerInterfaceState {
 
     public void enterUUID();
 

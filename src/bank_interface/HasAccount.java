@@ -11,7 +11,7 @@ import java.util.UUID;
 public class HasAccount implements CustomerInterfaceState {
 
     private static Bank bank;
-    CustomerInterface customerInterface;
+    private final CustomerInterface customerInterface;
 
     public HasAccount(CustomerInterface newCustomerInterface, Bank newBank) {
 

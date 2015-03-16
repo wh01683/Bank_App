@@ -6,7 +6,6 @@ import bank_package.Bank;
 import bank_package.uScanner;
 
 import java.util.Hashtable;
-import java.util.UUID;
 
 /**
  * Created by robert on 3/15/2015.
@@ -19,15 +18,14 @@ public class LoggedIn implements CustomerInterfaceState {
     private final uScanner TRANSACTION_REQUEST_SCANNER = new uScanner("What transaction would you like to process?\nDEPOSIT, WITHDRAW, TRANSFER, ACCOUNTS, RETURN", 2, 9);
     private final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", -1, 200000000);
     private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
-    CustomerInterface customerInterface;
-    DataIO dataIO;
-    AccountFactory accountFactory = new AccountFactory();
+    private final CustomerInterface customerInterface;
+    private final DataIO dataIO;
+    private final AccountFactory accountFactory = new AccountFactory();
 
     public LoggedIn(CustomerInterface newCustomerInterface, Bank newBank) {
         bank = newBank;
         this.customerInterface = newCustomerInterface;
         dataIO = new DataIO(newBank);
-        UUID customerUUID = this.customerInterface.getCustomerUUID();
     }
 
 

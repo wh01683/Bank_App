@@ -79,7 +79,6 @@ public class Bank implements Serializable {
     }
 
     public boolean removeCustomer(Customer customer){
-        boolean removed;
 
         if(this.accountHashtable.contains(customer)){
             this.accountHashtable.remove(customer.getUUID().hashCode());

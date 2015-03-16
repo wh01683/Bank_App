@@ -7,11 +7,10 @@ import bank_package.uScanner;
 public class LoggedOff implements CustomerInterfaceState {
 
     private static final uScanner logInOrRegister = new uScanner("Hello. do you have an account?\nYES, NO", 2, 3);
-    CustomerInterface customerInterface;
+    private final CustomerInterface customerInterface;
 
     public LoggedOff(CustomerInterface newCustomerInterface, Bank newBank) {
         this.customerInterface = newCustomerInterface;
-        Bank bank = newBank;
     }
 
     @Override

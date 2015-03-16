@@ -44,10 +44,6 @@ public class Customer implements Serializable {
         return this.accountHashtable;
     }
 
-    public void setAccountHashtable(Hashtable<Integer, Account> newAccountHashTable) {
-        this.accountHashtable = newAccountHashTable;
-    }
-
     public String getPASSWORD() {
         return this.PASSWORD;
     }
