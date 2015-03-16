@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * Created by robert on 3/16/2015.
  */
-public interface Bank {
+interface Bank {
 
     public void addAccount(Account newAccount);
 
@@ -21,5 +21,7 @@ public interface Bank {
     public boolean hasAccount(Integer accountNumber);
 
     public boolean hasCustomer(UUID customerUUID);
+
+    public boolean addCustomer(Customer customer);
 
 }

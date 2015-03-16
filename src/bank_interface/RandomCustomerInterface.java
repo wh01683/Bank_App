@@ -63,7 +63,7 @@ class RandomCustomerInterface {
         exitFailsafe++;
         System.out.println("Exit Fail Safe = " + exitFailsafe);
 
-        if (exitFailsafe == 1000) {
+        if (exitFailsafe == 300) {
             System.out.println("Failsafe = " + exitFailsafe + " logging out.");
             System.exit(0);
         }
@@ -119,7 +119,7 @@ class RandomCustomerInterface {
         *
         * @param Bank thisBank: needed for construction of the new instance
         * @return new CustomerInterface: returns new instance of CustomerInterface if their is no current instance in existence*/
-        private static RandomCustomerInterface getInstance(RealBank thisBank) {
+        public static RandomCustomerInterface getInstance(RealBank thisBank) {
             if (!(SINGLETON_INSTANCE == null)) {
                 CUSTOMER = null;
                 dataIO = new DataIO(thisBank);

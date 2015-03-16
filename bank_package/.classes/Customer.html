@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: Customer</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">bank_package</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: Customer (bank_package)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">Customer</td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    88.2%
+  </span>
+  <span class="absValue">
+    (15/ 17)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    82.2%
+  </span>
+  <span class="absValue">
+    (60/ 73)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package bank_package;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import java.util.Enumeration;
+        <i>4</i>&nbsp;import java.util.Hashtable;
+        <i>5</i>&nbsp;import java.util.Random;
+        <i>6</i>&nbsp;import java.util.UUID;
+        <i>7</i>&nbsp;
+        <i>8</i>&nbsp;
+        <i>9</i>&nbsp;class Customer {
+        <i>10</i>&nbsp;
+        <b class="fc"><i>11</i>&nbsp; private final String ALPHABET = &quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;;</b>
+        <b class="fc"><i>12</i>&nbsp; private final String HEX_ALPHABET = &quot;abcdefABCDEF0123456789&quot;;</b>
+        <b class="fc"><i>13</i>&nbsp; final int NUM_IN_HEX = HEX_ALPHABET.length();</b>
+        <b class="fc"><i>14</i>&nbsp; private final String ALPHA_NUMERIC = &quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;;</b>
+        <b class="fc"><i>15</i>&nbsp; private final int LENGTH_OF_ALPHA_NUMERIC = ALPHA_NUMERIC.length();</b>
+        <b class="fc"><i>16</i>&nbsp; private final int NUM_IN_ALPHABET = ALPHABET.length();</b>
+        <i>17</i>&nbsp; //ABOVE FIELDS ARE USED FOR CREATING RANDOM CUSTOMERS ONLY
+        <i>18</i>&nbsp;
+        <i>19</i>&nbsp; private final UUID CUSTOMER_ID;
+        <i>20</i>&nbsp; private final String NAME;
+        <i>21</i>&nbsp; private final String PASSWORD;
+        <b class="fc"><i>22</i>&nbsp; Random r = new Random();</b>
+        <i>23</i>&nbsp; private CreditReport _cred;
+        <i>24</i>&nbsp; private ChexSystems _score;
+        <b class="fc"><i>25</i>&nbsp; private Hashtable&lt;Integer, Account&gt; accountHashtable = new Hashtable&lt;Integer,
+            Account&gt;(400);</b>
+        <i>26</i>&nbsp; private int age;
+        <i>27</i>&nbsp; private int ChexSystemsScore; //intialize to 0 indicating no prior history
+        <i>28</i>&nbsp;
+        <b class="nc"><i>29</i>&nbsp; public Customer(String tempName, int tempAge, String password, CreditReport
+            newCreditReport, ChexSystems newScore) {</b>
+        <b class="nc"><i>30</i>&nbsp; this.CUSTOMER_ID = new UUID(16, 32).randomUUID();</b>
+        <i>31</i>&nbsp;
+        <b class="nc"><i>32</i>&nbsp; this.age = tempAge;</b>
+        <b class="nc"><i>33</i>&nbsp; this.NAME = tempName;</b>
+        <b class="nc"><i>34</i>&nbsp; this._cred = newCreditReport;</b>
+        <b class="nc"><i>35</i>&nbsp; this._score = newScore;</b>
+        <b class="nc"><i>36</i>&nbsp; this.PASSWORD = password;</b>
+        <b class="nc"><i>37</i>&nbsp; this.ChexSystemsScore = _score.getScore();</b>
+        <i>38</i>&nbsp;
+        <b class="nc"><i>39</i>&nbsp; }</b>
+        <i>40</i>&nbsp;
+        <b class="fc"><i>41</i>&nbsp; public Customer(boolean random) {</b>
+        <b class="fc"><i>42</i>&nbsp; this.CUSTOMER_ID = new UUID(16, 32).randomUUID();</b>
+        <b class="fc"><i>43</i>&nbsp; this.age = r.nextInt(100);</b>
+        <b class="fc"><i>44</i>&nbsp; this.NAME = nameGen(2, 50);</b>
+        <b class="fc"><i>45</i>&nbsp; this._cred = new CreditReport(this.age, true);</b>
+        <b class="fc"><i>46</i>&nbsp; this._score = new ChexSystems();</b>
+        <b class="fc"><i>47</i>&nbsp; this.PASSWORD = passwordGen(5, 15);</b>
+        <b class="fc"><i>48</i>&nbsp; this.ChexSystemsScore = _score.getScore();</b>
+        <b class="fc"><i>49</i>&nbsp; this.addCertificateOfDeposit(r.nextDouble() * 50000);</b>
+        <b class="fc"><i>50</i>&nbsp; this.addCheckingAccount(r.nextDouble() * 50000);</b>
+        <b class="fc"><i>51</i>&nbsp; this.addIndividualRetirementAccount(r.nextDouble() * 500000);</b>
+        <b class="fc"><i>52</i>&nbsp; this.addSavingsAccount(r.nextDouble() * 20000);</b>
+        <i>53</i>&nbsp;
+        <b class="fc"><i>54</i>&nbsp; }</b>
+        <i>55</i>&nbsp;
+        <i>56</i>&nbsp; public String getPASSWORD() {
+        <b class="nc"><i>57</i>&nbsp; return this.PASSWORD;</b>
+        <i>58</i>&nbsp; }
+        <i>59</i>&nbsp;
+        <i>60</i>&nbsp; public UUID getUUID() {
+        <b class="fc"><i>61</i>&nbsp; return this.CUSTOMER_ID;</b>
+        <i>62</i>&nbsp; }
+        <i>63</i>&nbsp;
+        <i>64</i>&nbsp; public int getAge() {
+        <b class="fc"><i>65</i>&nbsp; return this.age;</b>
+        <i>66</i>&nbsp; }
+        <i>67</i>&nbsp;
+        <i>68</i>&nbsp; public String getName() {
+        <b class="nc"><i>69</i>&nbsp; return this.NAME;</b>
+        <i>70</i>&nbsp; }
+        <i>71</i>&nbsp;
+        <i>72</i>&nbsp; public void addSavingsAccount(double openingBalance) {
+        <b class="fc"><i>73</i>&nbsp; SavingsAccountApplication temp = new SavingsAccountApplication(this,
+            openingBalance);</b>
+        <b class="fc"><i>74</i>&nbsp; if (temp.screeningResult()) {</b>
+        <b class="fc"><i>75</i>&nbsp; this.accountHashtable.put(acctGen(), new SavingsAccount(openingBalance,
+            this));</b>
+        <i>76</i>&nbsp; }
+        <b class="fc"><i>77</i>&nbsp; }</b>
+        <i>78</i>&nbsp;
+        <i>79</i>&nbsp; public void addCertificateOfDeposit(double openingBalance) {
+        <b class="fc"><i>80</i>&nbsp; CertificateOfDepositApplication temp = new CertificateOfDepositApplication(this,
+            openingBalance);</b>
+        <b class="fc"><i>81</i>&nbsp; if (temp.screeningResult()) {</b>
+        <b class="nc"><i>82</i>&nbsp; this.accountHashtable.put(acctGen(), new
+            CertificateOfDepositAccount(openingBalance, r.nextInt(500), this));</b>
+        <i>83</i>&nbsp; }
+        <b class="fc"><i>84</i>&nbsp; }</b>
+        <i>85</i>&nbsp;
+        <i>86</i>&nbsp; public void addCheckingAccount(double openingBalance) {
+        <b class="fc"><i>87</i>&nbsp; CheckingAccountApplication temp = new CheckingAccountApplication(this,
+            openingBalance);</b>
+        <b class="fc"><i>88</i>&nbsp; if (temp.screeningResult()) {</b>
+        <b class="fc"><i>89</i>&nbsp; this.accountHashtable.put(acctGen(), new CheckingAccount(openingBalance,
+            (r.nextInt(1000) * -1), this));</b>
+        <i>90</i>&nbsp; }
+        <b class="fc"><i>91</i>&nbsp; }</b>
+        <i>92</i>&nbsp;
+        <i>93</i>&nbsp; public void addIndividualRetirementAccount(double openingBalance) {
+        <b class="fc"><i>94</i>&nbsp; IndividualRetirementAccountApplication temp = new
+            IndividualRetirementAccountApplication(this, openingBalance);</b>
+        <b class="fc"><i>95</i>&nbsp; if (temp.screeningResult()) {</b>
+        <b class="nc"><i>96</i>&nbsp; this.accountHashtable.put(acctGen(), new
+            IndividualRetirementAccount(openingBalance, this));</b>
+        <i>97</i>&nbsp; }
+        <b class="fc"><i>98</i>&nbsp; }</b>
+        <i>99</i>&nbsp;
+        <i>100</i>&nbsp; public int getChexSystemsScore() {
+        <b class="fc"><i>101</i>&nbsp; return this._score.getScore();</b>
+        <i>102</i>&nbsp; }
+        <i>103</i>&nbsp;
+        <i>104</i>&nbsp; public int getCreditScore() {
+        <b class="fc"><i>105</i>&nbsp; return this._cred.getCreditScore();</b>
+        <i>106</i>&nbsp; }
+        <i>107</i>&nbsp;
+        <i>108</i>&nbsp; private String nameGen(int minLength, int maxLength) {
+        <b class="fc"><i>109</i>&nbsp; String temp = &quot;&quot;;</b>
+        <b class="fc"><i>110</i>&nbsp; for (int i = minLength; i &lt;= maxLength; i++) {</b>
+        <b class="fc"><i>111</i>&nbsp; temp += ALPHABET.charAt(r.nextInt(NUM_IN_ALPHABET));</b>
+        <i>112</i>&nbsp; }
+        <b class="fc"><i>113</i>&nbsp; return temp;</b>
+        <i>114</i>&nbsp; }
+        <i>115</i>&nbsp;
+        <i>116</i>&nbsp; private String passwordGen(int minLength, int maxLength) {
+        <b class="fc"><i>117</i>&nbsp; String temp = &quot;&quot;;</b>
+        <b class="fc"><i>118</i>&nbsp; for (int i = minLength; i &lt; maxLength; i++) {</b>
+        <b class="fc"><i>119</i>&nbsp; temp += ALPHA_NUMERIC.charAt(r.nextInt(LENGTH_OF_ALPHA_NUMERIC));</b>
+        <i>120</i>&nbsp; }
+        <b class="fc"><i>121</i>&nbsp; return temp;</b>
+        <i>122</i>&nbsp; }
+        <i>123</i>&nbsp;
+        <i>124</i>&nbsp; private int acctGen() {
+        <b class="fc"><i>125</i>&nbsp; int temp = 100000000;</b>
+        <i>126</i>&nbsp;
+        <b class="fc"><i>127</i>&nbsp; return temp += r.nextInt(99999999);</b>
+        <i>128</i>&nbsp; }
+        <i>129</i>&nbsp;
+        <i>130</i>&nbsp; public void printAllCustomerInformation() {
+        <b class="fc"><i>131</i>&nbsp; System.out.println(&quot;\n&quot; + this.CUSTOMER_ID + &quot; &quot; +
+            this.PASSWORD + &quot; &quot; + this.NAME + &quot; &quot; + this.getAge() + &quot; &quot; +
+            this.getCreditScore()</b>
+        <b class="fc"><i>132</i>&nbsp; + &quot; &quot; + this.getChexSystemsScore() + &quot; &quot;);</b>
+        <b class="fc"><i>133</i>&nbsp; this.printAccountInformation();</b>
+        <i>134</i>&nbsp;
+        <b class="fc"><i>135</i>&nbsp; }</b>
+        <i>136</i>&nbsp;
+        <i>137</i>&nbsp; public void printAccountInformation() {
+        <i>138</i>&nbsp;
+        <b class="fc"><i>139</i>&nbsp; Enumeration&lt;Integer&gt; enumKeys = accountHashtable.keys();</b>
+        <i>140</i>&nbsp;
+        <b class="fc"><i>141</i>&nbsp; while (enumKeys.hasMoreElements()) {</b>
+        <b class="fc"><i>142</i>&nbsp; Integer key = enumKeys.nextElement();</b>
+        <b class="fc"><i>143</i>&nbsp; Account temp = accountHashtable.get(key);</b>
+        <b class="fc"><i>144</i>&nbsp; System.out.print(temp.getBalance() + &quot; &quot;);</b>
+        <b class="fc"><i>145</i>&nbsp; }</b>
+        <i>146</i>&nbsp;
+        <b class="fc"><i>147</i>&nbsp; }</b>
+        <i>148</i>&nbsp;
+        <i>149</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2015-03-12 22:26</div>
+</div>
+</body>
+</html>

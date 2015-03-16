@@ -21,6 +21,7 @@ class CustomerInterface {
     private static BankProxy bankProxy;
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID CustomerUUID;
+    private static DataIO dataIO;
 
     final CustomerInterfaceState loggedOff;
     final CustomerInterfaceState loggedIn;
@@ -38,15 +39,16 @@ class CustomerInterface {
 
     private CustomerInterface(RealBank newRealBank) {
         realBank = newRealBank;
+        dataIO = new DataIO(newRealBank);
         bankProxy = new BankProxy(newRealBank);
         //uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
 
-        loggedOff = new LoggedOff(this, newRealBank);
-        hasAccount = new HasAccount(this, newRealBank);
-        hasNoAccount = new HasNoAccount(this, newRealBank);
-        hasCorrectUUID = new HasCorrectUUID(this, newRealBank);
-        hasIncorrectUUID = new HasIncorrectUUID(this, newRealBank);
-        loggedIn = new LoggedIn(this, newRealBank);
+        loggedOff = new LoggedOff(this, bankProxy);
+        hasAccount = new HasAccount(this, bankProxy);
+        hasNoAccount = new HasNoAccount(this, bankProxy);
+        hasCorrectUUID = new HasCorrectUUID(this, bankProxy);
+        hasIncorrectUUID = new HasIncorrectUUID(this, bankProxy);
+        loggedIn = new LoggedIn(this, bankProxy, dataIO);
 
         currentCustomerInterfaceState = loggedOff;
 
@@ -116,10 +118,8 @@ class CustomerInterface {
         currentCustomerInterfaceState.addAccount();
     }
 
-    public RealBank getBANK() {
-        return realBank;
+    public BankProxy getBankProxy() {
+        return bankProxy;
     }
-
-
 
 }

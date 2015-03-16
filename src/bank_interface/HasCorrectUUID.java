@@ -1,6 +1,6 @@
 package bank_interface;
 
-import bank_package.RealBank;
+import bank_package.BankProxy;
 import utility.uScanner;
 
 /**
@@ -8,11 +8,11 @@ import utility.uScanner;
  */
 class HasCorrectUUID implements CustomerInterfaceState {
 
-    private static RealBank bank;
+    private static BankProxy bankProxy;
     private final CustomerInterface customerInterface;
 
-    public HasCorrectUUID(CustomerInterface newCustomerInterface, RealBank newBank) {
-        bank = newBank;
+    public HasCorrectUUID(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
+        bankProxy = newBankProxy;
         this.customerInterface = newCustomerInterface;
 
 
@@ -62,7 +62,7 @@ class HasCorrectUUID implements CustomerInterfaceState {
         /*if they do have an account, they are requested to provide their UUID*/
         /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
          * their password ON RECORD is set to a final String "realPass"*/
-        final String realPass = bank.requestCustomer(customerInterface.getCustomerUUID()).getPASSWORD();
+        final String realPass = bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getPASSWORD();
         /*the user is prompted for their password, which is stored in enteredPass*/
         uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.", 4, 20);
         String enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();

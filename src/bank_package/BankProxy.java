@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 public class BankProxy implements Bank {
 
-    RealBank realBank;
+    private final RealBank realBank;
 
     public BankProxy(RealBank newRealBank) {
         this.realBank = newRealBank;
@@ -59,5 +59,15 @@ public class BankProxy implements Bank {
     @Override
     public boolean hasCustomer(UUID customerUUID) {
         return this.realBank.hasCustomer(customerUUID);
+    }
+
+    @Override
+    public boolean addCustomer(Customer customer) {
+        if (!this.realBank.hasCustomer(customer.getUUID())) {
+            this.realBank.addCustomer(customer);
+            return true;
+        } else
+            return false;
+
     }
 }

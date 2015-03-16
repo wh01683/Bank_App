@@ -56,7 +56,7 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
-    public void addCustomer(Customer customer){
+    public boolean addCustomer(Customer customer) {
 
         this.customerHashtable.put(customer.getUUID().hashCode(), customer);
         this.NUMBER_OF_CUSTOMERS++;
@@ -68,9 +68,8 @@ public class RealBank implements Serializable, Bank {
                 this.accountHashtable.put(acctKey, tempAcct);
                 this.NUMBER_OF_ACCOUNTS++;
             }
-
         }
-
+        return true;
     }
 
     public void addAccount(Account account){

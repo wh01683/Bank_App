@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: uScanner</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">bank_package</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: uScanner (bank_package)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">uScanner</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 16)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 55)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package bank_package;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import java.util.Scanner;
+        <i>4</i>&nbsp;
+        <i>5</i>&nbsp;class uScanner {
+        <i>6</i>&nbsp;
+        <b class="nc"><i>7</i>&nbsp; private static Scanner in = new Scanner(System.in);</b>
+        <i>8</i>&nbsp;
+        <i>9</i>&nbsp; private int maxInt;
+        <i>10</i>&nbsp; private int minInt;
+        <i>11</i>&nbsp; private double maxDouble;
+        <i>12</i>&nbsp; private double minDouble;
+        <i>13</i>&nbsp; private int minLength;
+        <i>14</i>&nbsp; private int maxLength;
+        <i>15</i>&nbsp; private String prompt;
+        <i>16</i>&nbsp;
+        <b class="nc"><i>17</i>&nbsp; public uScanner(String textPrompt, int min, int max) {</b>
+        <b class="nc"><i>18</i>&nbsp; this.prompt = textPrompt;</b>
+        <b class="nc"><i>19</i>&nbsp; this.minInt = min;</b>
+        <b class="nc"><i>20</i>&nbsp; this.maxInt = max;</b>
+        <b class="nc"><i>21</i>&nbsp; this.minLength = min;</b>
+        <b class="nc"><i>22</i>&nbsp; this.maxLength = max;</b>
+        <i>23</i>&nbsp; }
+        <i>24</i>&nbsp;
+        <b class="nc"><i>25</i>&nbsp; public uScanner(String textPrompt, double min, double max) {</b>
+        <b class="nc"><i>26</i>&nbsp; this.prompt = textPrompt;</b>
+        <b class="nc"><i>27</i>&nbsp; this.minDouble = min;</b>
+        <b class="nc"><i>28</i>&nbsp; this.maxDouble = max;</b>
+        <i>29</i>&nbsp; }
+        <i>30</i>&nbsp;
+        <i>31</i>&nbsp; private int getInt() {
+        <i>32</i>&nbsp;
+        <b class="nc"><i>33</i>&nbsp; System.out.println(this.prompt);</b>
+        <b class="nc"><i>34</i>&nbsp; while (!in.hasNextInt()) {</b>
+        <b class="nc"><i>35</i>&nbsp; System.out.println(&quot;Must enter a numeric value.&quot;);</b>
+        <b class="nc"><i>36</i>&nbsp; in.next();</b>
+        <i>37</i>&nbsp; }
+        <b class="nc"><i>38</i>&nbsp; return in.nextInt();</b>
+        <i>39</i>&nbsp; }
+        <i>40</i>&nbsp;
+        <i>41</i>&nbsp; public int intGet() {
+        <b class="nc"><i>42</i>&nbsp; int val = getInt();</b>
+        <b class="nc"><i>43</i>&nbsp; while (val &lt; this.minInt | val &gt; this.maxInt) {</b>
+        <b class="nc"><i>44</i>&nbsp; System.out.println(&quot;Must be greater than &quot; + this.minInt + &quot; and
+            lesser than &quot; + this.maxInt);</b>
+        <b class="nc"><i>45</i>&nbsp; val = getInt();</b>
+        <i>46</i>&nbsp; }
+        <b class="nc"><i>47</i>&nbsp; return val;</b>
+        <i>48</i>&nbsp; }
+        <i>49</i>&nbsp;
+        <i>50</i>&nbsp; public double doubleGet() {
+        <b class="nc"><i>51</i>&nbsp; double val = getDouble();</b>
+        <i>52</i>&nbsp;
+        <b class="nc"><i>53</i>&nbsp; while (val &lt; this.minDouble | val &gt; this.maxDouble) {</b>
+        <b class="nc"><i>54</i>&nbsp; System.out.println(&quot;Must be greater than &quot; + this.minDouble + &quot; and
+            lesser than &quot; + this.maxDouble);</b>
+        <b class="nc"><i>55</i>&nbsp; val = getDouble();</b>
+        <i>56</i>&nbsp; }
+        <b class="nc"><i>57</i>&nbsp; return val;</b>
+        <i>58</i>&nbsp; }
+        <i>59</i>&nbsp;
+        <i>60</i>&nbsp; public String stringGet() {
+        <b class="nc"><i>61</i>&nbsp; String val = getString();</b>
+        <i>62</i>&nbsp;
+        <b class="nc"><i>63</i>&nbsp; while (!val.matches(&quot;[a-zA-Z]+&quot;)) {</b>
+        <i>64</i>&nbsp;
+        <b class="nc"><i>65</i>&nbsp; System.out.println(&quot;Must enter letters only.&quot;);</b>
+        <b class="nc"><i>66</i>&nbsp; val = getString();</b>
+        <i>67</i>&nbsp;
+        <b class="nc"><i>68</i>&nbsp; while (val.length() &lt; this.minLength | val.length() &gt; this.maxLength) {</b>
+        <b class="nc"><i>69</i>&nbsp; System.out.println(&quot;Must be longer than &quot; + this.minLength + &quot; and
+            shorter than &quot; + this.maxLength + &quot; characters long.&quot;);</b>
+        <b class="nc"><i>70</i>&nbsp; val = getString();</b>
+        <i>71</i>&nbsp; }
+        <i>72</i>&nbsp; }
+        <i>73</i>&nbsp;
+        <b class="nc"><i>74</i>&nbsp; return val;</b>
+        <i>75</i>&nbsp; }
+        <i>76</i>&nbsp;
+        <i>77</i>&nbsp; public String alphaNumericStringGet() {
+        <i>78</i>&nbsp;
+        <b class="nc"><i>79</i>&nbsp; String val = getString();</b>
+        <i>80</i>&nbsp;
+        <b class="nc"><i>81</i>&nbsp; while (val.length() &lt; this.minLength | val.length() &gt; this.maxLength) {</b>
+        <b class="nc"><i>82</i>&nbsp; System.out.println(&quot;Must be longer than &quot; + this.minLength + &quot; and
+            shorter than &quot; + this.maxLength + &quot; characters long.&quot;);</b>
+        <b class="nc"><i>83</i>&nbsp; val = getString();</b>
+        <i>84</i>&nbsp; }
+        <b class="nc"><i>85</i>&nbsp; return val;</b>
+        <i>86</i>&nbsp; }
+        <i>87</i>&nbsp;
+        <i>88</i>&nbsp; private double getDouble() {
+        <b class="nc"><i>89</i>&nbsp; System.out.println(this.prompt);</b>
+        <b class="nc"><i>90</i>&nbsp; while (!in.hasNextDouble()) {</b>
+        <b class="nc"><i>91</i>&nbsp; System.out.println(&quot;Must enter a numeric value.&quot;);</b>
+        <b class="nc"><i>92</i>&nbsp; in.next();</b>
+        <i>93</i>&nbsp; }
+        <b class="nc"><i>94</i>&nbsp; return in.nextDouble();</b>
+        <i>95</i>&nbsp; }
+        <i>96</i>&nbsp;
+        <i>97</i>&nbsp; private String getString() {
+        <b class="nc"><i>98</i>&nbsp; System.out.println(this.prompt);</b>
+        <i>99</i>&nbsp;
+        <b class="nc"><i>100</i>&nbsp; while (!in.hasNext()) {</b>
+        <b class="nc"><i>101</i>&nbsp; System.out.println(this.prompt);</b>
+        <b class="nc"><i>102</i>&nbsp; in.next();</b>
+        <i>103</i>&nbsp; }
+        <b class="nc"><i>104</i>&nbsp; return in.next();</b>
+        <i>105</i>&nbsp; }
+        <i>106</i>&nbsp;
+        <i>107</i>&nbsp;
+        <i>108</i>&nbsp; public void setMinInt(int newMinInt) {
+        <b class="nc"><i>109</i>&nbsp; this.minInt = newMinInt;</b>
+        <i>110</i>&nbsp; }
+        <i>111</i>&nbsp;
+        <i>112</i>&nbsp; public void setMinDouble(double newMinDouble) {
+        <b class="nc"><i>113</i>&nbsp; this.minDouble = newMinDouble;</b>
+        <i>114</i>&nbsp; }
+        <i>115</i>&nbsp;
+        <i>116</i>&nbsp; public void setMaxInt(int newMaxInt) {
+        <b class="nc"><i>117</i>&nbsp; this.maxInt = newMaxInt;</b>
+        <i>118</i>&nbsp; }
+        <i>119</i>&nbsp;
+        <i>120</i>&nbsp; public void setMaxDouble(double newMaxDouble) {
+        <b class="nc"><i>121</i>&nbsp; this.maxDouble = newMaxDouble;</b>
+        <i>122</i>&nbsp; }
+        <i>123</i>&nbsp;
+        <i>124</i>&nbsp; public void setMaxLength(int newMaxLength) {
+        <b class="nc"><i>125</i>&nbsp; this.maxLength = newMaxLength;</b>
+        <i>126</i>&nbsp; }
+        <i>127</i>&nbsp;
+        <i>128</i>&nbsp; public void setMinLength(int newMinLength) {
+        <b class="nc"><i>129</i>&nbsp; this.minLength = newMinLength;</b>
+        <i>130</i>&nbsp; }
+        <i>131</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2015-03-12 22:26</div>
+</div>
+</body>
+</html>

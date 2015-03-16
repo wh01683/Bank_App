@@ -1,13 +1,13 @@
 package bank_interface;
 
+import bank_package.BankProxy;
 import bank_package.CreditReport;
 import bank_package.Customer;
-import bank_package.RealBank;
 import utility.uScanner;
 
 class HasNoAccount implements CustomerInterfaceState {
 
-    private static RealBank bank;
+    private static BankProxy bankProxy;
     private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
     private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
     private final uScanner NUM_LATE_PAYMENTS_SCANNER = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -17,9 +17,10 @@ class HasNoAccount implements CustomerInterfaceState {
     private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1, 2000000000);
     private final CustomerInterface customerInterface;
 
-    public HasNoAccount(CustomerInterface customerInterface, RealBank bank) {
+    public HasNoAccount(CustomerInterface customerInterface, BankProxy newBankProxy) {
         this.customerInterface = customerInterface;
-        HasNoAccount.bank = bank;
+        bankProxy = newBankProxy;
+
     }
 
 
@@ -83,15 +84,9 @@ class HasNoAccount implements CustomerInterfaceState {
          * added to the instance's customerHashTable*/
 
         if (wantsRegister) {
-            Customer newCustomer = getNewCustomerInformation();
-
-            System.out.println("Congratulations, " + newCustomer.getName() + "! You have successfully registered.\nYour new Customer ID is " +
-                    newCustomer.getUUID() + ". DO NOT LOSE THIS!\nYour password is " + newCustomer.getPASSWORD() + ". You may now log in and experience everything " +
-                    "we have to offer!");
+            getNewCustomerInformation();
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            customerInterface.getBANK().addCustomer(newCustomer);
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
-            customerInterface.setCustomerUUID(newCustomer.getUUID());
         } else {
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
             customerInterface.hasAccount(false);
@@ -99,7 +94,7 @@ class HasNoAccount implements CustomerInterfaceState {
     }
 
 
-    private Customer getNewCustomerInformation() {
+    private void getNewCustomerInformation() {
         String tempName = NAME_SCANNER.stringGet();
         int tempAge = AGE_SCANNER.intGet();
         CreditReport tempCreditReport;
@@ -112,8 +107,16 @@ class HasNoAccount implements CustomerInterfaceState {
         String tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
 
         Customer newCustomer = new Customer(tempName, tempAge, tempPassword, tempCreditReport);
-        bank.addCustomer(newCustomer);
-        return newCustomer;
+        if (bankProxy.addCustomer(newCustomer)) {
+            System.out.printf("You have been successfully added, %s.\nYour new Customer UUID is %s. DO NOT LOSE THIS! Your" +
+                            " password is %s.\nYou may now log on and experience all the benefits we have to offer!",
+                    newCustomer.getName(), newCustomer.getUUID(), newCustomer.getPASSWORD());
+            customerInterface.setCustomerUUID(newCustomer.getUUID());
+        } else {
+            System.out.println("This UUID is already in our system. Logging off.");
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.hasAccount(false);
+        }
     }
 
     /*@hasAccount

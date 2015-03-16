@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: IndividualRetirementAccount</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">bank_package</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: IndividualRetirementAccount (bank_package)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">IndividualRetirementAccount</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 21)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package bank_package;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;/**
+        <i>4</i>&nbsp; * Created by robert on 3/12/2015.
+        <i>5</i>&nbsp; */
+        <i>6</i>&nbsp;public class IndividualRetirementAccount implements Account {
+        <i>7</i>&nbsp;
+        <b class="nc"><i>8</i>&nbsp; private final double MIN_BALANCE = 100.00;</b>
+        <b class="nc"><i>9</i>&nbsp; private final String TYPE = &quot;MONEY MARKET INDIVIDUAL RETIREMENT ACCOUNT&quot;;</b>
+        <i>10</i>&nbsp; private Customer owner;
+        <i>11</i>&nbsp; private double interestRate;
+        <i>12</i>&nbsp; private double accountBalance;
+        <i>13</i>&nbsp;
+        <i>14</i>&nbsp;
+        <b class="nc"><i>15</i>&nbsp; public IndividualRetirementAccount(double openingBalance, Customer owner) {</b>
+        <b class="nc"><i>16</i>&nbsp; this.accountBalance = openingBalance;</b>
+        <b class="nc"><i>17</i>&nbsp; this.owner = owner;</b>
+        <b class="nc"><i>18</i>&nbsp; this.interestRate = calculateInterestRate();</b>
+        <i>19</i>&nbsp; }
+        <i>20</i>&nbsp;
+        <i>21</i>&nbsp; @Override
+        <i>22</i>&nbsp; public double getBalance() {
+        <b class="nc"><i>23</i>&nbsp; return this.accountBalance;</b>
+        <i>24</i>&nbsp; }
+        <i>25</i>&nbsp;
+        <i>26</i>&nbsp; @Override
+        <i>27</i>&nbsp; public void setBalance(double newBalance) {
+        <b class="nc"><i>28</i>&nbsp; this.accountBalance = newBalance;</b>
+        <i>29</i>&nbsp; }
+        <i>30</i>&nbsp;
+        <i>31</i>&nbsp; @Override
+        <i>32</i>&nbsp; public double getInterest() {
+        <b class="nc"><i>33</i>&nbsp; return this.interestRate;</b>
+        <i>34</i>&nbsp; }
+        <i>35</i>&nbsp;
+        <i>36</i>&nbsp; @Override
+        <i>37</i>&nbsp; public String getType() {
+        <b class="nc"><i>38</i>&nbsp; return this.TYPE;</b>
+        <i>39</i>&nbsp; }
+        <i>40</i>&nbsp;
+        <i>41</i>&nbsp; @Override
+        <i>42</i>&nbsp; public Customer getOwner() {
+        <b class="nc"><i>43</i>&nbsp; return this.owner;</b>
+        <i>44</i>&nbsp; }
+        <i>45</i>&nbsp;
+        <i>46</i>&nbsp; @Override
+        <i>47</i>&nbsp; public double getMinRequiredBalance() {
+        <b class="nc"><i>48</i>&nbsp; return this.MIN_BALANCE;</b>
+        <i>49</i>&nbsp; }
+        <i>50</i>&nbsp;
+        <i>51</i>&nbsp; @Override
+        <i>52</i>&nbsp; public double deposit(double amount) {
+        <b class="nc"><i>53</i>&nbsp; this.accountBalance += amount;</b>
+        <b class="nc"><i>54</i>&nbsp; return amount;</b>
+        <i>55</i>&nbsp; }
+        <i>56</i>&nbsp;
+        <i>57</i>&nbsp; @Override
+        <i>58</i>&nbsp; public double withdraw(double amount) {
+        <b class="nc"><i>59</i>&nbsp; this.accountBalance -= amount;</b>
+        <b class="nc"><i>60</i>&nbsp; return amount;</b>
+        <i>61</i>&nbsp; }
+        <i>62</i>&nbsp;
+        <i>63</i>&nbsp; private double calculateInterestRate() {
+        <b class="nc"><i>64</i>&nbsp; if (this.accountBalance &gt; 99999.0) {</b>
+        <b class="nc"><i>65</i>&nbsp; this.interestRate = .15;</b>
+        <b class="nc"><i>66</i>&nbsp; return .15;</b>
+        <b class="nc"><i>67</i>&nbsp; } else this.interestRate = .10;</b>
+        <b class="nc"><i>68</i>&nbsp; return .10;</b>
+        <i>69</i>&nbsp; }
+        <i>70</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2015-03-12 22:26</div>
+</div>
+</body>
+</html>

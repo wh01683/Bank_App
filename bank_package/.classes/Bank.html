@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: Bank</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">bank_package</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: Bank (bank_package)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">Bank</td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    57.1%
+  </span>
+  <span class="absValue">
+    (4/ 7)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    81.6%
+  </span>
+  <span class="absValue">
+    (31/ 38)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package bank_package;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import java.io.File;
+        <i>4</i>&nbsp;import java.io.FileNotFoundException;
+        <i>5</i>&nbsp;import java.io.PrintWriter;
+        <i>6</i>&nbsp;import java.util.Enumeration;
+        <i>7</i>&nbsp;import java.util.Hashtable;
+        <i>8</i>&nbsp;
+        <i>9</i>&nbsp;
+        <i>10</i>&nbsp;class Bank {
+        <i>11</i>&nbsp; private final boolean RANDOM_BANK;
+        <i>12</i>&nbsp; File test = new File(&quot;tests.xml&quot;);
+        <b class="fc"><i>13</i>&nbsp; PrintWriter writer = getPW(&quot;C:\\Users\\robert\\Desktop\\newionuflkijan.txt&quot;);</b>
+        <b class="fc"><i>14</i>&nbsp; private String name = &quot;Sea Island Bank - Sandiest Bank in Idaho!&quot;;</b>
+        <b class="fc"><i>15</i>&nbsp; private int numberCustomers;</b>
+        <i>16</i>&nbsp; private int numberAccounts;
+        <i>17</i>&nbsp; private Hashtable&lt;Integer, Customer&gt; customerHashtable;
+        <i>18</i>&nbsp; private int[] keyArray;
+        <i>19</i>&nbsp;
+        <i>20</i>&nbsp; public Bank(String name, int numberAccounts, int numberCustomers, boolean random) {
+        <b class="fc"><i>21</i>&nbsp; this.name = name;</b>
+        <b class="fc"><i>22</i>&nbsp; this.numberAccounts = numberAccounts;</b>
+        <b class="fc"><i>23</i>&nbsp; this.numberCustomers = numberCustomers;</b>
+        <b class="fc"><i>24</i>&nbsp; this.RANDOM_BANK = random;</b>
+        <b class="fc"><i>25</i>&nbsp; this.keyArray = new int[numberCustomers];</b>
+        <b class="fc"><i>26</i>&nbsp;</b>
+        <i>27</i>&nbsp; if (this.RANDOM_BANK) {
+        <b class="fc"><i>28</i>&nbsp; this.customerHashtable = new Hashtable&lt;Integer, Customer&gt;(this.numberCustomers
+            * 2);</b>
+        <b class="fc"><i>29</i>&nbsp; for (int i = 0; i &lt; this.numberCustomers; ++i) {</b>
+        <b class="fc"><i>30</i>&nbsp; Customer temp = new Customer(this.RANDOM_BANK);</b>
+        <b class="fc"><i>31</i>&nbsp; customerHashtable.put(temp.getUUID().hashCode(), temp);</b>
+        <b class="fc"><i>32</i>&nbsp; keyArray[i] = temp.getUUID().hashCode();</b>
+        <b class="fc"><i>33</i>&nbsp; }</b>
+        <i>34</i>&nbsp;
+        <i>35</i>&nbsp; }
+        <i>36</i>&nbsp;
+        <i>37</i>&nbsp; }
+        <b class="fc"><i>38</i>&nbsp;</b>
+        <i>39</i>&nbsp; public void addCustomer(int numberCustomers) {
+        <i>40</i>&nbsp; this.customerHashtable = new Hashtable&lt;Integer, Customer&gt;(numberCustomers * 2);
+        <b class="fc"><i>41</i>&nbsp; for (int i = 0; i &lt; numberCustomers; i++) {</b>
+        <b class="fc"><i>42</i>&nbsp; Customer temp = new Customer(true);</b>
+        <b class="fc"><i>43</i>&nbsp; this.customerHashtable.put(temp.getUUID().hashCode(), temp);</b>
+        <b class="fc"><i>44</i>&nbsp; }</b>
+        <i>45</i>&nbsp; }
+        <b class="fc"><i>46</i>&nbsp;</b>
+        <i>47</i>&nbsp; public int getNumberAccounts() {
+        <i>48</i>&nbsp; return this.numberAccounts;
+        <b class="nc"><i>49</i>&nbsp; }</b>
+        <i>50</i>&nbsp;
+        <i>51</i>&nbsp; public int getNumberCustomers() {
+        <i>52</i>&nbsp; return this.numberCustomers;
+        <b class="nc"><i>53</i>&nbsp; }</b>
+        <i>54</i>&nbsp;
+        <i>55</i>&nbsp; private PrintWriter getPW(String fileName) {
+        <i>56</i>&nbsp; PrintWriter pw;
+        <i>57</i>&nbsp; try {
+        <i>58</i>&nbsp; pw = new PrintWriter(fileName);
+        <b class="fc"><i>59</i>&nbsp; return pw;</b>
+        <b class="fc"><i>60</i>&nbsp; } catch (FileNotFoundException e) {</b>
+        <b class="nc"><i>61</i>&nbsp; e.printStackTrace();</b>
+        <b class="nc"><i>62</i>&nbsp; System.exit(1);</b>
+        <b class="nc"><i>63</i>&nbsp; return null;</b>
+        <b class="nc"><i>64</i>&nbsp; }</b>
+        <i>65</i>&nbsp; }
+        <i>66</i>&nbsp;
+        <i>67</i>&nbsp; public void printCustomerInfoToFile() {
+        <i>68</i>&nbsp;
+        <i>69</i>&nbsp; Enumeration&lt;Integer&gt; enumKeys = customerHashtable.keys();
+        <b class="fc"><i>70</i>&nbsp; System.out.println(&quot;RealCUSTOMER ID --------------------------PASSWORD
+            ---NAME ------------------------------&quot; +</b>
+        <b class="fc"><i>71</i>&nbsp; &quot;------------AGE-CRED&quot;);</b>
+        <i>72</i>&nbsp; while (enumKeys.hasMoreElements()) {
+        <b class="fc"><i>73</i>&nbsp; Integer key = enumKeys.nextElement();</b>
+        <b class="fc"><i>74</i>&nbsp; Customer temp = customerHashtable.get(key);</b>
+        <b class="fc"><i>75</i>&nbsp; temp.printAllCustomerInformation();</b>
+        <b class="fc"><i>76</i>&nbsp; }</b>
+        <b class="fc"><i>77</i>&nbsp;</b>
+        <i>78</i>&nbsp; }
+        <b class="fc"><i>79</i>&nbsp;</b>
+        <i>80</i>&nbsp; protected Hashtable getCustomerTable() {
+        <i>81</i>&nbsp; return this.customerHashtable;
+        <b class="nc"><i>82</i>&nbsp; }</b>
+        <i>83</i>&nbsp;
+        <i>84</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2015-03-12 22:26</div>
+</div>
+</body>
+</html>

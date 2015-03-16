@@ -21,6 +21,7 @@ class Main {
 
         RealBank newBank = new RealBank("hello", 500, 50);
         newBank.addRandomCustomers(50);
+        //RandomCustomerInterface test = RandomCustomerInterface.getInstance(newBank);
         CustomerInterface test = CustomerInterface.getInstance(newBank);
         test.START();
     }
