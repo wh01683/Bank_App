@@ -26,11 +26,9 @@ class Main {
         dataIO.readAllBankDataFromFile("DEFAULT");
         newrealBank = dataIO.getRealBank();
         DataIO newRealBankDataIO = new DataIO(newrealBank);
-        System.out.println("NEW BANK BELOW");
-        newRealBankDataIO.printAllAccountInformation();
 
-        //RandomCustomerInterface test = RandomCustomerInterface.getInstance(newBank);
-        /*CustomerInterface test = CustomerInterface.getInstance(newBank);
-        test.START();*/
+
+        CustomerInterface test = CustomerInterface.getInstance(newrealBank);
+        test.START();
     }
 }

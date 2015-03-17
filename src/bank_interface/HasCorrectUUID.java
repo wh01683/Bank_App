@@ -64,9 +64,11 @@ class HasCorrectUUID implements CustomerInterfaceState {
          * their password ON RECORD is set to a final String "realPass"*/
         final String realPass = bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getPASSWORD();
         /*the user is prompted for their password, which is stored in enteredPass*/
-        uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.", 4, 20);
+        uScanner PASSWORD_SCANNER = new uScanner("Please enter your password or BACK to go back.", 4, 20);
         String enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();
-        int attempts = 1;
+
+        while (!(enteredPass.equalsIgnoreCase("BACK"))) {
+            int attempts = 1;
         /*they will be prompted for their password as long as their REAL PASSWORD and their ENTERED PASSWORD do not match
         * and as long as their attempts do not exceed 4.*/
         while (!enteredPass.equals(realPass) && attempts < 6) {
@@ -82,13 +84,15 @@ class HasCorrectUUID implements CustomerInterfaceState {
 
         if (enteredPass.equals(realPass)) {
             System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
-                    " on file, " + realPass + "\nYou may now access your bank account information!");
-            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    " on file, " + realPass + "\nYou may now access your bank account information!\n");
+            System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
             customerInterface.setCustomerInterfaceState(customerInterface.loggedIn);
             customerInterface.requestInformation();
         } else {
             System.out.println("Invalid password, exiting.");
             System.exit(1);
         }
+        }
+
     }
 }

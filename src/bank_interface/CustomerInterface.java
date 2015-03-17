@@ -64,6 +64,8 @@ class CustomerInterface {
 
     public void START() {
 
+        dataIO.readAllBankDataFromFile("DEFAULT");
+
         while (this.currentCustomerInterfaceState.equals(hasNoAccount) | this.currentCustomerInterfaceState.equals(loggedOff))
             this.hasAccount(false);
         while (this.currentCustomerInterfaceState.equals(hasAccount) | this.currentCustomerInterfaceState.equals(hasIncorrectUUID))
@@ -75,7 +77,7 @@ class CustomerInterface {
             this.loggedIn.requestInformation();
         }
 
-        START();
+        dataIO.saveAllBankDataToFile("DEFAULT");
 
     }
 

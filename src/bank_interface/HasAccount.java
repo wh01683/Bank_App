@@ -22,35 +22,44 @@ class HasAccount implements CustomerInterfaceState {
 
     @Override
     public void enterUUID() {
-        uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
+        uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID or type BACK to go back.", 35, 37);
         UUID newCustomerUUID;
-        newCustomerUUID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
-        if (bankProxy.requestCustomer(newCustomerUUID) == null) {
+
+        String uuidInput = UUID_SCANNER.alphaNumericStringGet();
+
+        while (!(uuidInput.equalsIgnoreCase("BACK"))) {
+            newCustomerUUID = UUID.fromString(uuidInput);
+            if (bankProxy.requestCustomer(newCustomerUUID) == null) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
             * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
             * They are given 5 attempts total before the system exits.*/
-            System.out.println("We could not find your ID, please try again.");
-            boolean wantsToRegister = wantsToRegister();
-            int uuidCounter = 1;
+                System.out.println("We could not find your ID, please try again.");
+                boolean wantsToRegister = wantsToRegister();
+                int uuidCounter = 1;
 
-            while (bankProxy.requestCustomer(newCustomerUUID) == null && uuidCounter < 7) {
-                if (uuidCounter == 6) {
-                    System.out.println("All attempts exhausted. System exiting.");
-                    System.exit(1);
+                while (bankProxy.requestCustomer(newCustomerUUID) == null && uuidCounter < 7) {
+                    if (uuidCounter == 6) {
+                        System.out.println("All attempts exhausted. System exiting.");
+                        System.exit(1);
+                    }
+                    if (wantsToRegister) {
+                        customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
+                        customerInterface.hasAccount(false);
+                    } else if (uuidCounter < 6) {
+                        System.out.println(uuidCounter + " attempts remaining of 5. Please try again.");
+                        uuidInput = UUID_SCANNER.alphaNumericStringGet();
+                        newCustomerUUID = UUID.fromString(uuidInput);
+                    }
+                    uuidCounter++;
                 }
-                if (wantsToRegister) {
-                    customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
-                    customerInterface.hasAccount(false);
-                } else if (uuidCounter < 6) {
-                    System.out.println(uuidCounter + " attempts remaining of 5. Please try again.");
-                    newCustomerUUID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
-                }
-                uuidCounter++;
+                customerInterface.setCustomerInterfaceState(customerInterface.hasIncorrectUUID);
             }
-            customerInterface.setCustomerInterfaceState(customerInterface.hasIncorrectUUID);
+
+            customerInterface.setCustomerInterfaceState(customerInterface.hasCorrectUUID);
+            customerInterface.enterPassword();
         }
 
-        customerInterface.setCustomerInterfaceState(customerInterface.hasCorrectUUID);
+        customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
 
     }
 

@@ -186,13 +186,11 @@ class DataIO {
         if (!(fileName.equalsIgnoreCase("DEFAULT")))
             this.bankDataWriter = getOS(getFS(fileName));
 
-        Enumeration<Integer> enumKeys = customerHashTable.keys();
         try {
 
             this.bankDataWriter.writeObject(this.realBank);
             bankDataWriter.close();
-/*NOT FINISHED
-        * ToDo: learn how to write and read objects from file without losing data*/
+
         } catch (java.io.IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -200,18 +198,19 @@ class DataIO {
 
     }
 
-    public void readAllBankDataFromFile(String fileName){
+    public void readAllBankDataFromFile(String fileName) {
 
         if (!(fileName.equalsIgnoreCase("DEFAULT")))
             this.bankDataReader = getIS(getFIS(fileName));
 
-        Enumeration<Integer> enumKeys = customerHashTable.keys();
+
         try {
 
-            this.realBank = (RealBank)this.bankDataReader.readObject();
-            this.bankDataReader.close();
-/*NOT FINISHED
-        * ToDo: learn how to write and read objects from file without losing data*/
+            this.bankDataReader = new ObjectInputStream(new BufferedInputStream(getFIS(System.getProperty("user.dir") + "\\bankInformation.txt")));
+            while (this.bankDataReader.available() > 0) {
+
+                this.realBank = (RealBank) this.bankDataReader.readObject();
+            }
         } catch (java.io.IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -219,7 +218,6 @@ class DataIO {
             k.printStackTrace();
             System.exit(1);
         }
-
     }
 
     public RealBank getRealBank(){
