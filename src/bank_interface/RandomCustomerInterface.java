@@ -71,7 +71,7 @@ class RandomCustomerInterface {
         bank = newBank;
         Hashtable<Integer, Customer> customerHashtable = bank.getCustomerTable();
         bank.updateAccountTable();
-        dataIO = new DataIO(bank);
+        dataIO = new DataIO();
 
         String enteredPass;
 
@@ -122,7 +122,7 @@ class RandomCustomerInterface {
         public static RandomCustomerInterface getInstance(RealBank thisBank) {
             if (!(SINGLETON_INSTANCE == null)) {
                 CUSTOMER = null;
-                dataIO = new DataIO(thisBank);
+                dataIO = new DataIO();
                 return SINGLETON_INSTANCE;
             }
             else

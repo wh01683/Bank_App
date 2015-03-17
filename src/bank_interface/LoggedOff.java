@@ -1,18 +1,16 @@
 package bank_interface;
 
 
-import bank_package.BankProxy;
 import utility.uScanner;
 
 class LoggedOff implements CustomerInterfaceState {
 
-    private static final uScanner logInOrRegister = new uScanner("Hello. do you have an account?\nYES, NO", 2, 3);
-    private static BankProxy bankProxy;
+    /*login or register prompt.*/
+    private static final uScanner logInOrRegister = new uScanner("----LOGIN---------------------------------REGISTER----", 4, 8);
     private final CustomerInterface customerInterface;
 
-    public LoggedOff(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
+    public LoggedOff(CustomerInterface newCustomerInterface) {
         this.customerInterface = newCustomerInterface;
-        bankProxy = newBankProxy;
     }
 
     @Override
@@ -27,22 +25,25 @@ class LoggedOff implements CustomerInterfaceState {
         customerInterface.hasAccount(false);
     }
 
+    /*@func hasAccount: this is the entry point to the program they simply type whether they want to login or register,
+     and they are redirected to the appropriate state and the appropriate handling method based on what they choose
+
+     @param isRegistered: default false.
+     @return : void*/
     @Override
     public void hasAccount(boolean isRegistered) {
 
-        if (!isRegistered) {
-            customerInterface.START();
-        } else {
+
             String loginOrRegister = logInOrRegister.stringGet();
 
-            if (loginOrRegister.equalsIgnoreCase("NO")) {
+        if (loginOrRegister.equalsIgnoreCase("REGISTER")) {
                 customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
-                customerInterface.hasAccount(false);
-            } else if (loginOrRegister.equalsIgnoreCase("YES")) {
+            customerInterface.hasAccount(true);
+        } else if (loginOrRegister.equalsIgnoreCase("LOGIN")) {
                 customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
                 customerInterface.enterUUID();
             }
-        }
+
     }
 
     @Override

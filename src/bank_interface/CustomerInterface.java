@@ -17,33 +17,32 @@ import java.util.UUID;
 *
 */
 class CustomerInterface {
-    private static RealBank realBank;
-    private static BankProxy bankProxy;
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID CustomerUUID;
     private static DataIO dataIO;
-
     final CustomerInterfaceState loggedOff;
     final CustomerInterfaceState loggedIn;
     final CustomerInterfaceState hasAccount;
     final CustomerInterfaceState hasNoAccount;
     final CustomerInterfaceState hasCorrectUUID;
     final CustomerInterfaceState hasIncorrectUUID;
+    private RealBank realBank;
+    private BankProxy bankProxy;
 
 
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
-
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
     private CustomerInterfaceState currentCustomerInterfaceState;
 
     private CustomerInterface(RealBank newRealBank) {
+
         realBank = newRealBank;
-        dataIO = new DataIO(newRealBank);
+        dataIO = new DataIO();
         bankProxy = new BankProxy(newRealBank);
         //uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
 
-        loggedOff = new LoggedOff(this, bankProxy);
+        loggedOff = new LoggedOff(this);
         hasAccount = new HasAccount(this, bankProxy);
         hasNoAccount = new HasNoAccount(this, bankProxy);
         hasCorrectUUID = new HasCorrectUUID(this, bankProxy);
@@ -55,38 +54,58 @@ class CustomerInterface {
 
     }
 
+    /*@func getInstance: Singleton instance retriever.. ensures no two instances of customer interface exist at any
+    * one time.
+    * @param thisBank: RealBank to pass to the CustomerInterface constructor
+    *
+    * @return CustomerInterface: if the current SINGLETON_INSTANCE is null, a new instance is constructed and
+    * returned. otherwise, this method will return the current instance.*/
     public static CustomerInterface getInstance(RealBank thisBank) {
         if (!(SINGLETON_INSTANCE == null)) {
             return SINGLETON_INSTANCE;
-        } else
-            return new CustomerInterface(thisBank);
+        } else {
+            SINGLETON_INSTANCE = new CustomerInterface(thisBank);
+            return SINGLETON_INSTANCE;
+        }
     }
 
+    /*@func START(): after the CustomerInterface is instantiated, the Start() function is called to get everything
+    * moving in the right direction. the while loops call the correct methods depending on which state it is in.
+    *
+    * @param null
+    *
+    * @return void*/
     public void START() {
 
-        dataIO.readAllBankDataFromFile("DEFAULT");
+        dataIO.readAllBankDataFromFile();
         if (dataIO.getRealBank() != null) {
             realBank = dataIO.getRealBank();
             bankProxy = new BankProxy(realBank);
-            dataIO = new DataIO(realBank);
         } else {
             realBank = new RealBank("hello", 10, 10);
         }
 
-        while (this.currentCustomerInterfaceState.equals(hasNoAccount) | this.currentCustomerInterfaceState.equals(loggedOff))
+
+        while (this.currentCustomerInterfaceState.equals(hasNoAccount) | this.currentCustomerInterfaceState.equals(loggedOff)) {
             this.hasAccount(true);
-        while (this.currentCustomerInterfaceState.equals(hasAccount) | this.currentCustomerInterfaceState.equals(hasIncorrectUUID))
-            this.enterUUID();
-        while (this.currentCustomerInterfaceState.equals(hasCorrectUUID))
-            this.enterPassword();
+        }
+        while (!this.currentCustomerInterfaceState.equals(loggedOff)) {
+            while (this.currentCustomerInterfaceState.equals(hasAccount) | this.currentCustomerInterfaceState.equals(hasIncorrectUUID)) {
+                this.enterUUID();
+            }
+            while (this.currentCustomerInterfaceState.equals(hasCorrectUUID)) {
+                this.enterPassword();
+            }
+        }
+
+        /*dataIO.setRealBank(realBank);
+        dataIO.saveAllBankDataToFile("DEFAULT");*/
+
 
     }
 
     public void logOff() {
-        System.out.println("Have a nice day!");
-        this.saveBankDataToFile();
-        this.setCustomerInterfaceState(loggedOff);
-        loggedOff.hasAccount(false);
+        currentCustomerInterfaceState.logOff();
     }
 
     public UUID getCustomerUUID() {
@@ -130,7 +149,7 @@ class CustomerInterface {
     }
 
     public void saveBankDataToFile() {
-        dataIO.saveAllBankDataToFile("DEFAULT");
+        dataIO.saveAllBankDataToFile(realBank);
     }
 
 }

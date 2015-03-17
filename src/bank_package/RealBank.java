@@ -113,11 +113,7 @@ public class RealBank implements Serializable, Bank {
     @Override
     public boolean hasCustomer(UUID customerUUID) {
         try {
-            if (!this.customerHashtable.isEmpty()) {
-                return this.customerHashtable.containsKey(customerUUID.hashCode());
-            } else {
-                return false;
-            }
+            return !this.customerHashtable.isEmpty() && this.customerHashtable.containsKey(customerUUID.hashCode());
         } catch (NullPointerException n) {
             n.printStackTrace();
             System.out.println("Null pointer exception in real bank at hasCustomer():boolean");

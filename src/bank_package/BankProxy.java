@@ -8,10 +8,10 @@ import java.util.UUID;
 
 public class BankProxy implements Bank {
 
-    private static RealBank realBank = null;
+    private RealBank realBank;
 
     public BankProxy(RealBank newRealBank) {
-        realBank = newRealBank;
+        this.realBank = newRealBank;
     }
 
     @Override

@@ -139,6 +139,5 @@ class CertificateOfDepositAccount implements Account, Serializable{
             System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Fixed-Term Certificate of Deposit Account at this time.");
             return null;
         }
-    //return new CertificateOfDepositAccount(customer, openingBalance, desiredTermLength);
     }
 }

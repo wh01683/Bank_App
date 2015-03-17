@@ -18,12 +18,22 @@ class Main {
         int num = Integer.parseInt(args[0]);
         test.work(num);*/
 
-        /*newBank.addRandomCustomers(500);
-        DataIO dataIO = new DataIO(newBank);
-        dataIO.saveAllBankDataToFile("DEFAULT");
-        RealBank newrealBank;*/
         DataIO dataIO = new DataIO();
-        RealBank newBank = new RealBank("hello", 10, 10);
+        dataIO.readAllBankDataFromFile();
+        RealBank newBank = new RealBank("hello", 20, 20);
+        if (dataIO.getRealBank() != null) {
+            newBank = dataIO.getRealBank();
+        }
+
+        //RealBank newBank = new RealBank("hello", 10, 10);
+        newBank.addRandomCustomers(500);
+        dataIO.saveAllBankDataToFile(newBank);
+
+/*
+        DataIO dataIO = new DataIO();
+*/
+        dataIO.readAllBankDataFromFile();
+
         if (!(dataIO.getRealBank() == null)) {
             newBank = dataIO.getRealBank();
         }

@@ -58,9 +58,7 @@ class HasAccount implements CustomerInterfaceState {
                             customerInterface.hasAccount(false);
                         } else if (uuidInput.equalsIgnoreCase("LOGOFF")) {
                             System.out.println("Have a great day!");
-                            customerInterface.saveBankDataToFile();
-                            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
-                            customerInterface.hasAccount(false);
+                            customerInterface.logOff();
                         }
                     }
                     uuidCounter++;

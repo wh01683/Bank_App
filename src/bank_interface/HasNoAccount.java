@@ -42,12 +42,12 @@ class HasNoAccount implements CustomerInterfaceState {
    * @param void: not required
    * @return boolean: returns user's answer in boolean form*/
     @Override
-    public void hasAccount(boolean isRegistered) {
-        if (!isRegistered) {
+    public void hasAccount(boolean wantsToRegister) {
+        if (!wantsToRegister) {
             registerNewCustomer();
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
         } else {
-            System.out.println("You are already registered.");
+            getNewCustomerInformation();
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
         }
     }
@@ -111,7 +111,7 @@ class HasNoAccount implements CustomerInterfaceState {
         Customer newCustomer = new Customer(tempName, tempAge, tempPassword, tempCreditReport);
         if (bankProxy.addCustomer(newCustomer)) {
             System.out.printf("You have been successfully added, %s.\nYour new Customer UUID is %s. DO NOT LOSE THIS! Your" +
-                            " password is %s.\nYou may now log on and experience all the benefits we have to offer!",
+                            " password is %s.\nYou may now log on and experience all the benefits we have to offer!\n",
                     newCustomer.getName(), newCustomer.getUUID(), newCustomer.getPASSWORD());
             customerInterface.setCustomerUUID(newCustomer.getUUID());
         } else {

@@ -264,7 +264,7 @@ class LoggedIn implements CustomerInterfaceState {
                         processTransaction(transactionChoice);
 
 
-                    } else if (tempTransferFromAccountNumber == tempTransferToAccountNumber) { /*checks for the same account number*/
+                    } else if (tempTransferFromAccountNumber.equals(tempTransferToAccountNumber)) { /*checks for the same account number*/
                         System.out.println("You may not transfer to the same account.");
                         startTransaction();
 
@@ -351,10 +351,12 @@ class LoggedIn implements CustomerInterfaceState {
                 initiateLoginProcesses();
             } else if (request.equalsIgnoreCase("LOGOFF")) {
                 customerInterface.logOff();
-            } else if (request.equalsIgnoreCase("EXIT")) {
-                customerInterface.saveBankDataToFile();
-                System.out.println("Exiting...");
-                System.exit(0);
+            } else {
+                if (request.equalsIgnoreCase("EXIT")) {
+                    customerInterface.saveBankDataToFile();
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                }
             }
             return true;
         } else return false;
