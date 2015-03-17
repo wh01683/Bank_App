@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /*DATA Input/Output class for storing all the write -to-file methods and headers, etc.*/
-class DataIO {
+public class DataIO {
     String hiding = "ishallpass";
     private Hashtable customerHashTable = new Hashtable(50);
     private Hashtable accountHashTable = new Hashtable(500);
@@ -198,7 +198,7 @@ class DataIO {
 
     }
 
-    public void readAllBankDataFromFile(String fileName) {
+    public RealBank readAllBankDataFromFile(String fileName) {
 
         if (!(fileName.equalsIgnoreCase("DEFAULT")))
             this.bankDataReader = getIS(getFIS(fileName));
@@ -218,6 +218,8 @@ class DataIO {
             k.printStackTrace();
             System.exit(1);
         }
+
+        return this.realBank;
     }
 
     public RealBank getRealBank(){

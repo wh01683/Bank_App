@@ -18,17 +18,15 @@ class Main {
         int num = Integer.parseInt(args[0]);
         test.work(num);*/
 
-        RealBank newBank = new RealBank("hello", 500, 500);
-        newBank.addRandomCustomers(500);
+        RealBank newBank = new RealBank("hello", 0, 0);
+        /*newBank.addRandomCustomers(500);
         DataIO dataIO = new DataIO(newBank);
         dataIO.saveAllBankDataToFile("DEFAULT");
         RealBank newrealBank;
         dataIO.readAllBankDataFromFile("DEFAULT");
-        newrealBank = dataIO.getRealBank();
-        DataIO newRealBankDataIO = new DataIO(newrealBank);
+        newrealBank = dataIO.getRealBank();*/
 
-
-        CustomerInterface test = CustomerInterface.getInstance(newrealBank);
+        CustomerInterface test = CustomerInterface.getInstance(newBank);
         test.START();
     }
 }
