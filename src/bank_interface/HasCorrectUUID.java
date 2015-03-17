@@ -27,7 +27,9 @@ class HasCorrectUUID implements CustomerInterfaceState {
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
+        customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.hasAccount(false);
 
     }
 
@@ -64,10 +66,10 @@ class HasCorrectUUID implements CustomerInterfaceState {
          * their password ON RECORD is set to a final String "realPass"*/
         final String realPass = bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getPASSWORD();
         /*the user is prompted for their password, which is stored in enteredPass*/
-        uScanner PASSWORD_SCANNER = new uScanner("Please enter your password or BACK to go back.", 4, 20);
+        uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.\nBACK, LOGOFF.", 4, 20);
         String enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();
 
-        while (!(enteredPass.equalsIgnoreCase("BACK"))) {
+        while (!(enteredPass.equalsIgnoreCase("BACK")) | !(enteredPass.equalsIgnoreCase("LOGOFF"))) {
             int attempts = 1;
         /*they will be prompted for their password as long as their REAL PASSWORD and their ENTERED PASSWORD do not match
         * and as long as their attempts do not exceed 4.*/
@@ -94,5 +96,15 @@ class HasCorrectUUID implements CustomerInterfaceState {
         }
         }
 
+        if (enteredPass.equalsIgnoreCase("BACK")) {
+            customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+            customerInterface.enterUUID();
+        }
+        if (enteredPass.equalsIgnoreCase("LOGOFF")) {
+            System.out.println("Have a great day!");
+            customerInterface.saveBankDataToFile();
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.hasAccount(false);
+        }
     }
 }

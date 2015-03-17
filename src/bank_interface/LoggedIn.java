@@ -13,13 +13,13 @@ import java.util.Hashtable;
 class LoggedIn implements CustomerInterfaceState {
 
     private static BankProxy bankProxy;
+    private static DataIO dataIO;
     private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?\nCHECKING, SAVINGS, MMA, IRA, CD, RETURN", -1, 10);
-    private final uScanner INFORMATION_REQUEST_SCANNER = new uScanner("What would you like to know more about?\nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
+    private final uScanner INFORMATION_REQUEST_SCANNER = new uScanner("What would you like to know more about?\nCHEX, CREDIT, ACCOUNTS, ALL, MENU, LOGOFF", 2, 9);
     private final uScanner TRANSACTION_REQUEST_SCANNER = new uScanner("What transaction would you like to process?\nDEPOSIT, WITHDRAW, TRANSFER, ACCOUNTS, RETURN", 2, 9);
     private final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", -2, 200000000);
-    private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, RETURN", 2, 9);
+    private final uScanner REQUEST_SCANNER = new uScanner("\nWhat would you like to know more about?. \nCHEX, CREDIT, ACCOUNTS, ALL, MENU, LOGOFF", 2, 9);
     private final CustomerInterface customerInterface;
-    private final DataIO dataIO;
     private final AccountFactory accountFactory = new AccountFactory();
 
 
@@ -48,7 +48,9 @@ class LoggedIn implements CustomerInterfaceState {
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
-        this.customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.saveBankDataToFile();
+        customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.hasAccount(false);
     }
 
     @Override
@@ -65,6 +67,8 @@ class LoggedIn implements CustomerInterfaceState {
     public void addAccount() {
 
         String accountRequest = ACCOUNT_REQUESTER_SCANNER.stringGet();
+
+
         if (accountRequest.equalsIgnoreCase("RETURN")) {
             customerInterface.requestInformation();
         } else {
@@ -84,36 +88,43 @@ class LoggedIn implements CustomerInterfaceState {
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println(tempAccount.toString());
                 System.out.println("\n");
-                uScanner yesNo = new uScanner("Would you like to add more accounts?\nYES to create additional accounts, NO to return.", 1, 4);
-                if (yesNo.stringGet().equalsIgnoreCase("YES"))
+                uScanner yesNo = new uScanner("Would you like to add more accounts?\nYES, NO, LOGOFF", 1, 4);
+                String moreAccounts = yesNo.stringGet();
+                if (moreAccounts.equalsIgnoreCase("YES")) {
                     addAccount();
-                else
+                } else if (moreAccounts.equalsIgnoreCase("NO")) {
                     initiateLoginProcesses();
+                } else if (moreAccounts.equalsIgnoreCase("LOGOFF")) {
+                    customerInterface.logOff();
+                } else {
+                    System.out.println("Request could not be processed.");
+                    addAccount();
+                }
             }
-
-            customerInterface.requestInformation();
-
+            addAccount();
         }
     }
 
     private void initiateLoginProcesses() {
         final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + customerInterface.getBankProxy().requestCustomer(customerInterface.getCustomerUUID()).getName() +
-                "?\nINFORMATION, TRANSACTION, MKACCT, RMACCT, EXIT", 3, 12);
+                "?\nINFORMATION, TRANSACTION, MKACCT, RMACCT, LOGOFF, EXIT", 3, 12);
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             /*essentially an infinite loop only ending when the customer exits, runs in to an exit-worthy error, or
             * trips "isLoggedIn" to false.*/
         String processRequest = PROCESS_REQUEST_SCANNER.stringGet();
-        if (processRequest.equalsIgnoreCase("INFORMATION")) {
+
+        if (!isLogOffRequest(processRequest)) {
+            if (processRequest.equalsIgnoreCase("INFORMATION")) {
             this.printInformation(INFORMATION_REQUEST_SCANNER.stringGet());
             initiateLoginProcesses();
-        } else if (processRequest.equalsIgnoreCase("TRANSACTION")) {
+            } else if (processRequest.equalsIgnoreCase("TRANSACTION")) {
             this.processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
             initiateLoginProcesses();
-        } else if (processRequest.equalsIgnoreCase("MKACCT")) {
+            } else if (processRequest.equalsIgnoreCase("MKACCT")) {
             this.addAccount();
             initiateLoginProcesses();
-        } else if (processRequest.equalsIgnoreCase("RMACCT")) {
+            } else if (processRequest.equalsIgnoreCase("RMACCT")) {
             System.out.println("Which account would you like to remove?");
             Integer rmAccountNumber = ACCOUNT_NUMBER_SCANNER.intGet();
             if (bankProxy.removeAccount(rmAccountNumber)) {
@@ -123,39 +134,40 @@ class LoggedIn implements CustomerInterfaceState {
                 System.out.println("Account not found, try again.\n");
                 bankProxy.removeAccount(ACCOUNT_NUMBER_SCANNER.intGet());
             }
-        } else if (processRequest.equalsIgnoreCase("EXIT")) {
-            System.out.println("Swiggity Swooty, I'm Coming For That Booty!"); /*a unit exit message, telling me
-                the user chose "exit". this is useful when testing random customers.*/
-            System.exit(0);
-        } else {
+
+            } else {
                 /*if the user enters an invalid or unknown process, the method is called recursively and they're allowed
                 * to try the process again.*/
             System.out.println("Your request could not be processed, please try again.");
             initiateLoginProcesses();
         }
+
+    }
     }
 
     void printInformation(String request) {
 
-        if (request.equalsIgnoreCase("CHEX")) {
-            System.out.println("Your ChexSystems score is currently " + bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getChexSystemsScore() + ".");
-            printInformation(REQUEST_SCANNER.stringGet());
-        } else if (request.equalsIgnoreCase("CREDIT")) {
-            System.out.println("Your Credit Score is currently " + bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getCreditScore() + ".");
-            printInformation(REQUEST_SCANNER.stringGet());
-        } else if (request.equalsIgnoreCase("ACCOUNTS")) {
-            dataIO.printAccountInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
-            printInformation(REQUEST_SCANNER.stringGet());
-        } else if (request.equalsIgnoreCase("ALL")) {
-            dataIO.printAllCustomerPrivateInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getUUID().hashCode(), bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
-            printInformation(REQUEST_SCANNER.stringGet());
-        } else if (request.equalsIgnoreCase("RETURN")) {
-            System.out.println("Returning to previous menu.");
-            initiateLoginProcesses();
-        } else {
-            System.out.println("Could not process your request: " + request + " Please try again");
-            printInformation(REQUEST_SCANNER.stringGet());
+        if (!isLogOffRequest(request)) {
+
+            if (request.equalsIgnoreCase("CHEX")) {
+                System.out.println("Your ChexSystems score is currently " + bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getChexSystemsScore() + ".");
+                printInformation(REQUEST_SCANNER.stringGet());
+            } else if (request.equalsIgnoreCase("CREDIT")) {
+                System.out.println("Your Credit Score is currently " + bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getCreditScore() + ".");
+                printInformation(REQUEST_SCANNER.stringGet());
+            } else if (request.equalsIgnoreCase("ACCOUNTS")) {
+                dataIO.printAccountInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
+                printInformation(REQUEST_SCANNER.stringGet());
+            } else if (request.equalsIgnoreCase("ALL")) {
+                dataIO.printAllCustomerPrivateInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getUUID().hashCode(), bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
+                printInformation(REQUEST_SCANNER.stringGet());
+            } else {
+                System.out.println("Could not process your request: " + request + " Please try again");
+                printInformation(REQUEST_SCANNER.stringGet());
+            }
+
         }
+
     }
 
     private void processTransaction(String transactionChoice) {
@@ -333,7 +345,20 @@ class LoggedIn implements CustomerInterfaceState {
 
     }
 
-
+    private boolean isLogOffRequest(String request) {
+        if (request.equalsIgnoreCase("MENU") | request.equalsIgnoreCase("LOGOFF") | request.equalsIgnoreCase("EXIT")) {
+            if (request.equalsIgnoreCase("MENU")) {
+                initiateLoginProcesses();
+            } else if (request.equalsIgnoreCase("LOGOFF")) {
+                customerInterface.logOff();
+            } else if (request.equalsIgnoreCase("EXIT")) {
+                customerInterface.saveBankDataToFile();
+                System.out.println("Exiting...");
+                System.exit(0);
+            }
+            return true;
+        } else return false;
+    }
 
 
     String getAccountHeaders() {

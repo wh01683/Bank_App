@@ -65,20 +65,28 @@ class CustomerInterface {
     public void START() {
 
         dataIO.readAllBankDataFromFile("DEFAULT");
+        if (dataIO.getRealBank() != null) {
+            realBank = dataIO.getRealBank();
+            bankProxy = new BankProxy(realBank);
+            dataIO = new DataIO(realBank);
+        } else {
+            realBank = new RealBank("hello", 10, 10);
+        }
 
         while (this.currentCustomerInterfaceState.equals(hasNoAccount) | this.currentCustomerInterfaceState.equals(loggedOff))
-            this.hasAccount(false);
+            this.hasAccount(true);
         while (this.currentCustomerInterfaceState.equals(hasAccount) | this.currentCustomerInterfaceState.equals(hasIncorrectUUID))
             this.enterUUID();
         while (this.currentCustomerInterfaceState.equals(hasCorrectUUID))
             this.enterPassword();
 
-        while (!(this.currentCustomerInterfaceState.equals(loggedOff))) {
-            this.loggedIn.requestInformation();
-        }
+    }
 
-        dataIO.saveAllBankDataToFile("DEFAULT");
-
+    public void logOff() {
+        System.out.println("Have a nice day!");
+        this.saveBankDataToFile();
+        this.setCustomerInterfaceState(loggedOff);
+        loggedOff.hasAccount(false);
     }
 
     public UUID getCustomerUUID() {
@@ -119,6 +127,10 @@ class CustomerInterface {
 
     public BankProxy getBankProxy() {
         return bankProxy;
+    }
+
+    public void saveBankDataToFile() {
+        dataIO.saveAllBankDataToFile("DEFAULT");
     }
 
 }

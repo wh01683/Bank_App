@@ -55,7 +55,9 @@ class HasNoAccount implements CustomerInterfaceState {
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
+        customerInterface.saveBankDataToFile();
         this.customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.hasAccount(false);
 
     }
 
@@ -176,7 +178,7 @@ class HasNoAccount implements CustomerInterfaceState {
     }
 
     private boolean wantsToRegister() {
-        final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, RETURN, EXIT", 2, 6);
+        final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, LOGOFF, EXIT", 2, 6);
 
         String answer = WANT_REGISTER_SCANNER.stringGet();
 
@@ -184,8 +186,8 @@ class HasNoAccount implements CustomerInterfaceState {
             return true;
         } else if (answer.equalsIgnoreCase("NO")) {
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
-        } else if (answer.equalsIgnoreCase("RETURN")) {
-            this.customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        } else if (answer.equalsIgnoreCase("LOGOFF")) {
+            customerInterface.logOff();
         } else if (answer.equalsIgnoreCase("EXIT")) {
             System.out.println("Exiting.");
             System.exit(0);

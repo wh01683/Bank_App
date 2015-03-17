@@ -8,21 +8,21 @@ import java.util.UUID;
 
 public class BankProxy implements Bank {
 
-    private final RealBank realBank;
+    private static RealBank realBank = null;
 
     public BankProxy(RealBank newRealBank) {
-        this.realBank = newRealBank;
+        realBank = newRealBank;
     }
 
     @Override
     public void addAccount(Account newAccount) {
-        this.realBank.addAccount(newAccount);
+        realBank.addAccount(newAccount);
     }
 
     @Override
     public Customer requestCustomer(UUID customerUUID) {
-        if (!(this.realBank == null)) {
-            return this.realBank.requestCustomer(customerUUID);
+        if (!(realBank == null)) {
+            return realBank.requestCustomer(customerUUID);
         } else {
             return null;
         }
@@ -31,8 +31,8 @@ public class BankProxy implements Bank {
 
     @Override
     public Hashtable requestCustomerAccounts(UUID customerUUID) {
-        if (!(this.realBank == null)) {
-            return this.realBank.requestCustomerAccounts(customerUUID);
+        if (!(realBank == null)) {
+            return realBank.requestCustomerAccounts(customerUUID);
         } else {
             return null;
         }
@@ -41,8 +41,8 @@ public class BankProxy implements Bank {
     @Override
     public boolean removeAccount(Integer accountNumber) {
 
-        if (!(this.realBank == null)) {
-            this.realBank.removeAccount(accountNumber);
+        if (!(realBank == null)) {
+            realBank.removeAccount(accountNumber);
             return true;
         } else {
             return false;
@@ -51,21 +51,17 @@ public class BankProxy implements Bank {
 
     @Override
     public boolean hasAccount(Integer accountNumber) {
-        return this.realBank.hasAccount(accountNumber);
+        return realBank.hasAccount(accountNumber);
     }
 
     @Override
     public boolean hasCustomer(UUID customerUUID) {
-        return this.realBank.hasCustomer(customerUUID);
+        return realBank.hasCustomer(customerUUID);
     }
 
     @Override
     public boolean addCustomer(Customer customer) {
-        if (!this.realBank.hasCustomer(customer.getUUID())) {
-            this.realBank.addCustomer(customer);
-            return true;
-        } else
-            return false;
-
+        realBank.addCustomer(customer);
+        return true;
     }
 }

@@ -22,7 +22,7 @@ class HasIncorrectUUID implements CustomerInterfaceState {
 
 
     public void enterUUID() {
-        uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
+        uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 0, 37);
         UUID newCustomerUUID = UUID.fromString(UUID_SCANNER.alphaNumericStringGet());
 
         if (bankProxy.requestCustomer(newCustomerUUID) == null) {
@@ -75,7 +75,9 @@ class HasIncorrectUUID implements CustomerInterfaceState {
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
+        customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.hasAccount(false);
     }
 
     @Override
@@ -106,7 +108,7 @@ class HasIncorrectUUID implements CustomerInterfaceState {
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
             customerInterface.enterUUID();
         } else if (answer.equalsIgnoreCase("LOGOFF")) {
-            this.customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.logOff();
         } else if (answer.equalsIgnoreCase("EXIT")) {
             System.out.println("Exiting.");
             System.exit(0);

@@ -26,6 +26,8 @@ public class RealBank implements Serializable, Bank {
         this.name = name;
         this.NUMBER_OF_ACCOUNTS = numberAccounts;
         this.NUMBER_OF_CUSTOMERS = numberCustomers;
+        this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
+        this.accountHashtable = new Hashtable<Integer, Account>(numberAccounts * 2);
 
     }
 
@@ -110,7 +112,17 @@ public class RealBank implements Serializable, Bank {
 
     @Override
     public boolean hasCustomer(UUID customerUUID) {
-        return this.customerHashtable.containsKey(customerUUID.hashCode());
+        try {
+            if (!this.customerHashtable.isEmpty()) {
+                return this.customerHashtable.containsKey(customerUUID.hashCode());
+            } else {
+                return false;
+            }
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+            System.out.println("Null pointer exception in real bank at hasCustomer():boolean");
+        }
+        return false;
     }
 
     public boolean removeAccount(Integer accountNumber) {
@@ -181,4 +193,5 @@ public class RealBank implements Serializable, Bank {
             }
         }
     }
+
 }

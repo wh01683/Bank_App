@@ -30,14 +30,18 @@ class LoggedOff implements CustomerInterfaceState {
     @Override
     public void hasAccount(boolean isRegistered) {
 
-        String loginOrRegister = logInOrRegister.stringGet();
+        if (!isRegistered) {
+            customerInterface.START();
+        } else {
+            String loginOrRegister = logInOrRegister.stringGet();
 
-        if (loginOrRegister.equalsIgnoreCase("NO")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
-            customerInterface.hasAccount(false);
-        } else if (loginOrRegister.equalsIgnoreCase("YES")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
-            customerInterface.enterUUID();
+            if (loginOrRegister.equalsIgnoreCase("NO")) {
+                customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
+                customerInterface.hasAccount(false);
+            } else if (loginOrRegister.equalsIgnoreCase("YES")) {
+                customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+                customerInterface.enterUUID();
+            }
         }
     }
 

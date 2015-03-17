@@ -22,14 +22,19 @@ class HasAccount implements CustomerInterfaceState {
 
     @Override
     public void enterUUID() {
-        uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID or type BACK to go back.", 35, 37);
+        uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID.\nBACK, LOGOFF", 0, 37);
         UUID newCustomerUUID;
 
         String uuidInput = UUID_SCANNER.alphaNumericStringGet();
 
         while (!(uuidInput.equalsIgnoreCase("BACK"))) {
-            newCustomerUUID = UUID.fromString(uuidInput);
-            if (bankProxy.requestCustomer(newCustomerUUID) == null) {
+
+            if (uuidInput.equalsIgnoreCase("LOGOFF")) {
+                System.out.println("Have a great day!");
+                customerInterface.saveBankDataToFile();
+                customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+                customerInterface.hasAccount(false);
+            } else if (!bankProxy.hasCustomer(UUID.fromString(uuidInput))) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
             * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
             * They are given 5 attempts total before the system exits.*/
@@ -37,7 +42,7 @@ class HasAccount implements CustomerInterfaceState {
                 boolean wantsToRegister = wantsToRegister();
                 int uuidCounter = 1;
 
-                while (bankProxy.requestCustomer(newCustomerUUID) == null && uuidCounter < 7) {
+                while (!bankProxy.hasCustomer(UUID.fromString(uuidInput)) && uuidCounter < 7) {
                     if (uuidCounter == 6) {
                         System.out.println("All attempts exhausted. System exiting.");
                         System.exit(1);
@@ -48,7 +53,15 @@ class HasAccount implements CustomerInterfaceState {
                     } else if (uuidCounter < 6) {
                         System.out.println(uuidCounter + " attempts remaining of 5. Please try again.");
                         uuidInput = UUID_SCANNER.alphaNumericStringGet();
-                        newCustomerUUID = UUID.fromString(uuidInput);
+                        if (uuidInput.equalsIgnoreCase("BACK")) {
+                            customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
+                            customerInterface.hasAccount(false);
+                        } else if (uuidInput.equalsIgnoreCase("LOGOFF")) {
+                            System.out.println("Have a great day!");
+                            customerInterface.saveBankDataToFile();
+                            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+                            customerInterface.hasAccount(false);
+                        }
                     }
                     uuidCounter++;
                 }
@@ -77,7 +90,9 @@ class HasAccount implements CustomerInterfaceState {
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
+        customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.hasAccount(false);
 
     }
 
@@ -109,7 +124,10 @@ class HasAccount implements CustomerInterfaceState {
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
             customerInterface.enterUUID();
         } else if (answer.equalsIgnoreCase("LOGOFF")) {
-            this.customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            System.out.println("Have a great day!");
+            customerInterface.saveBankDataToFile();
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.hasAccount(false);
         } else if (answer.equalsIgnoreCase("EXIT")) {
             System.out.println("Exiting.");
             System.exit(0);

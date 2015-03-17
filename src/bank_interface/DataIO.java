@@ -9,20 +9,41 @@ import java.util.Hashtable;
 
 /*DATA Input/Output class for storing all the write -to-file methods and headers, etc.*/
 public class DataIO {
+    private static RealBank realBank;
     String hiding = "ishallpass";
     private Hashtable customerHashTable = new Hashtable(50);
     private Hashtable accountHashTable = new Hashtable(500);
     private PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
     private ObjectOutputStream bankDataWriter = getOS(getFS(System.getProperty("user.dir") + "\\bankInformation.txt"));
     private ObjectInputStream bankDataReader = getIS(getFIS(System.getProperty("user.dir") + "\\bankInformation.txt"));
-    private RealBank realBank;
 
     public DataIO(RealBank newRealBank) {
-        this.realBank = newRealBank;
-        this.customerHashTable = newRealBank.getCustomerTable();
-        this.accountHashTable = newRealBank.getAccountHashTable();
+
+        if (!(readAllBankDataFromFile("DEFAULT") == null)) {
+            realBank = readAllBankDataFromFile("DEFAULT");
+            this.customerHashTable = realBank.getCustomerTable();
+            this.accountHashTable = realBank.getAccountHashTable();
+        } else {
+            realBank = newRealBank;
+            this.customerHashTable = newRealBank.getCustomerTable();
+            this.accountHashTable = newRealBank.getAccountHashTable();
+        }
+
 
     }
+
+    public DataIO() {
+        if (!(readAllBankDataFromFile("DEFAULT") == null)) {
+            readAllBankDataFromFile("DEFAULT");
+            this.customerHashTable = this.getRealBank().getCustomerTable();
+            this.accountHashTable = this.getRealBank().getAccountHashTable();
+        } else {
+            realBank = new RealBank("testing", 10, 10);
+            this.customerHashTable = realBank.getCustomerTable();
+            this.accountHashTable = realBank.getAccountHashTable();
+        }
+    }
+
 
     void printAllCustomerPrivateInformation(Integer customerHashKey, Hashtable customerAccounts) {
 
@@ -188,7 +209,7 @@ public class DataIO {
 
         try {
 
-            this.bankDataWriter.writeObject(this.realBank);
+            this.bankDataWriter.writeObject(realBank);
             bankDataWriter.close();
 
         } catch (java.io.IOException e) {
@@ -209,7 +230,7 @@ public class DataIO {
             this.bankDataReader = new ObjectInputStream(new BufferedInputStream(getFIS(System.getProperty("user.dir") + "\\bankInformation.txt")));
             while (this.bankDataReader.available() > 0) {
 
-                this.realBank = (RealBank) this.bankDataReader.readObject();
+                return realBank = (RealBank) this.bankDataReader.readObject();
             }
         } catch (java.io.IOException e) {
             e.printStackTrace();
@@ -219,11 +240,11 @@ public class DataIO {
             System.exit(1);
         }
 
-        return this.realBank;
+        return null;
     }
 
     public RealBank getRealBank(){
-        return this.realBank;
+        return realBank;
     }
 
     private PrintWriter getPW(String fileName) {
