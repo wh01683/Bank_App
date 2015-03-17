@@ -37,6 +37,7 @@ class CustomerInterface {
 
         realBank = newRealBank;
         dataIO = new DataIO();
+        dataIO.setRealBank(newRealBank);
         bankProxy = new BankProxy(realBank);
         //uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
 

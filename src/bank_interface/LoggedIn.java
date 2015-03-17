@@ -159,7 +159,7 @@ class LoggedIn implements CustomerInterfaceState {
                 dataIO.printAccountInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
                 printInformation(REQUEST_SCANNER.stringGet());
             } else if (request.equalsIgnoreCase("ALL")) {
-                dataIO.printAllCustomerPrivateInformation(bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getUUID().hashCode(), bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
+                dataIO.printAllCustomerPrivateInformation(customerInterface.getCustomerUUID().hashCode(), bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getAccountHashtable());
                 printInformation(REQUEST_SCANNER.stringGet());
             } else {
                 System.out.println("Could not process your request: " + request + " Please try again");

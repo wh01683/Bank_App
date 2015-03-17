@@ -26,7 +26,7 @@ public class DataIO {
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println(getCustomerHeaders());
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println(this.customerHashTable.get(customerHashKey).toString());
+        System.out.println(this.getRealBank().getCustomerTable().get(customerHashKey).toString());
 
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         printAccountInformation(customerAccounts);
@@ -97,7 +97,7 @@ public class DataIO {
 
     public void printAllCustomerInformation() {
 
-        Enumeration<Integer> enumKeys = customerHashTable.keys();
+        Enumeration<Integer> enumKeys = realBank.getCustomerTable().keys();
 
         int tempCount = 10;
         while (enumKeys.hasMoreElements()) {
@@ -107,7 +107,7 @@ public class DataIO {
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 tempCount = 0;
             }
-            System.out.println(customerHashTable.get(enumKeys.nextElement()).toString());
+            System.out.println(realBank.getCustomerTable().get(enumKeys.nextElement()).toString());
             tempCount++;
         }
 
@@ -115,7 +115,7 @@ public class DataIO {
 
     public void printAllAccountInformation() {
 
-        Enumeration<Integer> enumKeys = accountHashTable.keys();
+        Enumeration<Integer> enumKeys = realBank.getAccountHashTable().keys();
 
         int tempCount = 10;
         while (enumKeys.hasMoreElements()) {
@@ -125,7 +125,7 @@ public class DataIO {
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 tempCount = 0;
             }
-            System.out.println(accountHashTable.get(enumKeys.nextElement()).toString());
+            System.out.println(realBank.getAccountHashTable().get(enumKeys.nextElement()).toString());
             tempCount++;
         }
 

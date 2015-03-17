@@ -9,8 +9,6 @@ package bank_interface;
  * information like ChexSystems report (the banking equivalent of a credit check), available balance
  * to open with, check basic customer information like age, etc*/
 
-import bank_package.RealBank;
-
 class Main {
 
     public static void main(String[] args) {
@@ -18,27 +16,15 @@ class Main {
         int num = Integer.parseInt(args[0]);
         test.work(num);*/
 
-        DataIO dataIO = new DataIO();
-        dataIO.readAllBankDataFromFile();
-        RealBank newBank = new RealBank("hello", 20, 20);
-        if (dataIO.getRealBank() != null) {
-            newBank = dataIO.getRealBank();
-        }
 
         //RealBank newBank = new RealBank("hello", 10, 10);
-        newBank.addRandomCustomers(500);
-        dataIO.saveAllBankDataToFile(newBank);
 
 /*
-        DataIO dataIO = new DataIO();
 */
+        DataIO dataIO = new DataIO();
         dataIO.readAllBankDataFromFile();
 
-        if (!(dataIO.getRealBank() == null)) {
-            newBank = dataIO.getRealBank();
-        }
-
-        CustomerInterface test = CustomerInterface.getInstance(newBank);
+        CustomerInterface test = CustomerInterface.getInstance(dataIO.getRealBank());
         test.START();
     }
 }
