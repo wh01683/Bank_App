@@ -12,8 +12,8 @@ import java.util.Hashtable;
  */
 class LoggedIn implements CustomerInterfaceState {
 
-    private static BankProxy bankProxy;
     private static DataIO dataIO;
+    private static BankProxy bankProxy;
     private final uScanner ACCOUNT_REQUESTER_SCANNER = new uScanner("What type of account would you like to add?\nCHECKING, SAVINGS, MMA, IRA, CD, RETURN", -1, 10);
     private final uScanner INFORMATION_REQUEST_SCANNER = new uScanner("What would you like to know more about?\nCHEX, CREDIT, ACCOUNTS, ALL, MENU, LOGOFF", 2, 9);
     private final uScanner TRANSACTION_REQUEST_SCANNER = new uScanner("What transaction would you like to process?\nDEPOSIT, WITHDRAW, TRANSFER, ACCOUNTS, RETURN", 2, 9);

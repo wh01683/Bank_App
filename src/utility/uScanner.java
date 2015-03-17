@@ -89,13 +89,17 @@ public class uScanner implements Serializable {
         return in.nextDouble();
     }
 
-    private String getString() throws NoSuchElementException {
+    private String getString() {
         System.out.println(this.prompt);
-
-        while (!in.hasNext()) {
-            System.out.println(this.prompt);
-            in.next();
+        try {
+            while (!in.hasNext()) {
+                System.out.println(this.prompt);
+                in.next();
+            }
+            return in.next();
+        } catch (NoSuchElementException l) {
+            System.exit(0);
         }
-        return in.next();
+        return null;
     }
 }

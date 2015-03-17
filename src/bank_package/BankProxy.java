@@ -2,16 +2,18 @@ package bank_package;
 
 import acct.Account;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Hashtable;
 import java.util.UUID;
 
 
 public class BankProxy implements Bank {
 
-    private RealBank realBank;
+    private static RealBank realBank;
 
     public BankProxy(RealBank newRealBank) {
-        this.realBank = newRealBank;
+        realBank = newRealBank;
     }
 
     @Override
@@ -64,4 +66,26 @@ public class BankProxy implements Bank {
         realBank.addCustomer(customer);
         return true;
     }
+
+
+    public void saveAllBankDataToFile() {
+
+        RealBank nonStaticRealBank = realBank;
+
+        try {
+
+            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/bankData.txt");
+            ObjectOutputStream bankDataWriter = new ObjectOutputStream(fos);
+
+            bankDataWriter.writeObject(nonStaticRealBank);
+
+
+            fos.close();
+            bankDataWriter.close();
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

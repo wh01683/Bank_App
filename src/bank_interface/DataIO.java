@@ -206,6 +206,8 @@ public class DataIO {
 
             //while (bankDataReader.available() > 0) {
             this.realBank = (RealBank) bankDataReader.readObject();
+            this.customerHashTable = realBank.getCustomerTable();
+            this.accountHashTable = realBank.getAccountHashTable();
             //}
 
 

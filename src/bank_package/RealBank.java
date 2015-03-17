@@ -13,9 +13,9 @@ import java.util.UUID;
 
 public class RealBank implements Serializable, Bank {
 
-    private final Random r = new Random();
-    private final RandomGenerator random = new RandomGenerator();
-    private final AccountFactory testAccountFactory = new AccountFactory();
+    private static final Random r = new Random();
+    private static final RandomGenerator random = new RandomGenerator();
+    private static final AccountFactory testAccountFactory = new AccountFactory();
     private int NUMBER_OF_CUSTOMERS;
     private int NUMBER_OF_ACCOUNTS;
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
@@ -26,13 +26,18 @@ public class RealBank implements Serializable, Bank {
         this.name = name;
         this.NUMBER_OF_ACCOUNTS = numberAccounts;
         this.NUMBER_OF_CUSTOMERS = numberCustomers;
-        this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
-        this.accountHashtable = new Hashtable<Integer, Account>(numberAccounts * 2);
+        if (customerHashtable == null) {
+            customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
+        }
+        if (accountHashtable == null) {
+            accountHashtable = new Hashtable<Integer, Account>(numberAccounts * 2);
+        }
+
 
     }
 
     public Hashtable getAccountHashTable() {
-        return this.accountHashtable;
+        return accountHashtable;
     }
 
     public RealBank getNewRandomBank() {
@@ -43,11 +48,18 @@ public class RealBank implements Serializable, Bank {
     }
 
     public void addRandomCustomers(int numberCustomers) {
-        this.customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
-        this.accountHashtable = new Hashtable<Integer, Account>(numberCustomers * 10);
+
+        if (customerHashtable == null) {
+            customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
+        }
+        if (accountHashtable == null) {
+            accountHashtable = new Hashtable<Integer, Account>(numberCustomers * 10);
+        }
+
+
         for (int i = 0; i < numberCustomers; i++) {
             Customer tempCustomer = new Customer();
-            this.customerHashtable.put(tempCustomer.getUUID().hashCode(), tempCustomer);
+            customerHashtable.put(tempCustomer.getUUID().hashCode(), tempCustomer);
 
             for (int k = 0; k < r.nextInt(10); k++) { //generates anywhere between 10 and 0 random accounts
                 Account tempAccount = testAccountFactory.getRandomAccount(tempCustomer);
@@ -60,14 +72,14 @@ public class RealBank implements Serializable, Bank {
 
     public boolean addCustomer(Customer customer) {
 
-        this.customerHashtable.put(customer.getUUID().hashCode(), customer);
+        customerHashtable.put(customer.getUUID().hashCode(), customer);
         this.NUMBER_OF_CUSTOMERS++;
         Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
         while (acctKeys.hasMoreElements()) {
             Integer acctKey = acctKeys.nextElement();
             Account tempAcct = customer.getAccount(acctKey);
             if (!(tempAcct == null)){
-                this.accountHashtable.put(acctKey, tempAcct);
+                accountHashtable.put(acctKey, tempAcct);
                 this.NUMBER_OF_ACCOUNTS++;
             }
         }
@@ -76,15 +88,15 @@ public class RealBank implements Serializable, Bank {
 
     public void addAccount(Account account){
 
-        this.accountHashtable.put(account.getACCOUNT_NUMBER(), account);
-        this.customerHashtable.get(account.getOwner().hashCode()).addAccount(account);
+        accountHashtable.put(account.getACCOUNT_NUMBER(), account);
+        customerHashtable.get(account.getOwner().hashCode()).addAccount(account);
         this.NUMBER_OF_ACCOUNTS++;
     }
 
     public boolean removeCustomer(Customer customer){
 
-        if(this.accountHashtable.contains(customer)){
-            this.accountHashtable.remove(customer.getUUID().hashCode());
+        if (accountHashtable.contains(customer)) {
+            accountHashtable.remove(customer.getUUID().hashCode());
             this.NUMBER_OF_CUSTOMERS--;
 
             Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
@@ -92,7 +104,7 @@ public class RealBank implements Serializable, Bank {
                 Integer acctKey = acctKeys.nextElement();
                 Account tempAcct = customer.getAccount(acctKey);
                 if (!(tempAcct == null)){
-                    this.accountHashtable.remove(acctKey);
+                    accountHashtable.remove(acctKey);
                     this.NUMBER_OF_ACCOUNTS--;
                 }
 
@@ -107,13 +119,13 @@ public class RealBank implements Serializable, Bank {
 
     @Override
     public boolean hasAccount(Integer accountNumber) {
-        return this.accountHashtable.containsKey(accountNumber);
+        return accountHashtable.containsKey(accountNumber);
     }
 
     @Override
     public boolean hasCustomer(UUID customerUUID) {
         try {
-            return !this.customerHashtable.isEmpty() && this.customerHashtable.containsKey(customerUUID.hashCode());
+            return !customerHashtable.isEmpty() && customerHashtable.containsKey(customerUUID.hashCode());
         } catch (NullPointerException n) {
             n.printStackTrace();
             System.out.println("Null pointer exception in real bank at hasCustomer():boolean");
@@ -123,10 +135,10 @@ public class RealBank implements Serializable, Bank {
 
     public boolean removeAccount(Integer accountNumber) {
 
-        if(this.accountHashtable.containsKey(accountNumber)){
-            Account tempAccountToBeRemoved = this.accountHashtable.get(accountNumber);
-            this.customerHashtable.get(this.accountHashtable.get(accountNumber).getOwner().hashCode()).getAccountHashtable().remove(accountNumber);
-            this.accountHashtable.remove(accountNumber);
+        if (accountHashtable.containsKey(accountNumber)) {
+            Account tempAccountToBeRemoved = accountHashtable.get(accountNumber);
+            customerHashtable.get(accountHashtable.get(accountNumber).getOwner().hashCode()).getAccountHashtable().remove(accountNumber);
+            accountHashtable.remove(accountNumber);
             this.NUMBER_OF_ACCOUNTS--;
             return true;
         } else {
@@ -137,7 +149,7 @@ public class RealBank implements Serializable, Bank {
     public Customer requestCustomer(UUID customerID){
 
         if(this.customerHashtable.containsKey(customerID.hashCode())){
-            return customerHashtable.get(customerID.hashCode());
+            return this.customerHashtable.get(customerID.hashCode());
         }
         else{
             return null;
@@ -167,7 +179,7 @@ public class RealBank implements Serializable, Bank {
     }
 
     public Hashtable getCustomerTable() {
-        return this.customerHashtable;
+        return customerHashtable;
     }
 
     public void updateAccountTable() {
@@ -184,7 +196,7 @@ public class RealBank implements Serializable, Bank {
                 Integer acctKey = acctKeys.nextElement();
                 Account tempAcct = tempHash.get(acctKey);
                 if (!(tempAcct == null))
-                    this.accountHashtable.put(acctKey, tempAcct);
+                    accountHashtable.put(acctKey, tempAcct);
 
             }
         }

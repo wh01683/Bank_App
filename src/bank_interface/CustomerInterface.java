@@ -20,16 +20,14 @@ class CustomerInterface {
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID CustomerUUID;
     private static DataIO dataIO;
+    private static RealBank realBank;
+    private static BankProxy bankProxy;
     final CustomerInterfaceState loggedOff;
     final CustomerInterfaceState loggedIn;
     final CustomerInterfaceState hasAccount;
     final CustomerInterfaceState hasNoAccount;
     final CustomerInterfaceState hasCorrectUUID;
     final CustomerInterfaceState hasIncorrectUUID;
-    private RealBank realBank;
-    private BankProxy bankProxy;
-
-
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
@@ -39,7 +37,7 @@ class CustomerInterface {
 
         realBank = newRealBank;
         dataIO = new DataIO();
-        bankProxy = new BankProxy(newRealBank);
+        bankProxy = new BankProxy(realBank);
         //uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
 
         loggedOff = new LoggedOff(this);
@@ -50,6 +48,7 @@ class CustomerInterface {
         loggedIn = new LoggedIn(this, bankProxy, dataIO);
 
         currentCustomerInterfaceState = loggedOff;
+
 
 
     }
@@ -80,7 +79,8 @@ class CustomerInterface {
         dataIO.readAllBankDataFromFile();
         if (dataIO.getRealBank() != null) {
             realBank = dataIO.getRealBank();
-            bankProxy = new BankProxy(realBank);
+            SINGLETON_INSTANCE = new CustomerInterface(realBank);
+
         } else {
             realBank = new RealBank("hello", 10, 10);
         }
@@ -149,7 +149,7 @@ class CustomerInterface {
     }
 
     public void saveBankDataToFile() {
-        dataIO.saveAllBankDataToFile(realBank);
+        bankProxy.saveAllBankDataToFile();
     }
 
 }

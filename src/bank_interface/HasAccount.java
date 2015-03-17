@@ -67,6 +67,7 @@ class HasAccount implements CustomerInterfaceState {
             }
 
             customerInterface.setCustomerInterfaceState(customerInterface.hasCorrectUUID);
+            customerInterface.setCustomerUUID(UUID.fromString(uuidInput));
             customerInterface.enterPassword();
         }
 
