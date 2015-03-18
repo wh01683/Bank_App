@@ -34,12 +34,16 @@ class CustomerInterface {
     private CustomerInterfaceState currentCustomerInterfaceState;
 
     private CustomerInterface(RealBank newRealBank) {
-
-        realBank = newRealBank;
-        dataIO = new DataIO();
-        dataIO.setRealBank(newRealBank);
-        bankProxy = new BankProxy(realBank);
-        //uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
+        try {
+            realBank = newRealBank;
+            dataIO = new DataIO();
+            dataIO.setRealBank(newRealBank);
+            bankProxy = new BankProxy(realBank);
+            //uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 35, 37);
+        } catch (NullPointerException con) {
+            System.out.printf("Null pointer caught in CustomerInterface : constructor");
+            System.exit(1);
+        }
 
         loggedOff = new LoggedOff(this);
         hasAccount = new HasAccount(this, bankProxy);
@@ -77,13 +81,18 @@ class CustomerInterface {
     * @return void*/
     public void START() {
 
-        dataIO.readAllBankDataFromFile();
-        if (dataIO.getRealBank() != null) {
-            realBank = dataIO.getRealBank();
-            SINGLETON_INSTANCE = new CustomerInterface(realBank);
+        try {
+            dataIO.readAllBankDataFromFile();
+            if (dataIO.getRealBank() != null) {
+                realBank = dataIO.getRealBank();
+                SINGLETON_INSTANCE = new CustomerInterface(realBank);
 
-        } else {
-            realBank = new RealBank("hello", 10, 10);
+            } else {
+                realBank = new RealBank("hello", 10, 10);
+            }
+        } catch (NullPointerException start) {
+            System.out.printf("Null pointer caught in CustomerInterface : START()");
+            System.exit(1);
         }
 
 
@@ -105,20 +114,30 @@ class CustomerInterface {
 
     }
 
-    public void logOff() {
-        currentCustomerInterfaceState.logOff();
-    }
 
     public UUID getCustomerUUID() {
-        return CustomerUUID;
+        if (!(CustomerUUID == null)) {
+            return CustomerUUID;
+        } else {
+            System.out.printf("CustomerUUID in CustomerInterface is null. Returning null.");
+            return null;
+        }
     }
 
     public void setCustomerUUID(UUID newCustomerUUID) {
-        CustomerUUID = newCustomerUUID;
+        try {
+            CustomerUUID = newCustomerUUID;
+        } catch (NullPointerException uuid) {
+            System.out.printf("Null pointer caught in CustomerInterface : setCustomerUUID\nparameter cannot be null.");
+        }
     }
 
     public void setCustomerInterfaceState(CustomerInterfaceState newCustomerInterfaceState) {
         this.currentCustomerInterfaceState = newCustomerInterfaceState;
+    }
+
+    public void logOff() {
+        currentCustomerInterfaceState.logOff();
     }
 
     public void enterUUID() {

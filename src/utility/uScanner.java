@@ -45,7 +45,7 @@ public class uScanner implements Serializable {
         double minDouble = this.MIN;
         double maxDouble = this.MAX;
 
-        while (val < minDouble | val > maxDouble) {
+        while (Math.abs(val) < Math.abs(minDouble) | val > maxDouble) {
             System.out.println("Must be greater than " + minDouble + " and lesser than " + maxDouble);
             val = getDouble();
         }

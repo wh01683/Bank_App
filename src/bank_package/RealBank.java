@@ -18,6 +18,7 @@ public class RealBank implements Serializable, Bank {
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
+    /*ToDo: Declare Hashtables static and adapt saveData methods to cope with this.*/
 
     public RealBank(String name, int numberAccounts, int numberCustomers) {
         this.name = name;

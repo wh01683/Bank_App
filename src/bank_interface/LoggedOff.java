@@ -6,7 +6,7 @@ import utility.uScanner;
 class LoggedOff implements CustomerInterfaceState {
 
     /*login or register prompt.*/
-    private static final uScanner logInOrRegister = new uScanner("----LOGIN---------------------------------REGISTER----", 4, 8);
+    private static final uScanner logInOrRegister = new uScanner("----LOGIN--------------REGISTER-------------EXIT----", 4, 8);
     private final CustomerInterface customerInterface;
 
     public LoggedOff(CustomerInterface newCustomerInterface) {
@@ -33,7 +33,6 @@ class LoggedOff implements CustomerInterfaceState {
     @Override
     public void hasAccount(boolean isRegistered) {
 
-
             String loginOrRegister = logInOrRegister.stringGet();
 
         if (loginOrRegister.equalsIgnoreCase("REGISTER")) {
@@ -42,7 +41,14 @@ class LoggedOff implements CustomerInterfaceState {
         } else if (loginOrRegister.equalsIgnoreCase("LOGIN")) {
                 customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
                 customerInterface.enterUUID();
-            }
+        } else if (loginOrRegister.equalsIgnoreCase("EXIT")) {
+            System.out.printf("Exiting..");
+            System.exit(0);
+        } else {
+            System.out.printf("Request could not be processed.");
+            hasAccount(false);
+        }
+
 
     }
 

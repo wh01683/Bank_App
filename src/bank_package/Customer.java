@@ -79,13 +79,18 @@ public class Customer implements Serializable {
     }
 
     public Account getAccount(Integer accountNumber) {
-        final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", 0, 200000000);
+        try {
+            final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", 0, 200000000);
 
-        if (this.accountHashtable.containsKey(accountNumber))
-            return this.accountHashtable.get(accountNumber);
-        else{
-            System.out.println("Could not locate your account. Please re-enter your account number.");
-            return getAccount(ACCOUNT_NUMBER_SCANNER.intGet());
+            if (this.accountHashtable.containsKey(accountNumber))
+                return this.accountHashtable.get(accountNumber);
+            else {
+                System.out.println("Could not locate your account. Please re-enter your account number.");
+                return getAccount(ACCOUNT_NUMBER_SCANNER.intGet());
+            }
+        } catch (NullPointerException q) {
+            System.out.printf("null pointer caught in Customer : getAccount");
+            return null;
         }
     }
 
