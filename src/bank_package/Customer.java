@@ -80,6 +80,7 @@ public class Customer implements Serializable {
 
     public Account getAccount(Integer accountNumber) {
         final uScanner ACCOUNT_NUMBER_SCANNER = new uScanner("Please enter your ACCOUNT NUMBER, or -1 to RETURN", 0, 200000000);
+
         if (this.accountHashtable.containsKey(accountNumber))
             return this.accountHashtable.get(accountNumber);
         else{
