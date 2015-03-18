@@ -58,9 +58,9 @@ public class DataIO {
     void printAccountInformation(Hashtable customerAccounts) {
         try {
             int tempCount = 10;
-            Enumeration<Integer> enumer = customerAccounts.keys();
+            Enumeration customerAccountEnumeration = customerAccounts.keys();
 
-            while (enumer.hasMoreElements()) {
+            while (customerAccountEnumeration.hasMoreElements()) {
                 if (tempCount == 10) {
                     System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                     System.out.println(getAccountHeaders());
@@ -68,7 +68,7 @@ public class DataIO {
                     tempCount = 0;
                 }
 
-                Integer tempKey = enumer.nextElement();
+                Integer tempKey = (Integer) customerAccountEnumeration.nextElement();
 
                 if (customerAccounts.containsKey(tempKey)) {
                     System.out.println(customerAccounts.get(tempKey).toString());
@@ -89,7 +89,7 @@ public class DataIO {
 
     /*@func writeCustomerAndAccountInformationToFile():
     *
-    * writes BOTH the customer and the customer's account formation to a file using nexted hashtable enumerations.
+    * writes BOTH the customer and the customer's account formation to a file using nested hashtable enumerations.
     * when a customer is printed, the method will print all of the accounts associated with that particular customer
      * when the method has printed all the accounts associated with that customer, we will move on to the next customer
      *
@@ -102,18 +102,18 @@ public class DataIO {
         try {
             PrintWriter writer = new PrintWriter(String.format("%s/writeBankData.txt", System.getProperty("user.dir")));
 
-            Enumeration<Integer> enumKeys = getRealBank().getCustomerTable().keys();
+            Enumeration enumKeys = getRealBank().getCustomerTable().keys();
             while (enumKeys.hasMoreElements()) {
-                Integer key = enumKeys.nextElement();
+                Integer key = (Integer) enumKeys.nextElement();
                 writer.println(getRealBank().getCustomerTable().get(key).toString());
-                Enumeration<Integer> acctKeys = getRealBank().getAccountHashTable().keys();
+                Enumeration acctKeys = getRealBank().getAccountHashTable().keys();
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 writer.println(getCustomerHeaders());
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 writer.println(getAccountHeaders());
 
                 while (acctKeys.hasMoreElements()) {
-                    Integer acctKey = acctKeys.nextElement();
+                    Integer acctKey = (Integer) acctKeys.nextElement();
                     writer.println(getRealBank().getAccountHashTable().get(acctKey).toString());
         }
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -139,7 +139,7 @@ public class DataIO {
 
     public void printAllCustomerInformation() {
 
-        Enumeration<Integer> enumKeys = getRealBank().getCustomerTable().keys();
+        Enumeration enumKeys = getRealBank().getCustomerTable().keys();
 
         int tempCount = 10;
         while (enumKeys.hasMoreElements()) {
@@ -157,12 +157,12 @@ public class DataIO {
 
     /*@func printAllAccountInformation():
     *
-    * prints all information concerning ACCOUNTS ONLY to the console. will contain information realated to the user
+    * prints all information concerning ACCOUNTS ONLY to the console. will contain information related to the user
     * associated with the account, but will only print out accounts on file.*/
     public void printAllAccountInformation() {
 
         try {
-            Enumeration<Integer> enumKeys = getRealBank().getAccountHashTable().keys();
+            Enumeration enumKeys = getRealBank().getAccountHashTable().keys();
 
             int tempCount = 10;
             while (enumKeys.hasMoreElements()) {
@@ -191,7 +191,7 @@ public class DataIO {
     public void writeCustomerInformationToFile() {
         try {
             PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/writeBankData.txt");
-            Enumeration<Integer> enumKeys = this.getRealBank().getCustomerTable().keys();
+            Enumeration enumKeys = this.getRealBank().getCustomerTable().keys();
 
             int tempCount = 10;
             while (enumKeys.hasMoreElements()) {
@@ -222,7 +222,7 @@ public class DataIO {
         try {
             PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/writeBankData.txt");
 
-            Enumeration<Integer> enumKeys = getRealBank().getAccountHashTable().keys();
+            Enumeration enumKeys = getRealBank().getAccountHashTable().keys();
             int tempCount = 10;
 
             while (enumKeys.hasMoreElements()) {
@@ -248,7 +248,7 @@ public class DataIO {
     /*@func saveAllBankDataToFile():
     *
     * saves the current RealBank object to a file named bankData.txt in the user's current directory using an
-    * object output stream. the File outputstream and object output stream are closed when they are done.
+    * object output stream. the File output stream and object output stream are closed when they are done.
     *
     * @param newRealBank to be saved, useful for passing and saving the most current bank
     *
