@@ -6,7 +6,6 @@ import java.util.Vector;
 
 public class RandomGenerator implements Serializable {
 
-    private static int currentIndex;
     private final Random r = new Random();
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
@@ -30,7 +29,7 @@ public class RandomGenerator implements Serializable {
             tempAccountNumber = temp += r.nextInt(99999999);
 
         this.acctNumberList.add(tempAccountNumber);
-        currentIndex++;
+
         return tempAccountNumber;
     }
 
@@ -79,10 +78,9 @@ public class RandomGenerator implements Serializable {
     }
 
     public String emailGen(){
-        String email = "";
-        email = passwordGen(5, 10);
-        email+="@";
-        return email;
+        String[] emailDomains = {"yahoo.com", "gmail.com", "georgiasouthern.edu", "hotmail.com", "live.com",
+                "genericbusiness.com", "someotheruniversity.edu", "notmyrealemail.com"};
+        return (passwordGen(5, 10) + "@" + emailDomains[r.nextInt(8)]);
     }
 
 

@@ -257,7 +257,7 @@ public class DataIO {
 
         try {
 
-            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/writeBankData.txt");
+            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/bankData.txt");
             ObjectOutputStream bankDataWriter = new ObjectOutputStream(fos);
 
             bankDataWriter.writeObject(newRealBank);

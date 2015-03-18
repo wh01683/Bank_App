@@ -5,9 +5,11 @@ import acct.Account;
 import java.util.Hashtable;
 import java.util.UUID;
 
-/**
- * Created by robert on 3/16/2015.
- */
+
+/*Bank Interface defines the methods available to the Bank Proxy and ultimately the customer. the goal is to restrict
+* their access and not give customers the ability to edit balances(aside from making a deposit or withdrawal), add/remove
+* other customers, etc.*/
+
 interface Bank {
 
     public void addAccount(Account newAccount);

@@ -8,6 +8,12 @@ class Main {
         DataIO dataIO = new DataIO(); /*declare new data input/output object. this helps us retrieve the bank'
         information form storage*/
 
+        //below is used to instantiate a new bank and register if you do not have a bankData file yet
+
+        /*RealBank tempBank = new RealBank("name", 1, 1);
+        dataIO.saveAllBankDataToFile(tempBank);*/
+
+
         dataIO.readAllBankDataFromFile(); /*invoke the "readAllBankDataFromFile()" method in the dataIO object
         this will populate the RealBank object INSIDE the dataIO object.*/
 
