@@ -1,30 +1,19 @@
 package bank_interface;
-/*The goal of the facade pattern is to simplify a group of subsystems
- * by making a unified interface to group all the subsystems. the implemented
- * Systems have no knowledge of the facade; they have no instance of the facade.*/
 
-/*The purpose of this application is to demonstrate understanding and possible uses 
- * of the Facade pattern. I will create a bank themed application which will implement a 
- * checking account application class as the facade class. Subclasses will include bank account
- * information like ChexSystems report (the banking equivalent of a credit check), available balance
- * to open with, check basic customer information like age, etc*/
 
 class Main {
 
     public static void main(String[] args) {
-        /*Main test = new Main();
-        int num = Integer.parseInt(args[0]);
-        test.work(num);*/
 
+        DataIO dataIO = new DataIO(); /*declare new data input/output object. this helps us retrieve the bank'
+        information form storage*/
 
-        //RealBank newBank = new RealBank("hello", 10, 10);
+        dataIO.readAllBankDataFromFile(); /*invoke the "readAllBankDataFromFile()" method in the dataIO object
+        this will populate the RealBank object INSIDE the dataIO object.*/
 
-/*
-*/
-        DataIO dataIO = new DataIO();
-        dataIO.readAllBankDataFromFile();
+        CustomerInterface test = CustomerInterface.getInstance(dataIO.getRealBank()); /*get the RealBank object from the
+        dataIO object and pass it to the new CustomerInterface instance using the singleton instantiator*/
 
-        CustomerInterface test = CustomerInterface.getInstance(dataIO.getRealBank());
-        test.START();
+        test.START(); /*call the START() method of the CustomerInterface class. this will start the chain of interactions*/
     }
 }

@@ -11,55 +11,58 @@ import java.util.Hashtable;
 public class DataIO {
     String hiding = "ishallpass";
     private RealBank realBank;
-    private Hashtable customerHashTable = new Hashtable(50);
-    private Hashtable accountHashTable = new Hashtable(500);
-/*
-    private PrintWriter writer = getPW(System.getProperty("user.dir") + "\\bankInformation.txt");
-*/
-
 
     public DataIO() {
     }
 
     void printAllCustomerPrivateInformation(Integer customerHashKey, Hashtable customerAccounts) {
+        try {
 
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println(getCustomerHeaders());
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println(this.getRealBank().getCustomerTable().get(customerHashKey).toString());
 
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        printAccountInformation(customerAccounts);
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println("Finished printing customer information...");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(getCustomerHeaders());
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(this.getRealBank().getCustomerTable().get(customerHashKey).toString());
 
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            printAccountInformation(customerAccounts);
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("Finished printing customer information...");
+        } catch (NullPointerException p) {
+            System.out.println("Null Pointer caught in DataIO : printAllCustomerPrivateInformation");
+            System.exit(1);
+        }
 
 
     }
 
     void printAccountInformation(Hashtable customerAccounts) {
+        try {
+            int tempCount = 10;
+            Enumeration<Integer> enumer = customerAccounts.keys();
 
-        int tempCount = 10;
-        Enumeration<Integer> enumer = customerAccounts.keys();
+            while (enumer.hasMoreElements()) {
+                if (tempCount == 10) {
+                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    System.out.println(getAccountHeaders());
+                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    tempCount = 0;
+                }
 
-        while (enumer.hasMoreElements()) {
-            if (tempCount == 10) {
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                System.out.println(getAccountHeaders());
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                tempCount = 0;
+                Integer tempKey = enumer.nextElement();
+
+                if (customerAccounts.containsKey(tempKey)) {
+                    System.out.println(customerAccounts.get(tempKey).toString());
+                } else if (!customerAccounts.containsKey(tempKey) && !customerAccounts.isEmpty())
+                    System.out.println("Wrong key.");
+
+                else
+                    System.out.println("Something else happened.");
+                tempCount++;
             }
-
-            Integer tempKey = enumer.nextElement();
-
-            if (customerAccounts.containsKey(tempKey)) {
-                System.out.println(customerAccounts.get(tempKey).toString());
-            } else if (!customerAccounts.containsKey(tempKey) && !customerAccounts.isEmpty())
-                System.out.println("Wrong key.");
-
-            else
-                System.out.println("Something else happened.");
-            tempCount++;
+        } catch (NullPointerException p) {
+            System.out.println("Null Pointer caught in DataIO : printAccountInformation");
+            System.exit(1);
         }
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("Finished printing accounts.");
@@ -97,7 +100,7 @@ public class DataIO {
 
     public void printAllCustomerInformation() {
 
-        Enumeration<Integer> enumKeys = realBank.getCustomerTable().keys();
+        Enumeration<Integer> enumKeys = getRealBank().getCustomerTable().keys();
 
         int tempCount = 10;
         while (enumKeys.hasMoreElements()) {
@@ -107,7 +110,7 @@ public class DataIO {
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 tempCount = 0;
             }
-            System.out.println(realBank.getCustomerTable().get(enumKeys.nextElement()).toString());
+            System.out.println(getRealBank().getCustomerTable().get(enumKeys.nextElement()).toString());
             tempCount++;
         }
 
@@ -115,7 +118,7 @@ public class DataIO {
 
     public void printAllAccountInformation() {
 
-        Enumeration<Integer> enumKeys = realBank.getAccountHashTable().keys();
+        Enumeration<Integer> enumKeys = getRealBank().getAccountHashTable().keys();
 
         int tempCount = 10;
         while (enumKeys.hasMoreElements()) {
@@ -125,34 +128,37 @@ public class DataIO {
                 System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 tempCount = 0;
             }
-            System.out.println(realBank.getAccountHashTable().get(enumKeys.nextElement()).toString());
+            System.out.println(getRealBank().getAccountHashTable().get(enumKeys.nextElement()).toString());
             tempCount++;
         }
 
     }
 
-    /*public void writeCustomerInformationToFile(String fileName) {
+    public void writeCustomerInformationToFile() {
+        try {
+            PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/bankData.txt");
+            Enumeration<Integer> enumKeys = this.getRealBank().getCustomerTable().keys();
 
-        if (!fileName.equalsIgnoreCase("DEFAULT"))
-            writer = getPW(fileName);
-
-        Enumeration<Integer> enumKeys = customerHashTable.keys();
-
-        int tempCount = 10;
-        while (enumKeys.hasMoreElements()) {
-            if (tempCount == 10) {
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                System.out.println(getCustomerHeaders());
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                tempCount = 0;
-            }
-            writer.println(customerHashTable.get(enumKeys.nextElement()).toString());
-            tempCount++;
+            int tempCount = 10;
+            while (enumKeys.hasMoreElements()) {
+                if (tempCount == 10) {
+                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    System.out.println(getCustomerHeaders());
+                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    tempCount = 0;
         }
-        writer.close();
+                writer.println(this.getRealBank().getCustomerTable().get(enumKeys.nextElement()).toString());
+                tempCount++;
+            }
+            writer.close();
+
+        } catch (FileNotFoundException f) {
+            System.out.println("Must create file first.");
+            System.exit(1);
+        }
         System.out.println("Finished writing customers to file.");
 
-    }*/
+    }
 
     /*public void writeAccountInformationToFile(String fileName) {
 
@@ -179,6 +185,7 @@ public class DataIO {
         System.out.println("Finished writing accounts to file.");
     }*/
 
+
     public void saveAllBankDataToFile(RealBank newRealBank) {
 
         try {
@@ -197,6 +204,15 @@ public class DataIO {
         }
     }
 
+
+    /*@func realAllBankDataFromFile():
+    *
+    * reads bank information from a file called "bankData.txt" located in the project directory (Bank_App) using an object
+    * input stream. sets current RealBank object to the new type case object read from the file.
+    *
+    * @param null
+    *
+    * @return void*/
     public void readAllBankDataFromFile() {
 
         try {
@@ -204,15 +220,12 @@ public class DataIO {
             FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + "/bankData.txt");
             ObjectInputStream bankDataReader = new ObjectInputStream(fis);
 
-            //while (bankDataReader.available() > 0) {
             this.realBank = (RealBank) bankDataReader.readObject();
-            this.customerHashTable = realBank.getCustomerTable();
-            this.accountHashTable = realBank.getAccountHashTable();
-            //}
-
 
             /*bankDataReader.close();
-            fis.close();*/
+            fis.close();
+
+            **** DO I NEED TO CLOSE THE INPUT STREAMS? SO FAR, NO PROBLEMS*/
 
         } catch (EOFException p) {
             p.printStackTrace();
@@ -226,10 +239,28 @@ public class DataIO {
 
     }
 
+    /*@func getRealBank():
+    *
+    * Used to access current bank information, and the bank data most recently loaded from file.
+    *
+    * @param:
+    *
+    * @return current RealBank object or a temporary if current RealBank is null.*/
     public RealBank getRealBank(){
-        return realBank;
+        /*checks to make sure the current realBank object is not null before passing it on to the invoker*/
+        if (!(this.realBank == null)) {
+            return realBank;
+        } else {/*if realBank IS null, a temporary instantiated realBank is returned and the invoker is notified
+        this is implemented to expose and catch bugs*/
+            System.out.println("realBank == null, returning temporary bank.");
+            return new RealBank("temp", 1, 1);
+        }
+
     }
 
+    /*@func setRealBank:
+    *
+    * sets the current RealBank object to the new instance. used when the bank has been updated and is no longer current*/
     public void setRealBank(RealBank newRealBank) {
         realBank = newRealBank;
     }
