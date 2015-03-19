@@ -65,7 +65,6 @@ public class uScanner implements Serializable {
                 val = getString();
             }
         }
-
         return val;
     }
 

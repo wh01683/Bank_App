@@ -56,10 +56,23 @@ public class CreditReport implements Serializable {
         this.AMOUNT_OF_LATE_PAYMENTS = 0;
     }
 
+    /**
+     * getCreditScore gets the user's pre-calculated credit score
+     *
+     * @return the customer's pre-calculated credit score.
+     */
     public int getCreditScore() {
         return this.CREDIT_SCORE;
     }
 
+    /**
+     * calculateCreditScore calculates the credit score for the customer. the minimum credit score is 100, so the score
+     * is initialized to 100. 10% of the score is not calculated in this class, so that portion(79)
+     * is automatically added to the score. The rest of the score is calculated by adding the
+     * sub scores calculated by the other methods in the class.
+     *
+     * @return returns the customer's calculated credit score.
+     */
     private int calculateCreditScore() {
         int tempScore = 100; //base score
         tempScore += 79; /*I automatically add 79 because I do not take into account variables comprising
@@ -72,15 +85,31 @@ public class CreditReport implements Serializable {
         return tempScore;
     }
 
+    /** getCUSTOMER_AGE returns the customer's age
+     *
+     * @return customer's age*/
     public int getCUSTOMER_AGE() {
         return this.CUSTOMER_AGE;
     }
+
+    /** calcNewCreditScore calculates the customer's credit sub score based on how many new credit lines they've
+     *                     recently acquired or inquired about. This includes applying for credit cards, mortgages,
+     *                     loans, etc.
+     * @return credit inquiry sub score
+     */
     private int calcNewCreditScore() {
         if (this.RECENT_CREDIT_INQUIRIES < 8)
             return 80 - (this.RECENT_CREDIT_INQUIRIES * 10);
         else return 0;
     }
 
+    /**calcPaymentHistoryScore calculates their portion of the credit score dependent upon how many late payments
+     *                         they've made late, and the total amounts the late payments amount to. The sub score is
+     *                         calculated based on a "severity multiplier" assigned based on how many late payments they
+     *                         have. this results in a lower subscore if the user has many late payments vs. someone with
+     *                         the same AMOUNT of late payments, but a lower frequency
+     *
+     * @return late payment portion of the customer's credit score.*/
     private int calcPaymentHistoryScore() {
         //min 0, max 279 (35% of credit score)
         double severity;
@@ -115,6 +144,12 @@ public class CreditReport implements Serializable {
 
     }
 
+    /**calcAmtOwedScore calculates the portion of the customer's credit score dependent on the amount of money they owe.
+     *                  if the customer's current balance is equal to 0 or if their CREDIT_USED percentage is less than
+     *                  10, they automatically get the max score. if their CREDIT_USED percentage is 50% or above, their
+     *                  score for this portion is automatically 0
+     *
+     * @return the "amount owed" portion of their credit score.*/
     private int calcAmtOwedScore() {
         //max is 239.7
         int tempScore;
@@ -127,13 +162,21 @@ public class CreditReport implements Serializable {
         return tempScore;
     }
 
+    /**calcLenHistoryScore calculates the portion of the customer's credit score dependent on how long their credit
+     *                     history is. Here, I simply find the percentage of the customer's age that they've had credit
+     *                     and add that to 20 for their score. It's not correct, but produces reliable fake figures.
+     * @return returns the history portion of the customer's credit score.*/
     private int calcLenHistoryScore() {
         //max is 120
         int tempScore = 20;
 
-        tempScore += this.CUSTOMER_AGE - this.LENGTH_OF_CREDIT_HISTORY;
+        tempScore += (this.LENGTH_OF_CREDIT_HISTORY / this.CUSTOMER_AGE) * 100;
 
-        if (tempScore > 120) tempScore = 120;
+        if (tempScore > 120) {
+            tempScore = 120;
+        } else if (tempScore < 0) {
+            tempScore = 0;
+        }
 
         return tempScore;
     }
