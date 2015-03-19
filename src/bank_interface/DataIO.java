@@ -268,14 +268,14 @@ public class DataIO {
         try {
 
             File newFile = new File(System.getProperty("user.dir") + "/bankData.txt");
-            newFile.createNewFile();
-            if(!newFile.createNewFile()){
-            }
+
+            newFile.createNewFile(); //creates new file from the file variable defined above
+
 
             FileInputStream fis = new FileInputStream(newFile);
 
             ObjectInputStream bankDataReader = new ObjectInputStream(fis);
-            this.realBank = (RealBank) bankDataReader.readObject();
+            this.realBank = (RealBank) bankDataReader.readObject(); //reads saved RealBank object from file.
 
             /*bankDataReader.close();
             fis.close();
