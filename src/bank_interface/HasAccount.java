@@ -8,11 +8,18 @@ import java.util.UUID;
 /**
  * Created by robert on 3/15/2015.
  */
-class HasAccount implements CustomerInterfaceState {
+public class HasAccount implements CustomerInterfaceState {
 
     private static BankProxy bankProxy;
     private final CustomerInterface customerInterface;
 
+    /**
+     * HasAccount creates a new HasAccount state used by the CustomerInterface
+     *
+     * @param newBankProxy         BankProxy object passed by the CustomerInterface constructor. used to retrieve and set
+     *                             certain customer information
+     * @param newCustomerInterface instance of CustomerInterface, used to set new states when the state changes.
+     */
     public HasAccount(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
 
         this.customerInterface = newCustomerInterface;
@@ -20,6 +27,13 @@ class HasAccount implements CustomerInterfaceState {
 
     }
 
+    /**
+     * enterUUID after registering or stating they have an account, the customer is prompted to enter their UUID here.
+     *           This method does not verify whether or not the UUID belongs to the customer or not. The user simply
+     *           enters their UUID and the method checks whether or not the bank has the UUID on file through the bankProxy.
+     *           They are given 5 attempts before the system closes. Upon a successful match, the state is changed to
+     *           HasCorrectUUID and the customer is prompted for their password.
+     * */
     @Override
     public void enterUUID() {
 
@@ -81,17 +95,26 @@ class HasAccount implements CustomerInterfaceState {
         }
     }
 
+    /**
+     * not allowed in this state
+     * */
     @Override
     public void enterPassword() {
         System.out.println("You must enter your UUID first.");
         customerInterface.enterUUID();
     }
 
+    /**
+     * not allowed in this state
+ * */
     @Override
     public void hasAccount(boolean isRegistered) {
         System.out.println("You are already registered.");
     }
 
+    /**
+     * saves all bank information to file, changes the current state to LoggedOff, and brings up the first menu
+ * */
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
@@ -101,24 +124,40 @@ class HasAccount implements CustomerInterfaceState {
 
     }
 
+    /**
+     * not allowed in this state
+ * */
     @Override
     public void requestInformation() {
         System.out.println("You must log in first.");
         customerInterface.enterUUID();
     }
 
+    /**
+     * not allowed in this state
+ * */
     @Override
     public void startTransaction() {
         System.out.println("You must log in first.");
         customerInterface.enterUUID();
     }
 
+    /**
+     * not allowed in this state
+ * */
     @Override
     public void addAccount() {
         System.out.println("You must log in first.");
         customerInterface.enterUUID();
     }
 
+    /**
+     * wantsToRegister upon failure to provide a correct UUID, the customer is asked if they would like to register. They
+     *                 are redirected based on their response.
+     *
+     * @return recursively calls itself until the user enters a correct response or logs off/exits. Will return true if the
+     *         customer wants to register.
+ * */
     private boolean wantsToRegister() {
         final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, LOGOFF, EXIT", 2, 6);
         String answer = WANT_REGISTER_SCANNER.stringGet();
