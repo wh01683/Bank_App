@@ -8,7 +8,8 @@ import utility.uScanner;
 import java.util.Hashtable;
 
 /**
- * Created by robert on 3/15/2015.
+ * @author robert
+ * Created on 3/15/2015
  */
 class LoggedIn implements CustomerInterfaceState {
 

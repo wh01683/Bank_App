@@ -15,17 +15,16 @@ public class DataIO {
     public DataIO() {
     }
 
-    /*@func printAllCustomerPrivateInformation():
-    *
-    * prints all information concerning the customer including all information they have on file and all accounts they
-    * own. this method is invoked if the user requests "all" from the information menu
+    /**printAllCustomerPrivateInformation() prints all information concerning the customer including all information
+     *                                      they have on file and all accounts they own. this method is invoked if the
+     *                                      user requests "all" from the information menu
     *
     * @param customerHashKey: key of the customer requesting the information. the key is used to look up the information
     * of the customer requesting it
     *
     * @param customerAccounts: HashTable of the accounts owned by the customer.
     *
-    * @return void*/
+     */
     void printAllCustomerPrivateInformation(Integer customerHashKey, Hashtable customerAccounts) {
         try {
 
@@ -47,14 +46,11 @@ public class DataIO {
 
     }
 
-    /*@func printAccountInformation()
-    *
-    * prints passed accounts from a hash table. these will almost always be a hashtable from one customer to provide
-    * personal information regarding all accounts they own
+    /** printAccountInformation prints passed accounts from a hash table. these will almost always be a hashtable
+     *                                from one customer to provide personal information regarding all accounts they own
     *
     * @param customerAccounts: HashTable to be printed
-    *
-    * @return void*/
+     */
     void printAccountInformation(Hashtable customerAccounts) {
         try {
             int tempCount = 10;
@@ -87,15 +83,13 @@ public class DataIO {
         System.out.println("Finished printing accounts.");
     }
 
-    /*@func writeCustomerAndAccountInformationToFile():
-    *
-    * writes BOTH the customer and the customer's account formation to a file using nested hashtable enumerations.
-    * when a customer is printed, the method will print all of the accounts associated with that particular customer
-     * when the method has printed all the accounts associated with that customer, we will move on to the next customer
-     *
-     * @param null
-     *
-     * @return void*/
+    /**
+     * writeCustomerAndAccountInformationToFile writes BOTH the customer and the customer's account formation to a file
+     * using nested hashtable enumerations. when a customer is printed, the
+     * method will print all of the accounts associated with that particular
+     * customer when the method has printed all the accounts associated with that
+     * customer, we will move on to the next customer
+     */
 
     public void writeCustomerAndAccountInformationToFile() {
 
@@ -129,13 +123,9 @@ public class DataIO {
         System.out.println("Finished writing to file.");
     }
 
-    /*@func printAllCustomerInformation():
-    *
-    * prints all customer information to the console.
-    *
-    * @param null
-    *
-    * @return void*/
+    /**
+     *  printAllCustomerInformation prints all customer information to the console.
+    */
 
     public void printAllCustomerInformation() {
 
@@ -155,10 +145,10 @@ public class DataIO {
 
     }
 
-    /*@func printAllAccountInformation():
-    *
-    * prints all information concerning ACCOUNTS ONLY to the console. will contain information related to the user
-    * associated with the account, but will only print out accounts on file.*/
+    /**
+     * printAllAccountInformation() prints all information concerning ACCOUNTS ONLY to the console. will contain
+     *                              information related to the user associated with the account, but will only print out accounts on file.
+     * */
     public void printAllAccountInformation() {
 
         try {
@@ -181,13 +171,9 @@ public class DataIO {
         }
     }
 
-    /*@func writeCustomerInformationToFile():
-    *
-    * writes the current RealBank object's CUSTOMER information to a file. does not print account information
-    *
-    * @param null
-    *
-    * @return void*/
+    /**
+     *  writeCustomerInformationToFile() writes the current RealBank object's CUSTOMER information to a file. does not print account information
+     */
     public void writeCustomerInformationToFile() {
         try {
             PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/writeBankData.txt");
@@ -214,9 +200,9 @@ public class DataIO {
 
     }
 
-    /*@func writeAccountInformationToFile():
-    *
-    * writes the current RealBank object's ACCOUNT information to a txt file in a format legible by humans*/
+    /**
+     * writeAccountInformationToFile() writes the current RealBank object's ACCOUNT information to a txt file in a format legible by humans
+     * */
     public void writeAccountInformationToFile() {
 
         try {
@@ -245,14 +231,12 @@ public class DataIO {
     }
 
 
-    /*@func saveAllBankDataToFile():
-    *
-    * saves the current RealBank object to a file named bankData.txt in the user's current directory using an
-    * object output stream. the File output stream and object output stream are closed when they are done.
-    *
-    * @param newRealBank to be saved, useful for passing and saving the most current bank
-    *
-    * @return void*/
+    /**saveAllBankDataToFile saves the current RealBank object to a file named bankData.txt in the user's current
+     *                       directory using an object output stream. the File output stream and object output stream
+     *                       are closed when they are done.
+     *
+     * @param newRealBank to be saved, useful for passing and saving the most current bank
+     */
     public void saveAllBankDataToFile(RealBank newRealBank) {
 
         try {
@@ -275,28 +259,33 @@ public class DataIO {
     }
 
 
-    /*@func realAllBankDataFromFile():
-    *
-    * reads bank information from a file called "bankData.txt" located in the project directory (Bank_App) using an object
-    * input stream. sets current RealBank object to the new type case object read from the file.
-    *
-    * @param null
-    *
-    * @return void*/
+    /**realAllBankDataFromFile() reads bank information from a file called "bankData.txt" located in the project directory
+    *                            (Bank_App) using an object input stream. sets current RealBank object to the new type
+     *                            case object read from the file.
+     */
     public void readAllBankDataFromFile() {
 
         try {
+
+            File newFile = new File(System.getProperty("user.dir") + "/bankData.txt");
+
+            if(!newFile.createNewFile()){
+            }
 
             FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + "/bankData.txt");
             ObjectInputStream bankDataReader = new ObjectInputStream(fis);
 
             this.realBank = (RealBank) bankDataReader.readObject();
 
+
             /*bankDataReader.close();
             fis.close();
 
             **** DO I NEED TO CLOSE THE INPUT STREAMS? SO FAR, NO PROBLEMS*/
 
+        }catch(FileNotFoundException f){
+            System.out.printf("File not found in DataIO : readAllBankDataFromFile");
+            System.exit(1);
         } catch (EOFException p) {
             p.printStackTrace();
         } catch (java.io.IOException e) {
@@ -309,14 +298,10 @@ public class DataIO {
 
     }
 
-    /*@func getRealBank():
-    *
-    * Used to access current bank information, and the bank data most recently loaded from file.
-    *
-    * @param:
+    /**getRealBank() Used to access current bank information, and the bank data most recently loaded from file.
     *
     * @return current RealBank object or a temporary if current RealBank is null.*/
-    public RealBank getRealBank(){
+    public RealBank getRealBank() {
         /*checks to make sure the current realBank object is not null before passing it on to the invoker*/
         if (!(this.realBank == null)) {
             return realBank;
@@ -328,19 +313,27 @@ public class DataIO {
 
     }
 
-    /*@func setRealBank:
-    *
-    * sets the current RealBank object to the new instance. used when the bank has been updated and is no longer current*/
+    /** setRealBank sets the current RealBank object to the new instance. used when the bank has been updated and
+    *               is no longer current
+     * @param newRealBank most current realBank object to be used for information printing and retrieval
+     */
     public void setRealBank(RealBank newRealBank) {
         realBank = newRealBank;
     }
 
 
+    /**
+     * getAccountHeaders stores headers used when printing account information to the console.
+     *
+     * @return returns string representation of the headers*/
     String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-7s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
-
+/**
+ * getCustomerHeaders stores headers used when printing customer information to the console
+ *
+ * @return string representation of the headers*/
     String getCustomerHeaders() {
         return String.format("||%-36s||%-20s||%-20s||%-3s||%-4s||%-4s||", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
     }
