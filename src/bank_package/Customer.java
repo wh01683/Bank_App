@@ -17,17 +17,18 @@ public class Customer implements Serializable {
     private final String PASSWORD;
     private final CreditReport CREDIT_REPORT;
     private final ChexSystems CHEX_SCORE = new ChexSystems();
-    private final int age;
+    private final String EMAIL_ADDRESS;
     private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(5);
+    private int age;
 
-    public Customer(String tempName, int tempAge, String password, CreditReport newCreditReport) {
+    public Customer(String tempName, String newEmail, int tempAge, String password, CreditReport newCreditReport) {
         this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
 
         this.age = tempAge;
         this.NAME = tempName;
         this.CREDIT_REPORT = newCreditReport;
         this.PASSWORD = password;
-
+        this.EMAIL_ADDRESS = newEmail;
     }
 
     public Customer() {
@@ -38,6 +39,7 @@ public class Customer implements Serializable {
         this.CREDIT_REPORT = new CreditReport();
         this.age = CREDIT_REPORT.getCUSTOMER_AGE();
         this.PASSWORD = random.passwordGen(0, r.nextInt(15) + 5);
+        this.EMAIL_ADDRESS = random.emailGen();
 
 
     }

@@ -15,6 +15,7 @@ class HasNoAccount implements CustomerInterfaceState {
     private final uScanner CREDIT_BALANCE_SCANNER = new uScanner("Please enter your current outstanding credit card balance.", -1, 2000000000);
     private final uScanner CREDIT_HISTORY_SCANNER = new uScanner("Please enter the length of your credit history in years: ", -1, 99);
     private final uScanner CREDIT_LIMIT_SCANNER = new uScanner("Please enter your total credit limit.", -1, 2000000000);
+    private final uScanner EMAIL_GET_SCANNER = new uScanner("Please enter your e-mail address. We totally won't sell it!", 0, 100);
     private final CustomerInterface customerInterface;
 
     public HasNoAccount(CustomerInterface customerInterface, BankProxy newBankProxy) {
@@ -46,9 +47,11 @@ class HasNoAccount implements CustomerInterfaceState {
         if (!wantsToRegister) {
             registerNewCustomer();
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+            customerInterface.enterUUID();
         } else {
             getNewCustomerInformation();
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+            customerInterface.enterUUID();
         }
     }
 
@@ -97,6 +100,7 @@ class HasNoAccount implements CustomerInterfaceState {
 
 
     private void getNewCustomerInformation() {
+        EmailValidator emailValidator = new EmailValidator();
         String tempName = NAME_SCANNER.stringGet();
         int tempAge = AGE_SCANNER.intGet();
         CreditReport tempCreditReport;
@@ -107,8 +111,12 @@ class HasNoAccount implements CustomerInterfaceState {
             tempCreditReport = fillCredReportInformation(tempAge);
         final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 5, 20);
         String tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
-
-        Customer newCustomer = new Customer(tempName, tempAge, tempPassword, tempCreditReport);
+        String tempEmail = EMAIL_GET_SCANNER.alphaNumericStringGet();
+        while (!(emailValidator.validate(tempEmail))) {
+            System.out.println("Not a valid e-mail address.\n");
+            tempEmail = EMAIL_GET_SCANNER.alphaNumericStringGet();
+        }
+        Customer newCustomer = new Customer(tempName, tempEmail, tempAge, tempPassword, tempCreditReport);
         if (bankProxy.addCustomer(newCustomer)) {
             System.out.printf("You have been successfully added, %s.\nYour new Customer UUID is %s. DO NOT LOSE THIS! Your" +
                             " password is %s.\nYou may now log on and experience all the benefits we have to offer!\n",
