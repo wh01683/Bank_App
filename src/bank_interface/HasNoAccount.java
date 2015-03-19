@@ -35,12 +35,12 @@ class HasNoAccount implements CustomerInterfaceState {
         System.out.println("You must register first.");
     }
 
-    /*@hasAccount
+    /**@hasAccount
+     *                This method asks the user whether they would like to register or not, accepting a non-case-sensitive
+     *                yes for true and a non-case-sensitive no as false
    *
-   * This method asks the user whether they would like to register or not, accepting a non-case-sensitive
-   * yes for true and a non-case-sensitive no as false
-   *
-   * @param void: not required
+     * @param
+     *
    * @return boolean: returns user's answer in boolean form*/
     @Override
     public void hasAccount(boolean wantsToRegister) {
@@ -134,15 +134,16 @@ class HasNoAccount implements CustomerInterfaceState {
         }
     }
 
-    /*@hasAccount
+    /**@hasAccount
+     *            This method asks the user whether they have an account or not, accepting a non-case-sensitive yes for true and
+     *            a non-case-sensitive no as false
    *
-   * This method asks the user whether they have an account or not, accepting a non-case-sensitive yes for true and
-   * a non-case-sensitive no as false
-   *
-   * @param void: not required
-   * @return boolean: returns user's answer in boolean form. will ALWAYS return true or false, the method calls itself
-   * recursively until the user can enter a valid response.*/
-   /* private boolean hasAccount() {
+     * @param
+     *
+     * @return boolean
+     *              returns user's answer in boolean form. will ALWAYS return true or false, the method calls itself
+     *                recursively until the user can enter a valid response.*/
+  /*private boolean hasAccount() {
         String answer = this.HAVE_ACCOUNT_SCANNER.stringGet();
 
         if (answer.equalsIgnoreCase("YES"))
@@ -167,13 +168,13 @@ class HasNoAccount implements CustomerInterfaceState {
     }*/
 
 
-    /*@fillCreditReportInformation
-    * This method is used when creating a new customer. This method is only called if the new customer is older than 17 years
-    * old. They are requested to fill in their credit information.
+    /**@fillCreditReportInformation
+     *                   This method is used when creating a new customer. This method is only called if the new customer
+     *                   is older than 17 years old. They are requested to fill in their credit information.
     *
     * @param tempAge: age passed to the fill credit report. In reality, it is unnecessary because the user will never
     *                 see this method if their age is less than 18; the tempAge is printed purely for debugging and verification
-    * @return new CreditReport: returns a new credit report for the customer, filled in with their provided information*/
+     * @return new CreditReport returns a new credit report for the customer, filled in with their provided information*/
     CreditReport fillCredReportInformation(int tempAge) {
         double amountOfLatePayments = 0;
 
@@ -210,11 +211,12 @@ class HasNoAccount implements CustomerInterfaceState {
 
     }
 
-    /*@getLatePaymentAmounts
-    * This method is called by the fillCreditReportInformation method IFF the user had more than 0 late payments on record
+    /**@getLatePaymentAmounts
+     *                   This method is called by the fillCreditReportInformation method IFF the user had more than 0 late payments on record
     *
     * @param newNumberOfLatePayments: number of latePayments on customer's record
-    * @return latePay.doubleGet(): returns a new double value with the total value of late payments on record*/
+     *
+     * @return latePay.doubleGet() returns a new double value with the total value of late payments on record*/
     private double getLatePaymentAmounts(int newNumberOfLatePayments) {
         uScanner latePay = new uScanner("You indicated you have " + newNumberOfLatePayments + " late payments on record.\n"
                 + "Please enter the total amount of the late payments.", 0, 2000000000);

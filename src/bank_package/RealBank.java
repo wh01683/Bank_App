@@ -34,6 +34,12 @@ public class RealBank implements Serializable, Bank {
 
     }
 
+    /**
+     * getAccountHashtable retrieves the current comprehensive account hashtable of the bank
+     *
+     * @return returns Hashtable<Integer, Account> object with user's accounts. keys associated with the accounts are
+     * the account numbers themselves.
+     */
     public Hashtable getAccountHashTable() {
         try {
             return accountHashtable;
@@ -44,6 +50,16 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**getNewRandomBank retrieves new randomly generated bank; used for testing purposes.
+     *       Properties:
+     *                  Name between 0 and 10 chars long
+     *                  50 to 500 accountHashtable initial size
+     *                  50 to 500 customerHashtable initial size
+     *                  50 to 500 randomly generated customers added,
+     *                  each customer has 0 to 10 randomly generated accounts
+     *
+     * @return randomly created bank
+     * */
     public RealBank getNewRandomBank() {
 
         RealBank randomBank = new RealBank(random.nameGen(0, 10), random.getInts(50, 500), random.getInts(50, 500));
@@ -51,6 +67,11 @@ public class RealBank implements Serializable, Bank {
         return randomBank;
     }
 
+    /**addRandomCustomers adds a specified number of random customers, each with 0 to 10 accounts
+     *
+     ** @param numberCustomers number of customers to be created.
+     *
+     * */
     public void addRandomCustomers(int numberCustomers) {
 
         try {
@@ -79,6 +100,12 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**addCustomer adds a new customer to the bank's customer hashtable and adds all accounts owned by the customer to
+     *             the bank's account hash table.
+     *
+     * @param customer customer object to be added.
+     *
+     * @return true if the account was successfully added, false otherwise*/
     public boolean addCustomer(Customer customer) {
 
         try {
@@ -101,6 +128,11 @@ public class RealBank implements Serializable, Bank {
 
     }
 
+    /**addAccount adds new account object to the bank's account hash table and adds the same account to the OWNER's
+     *            own account hashtable
+     *
+     * @param account account object to be added
+     * */
     public void addAccount(Account account) {
         try {
             accountHashtable.put(account.getACCOUNT_NUMBER(), account);
@@ -114,6 +146,12 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**removeCustomer removes a customer and all of its associated accounts from the bank's hash tables
+     *
+     * @param customer customer object to be removed
+     *
+     * @return true if successfully removed, false otherwise
+     * */
     public boolean removeCustomer(Customer customer) {
 
         try {
@@ -139,6 +177,13 @@ public class RealBank implements Serializable, Bank {
         return false;
     }
 
+    /**hasAccount overrides Bank interface's hasAccount. Used by BankProxy object. Method used to ask the bank whether or not
+     *            it has an account object associated with the given account number
+     *
+     * @param accountNumber account number interger to check for.
+     *
+     * @return true if the bank has the account, false otherwise.
+     * */
     @Override
     public boolean hasAccount(Integer accountNumber) {
         try {
@@ -149,6 +194,13 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**hasCustomer overrides Bank interface's hasCustomer. used by BankProxy object. Method used to ask the bank whether
+     *             or not it has a customer object associated with the given UUID object
+     *
+     * @param customerUUID UUID object associated with the customer. Customer's hash key calculated from the UUID.
+     *
+     * @return true if found, false otherwise.
+     * */
     @Override
     public boolean hasCustomer(UUID customerUUID) {
         try {
@@ -159,6 +211,13 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**removeAccount removes account object associated with the given account number from both the account hash table
+     *               and the account hashtable associated with the customer
+     *
+     * @param accountNumber account number of the account to be removed
+     *
+     * @return true if successfully removed, false otherwise
+     * */
     public boolean removeAccount(Integer accountNumber) {
 
         try {
@@ -177,6 +236,12 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**requestCustomer method used to retrieve customer from the realBank using a given UUID object
+     *
+     * @param customerID UUID object associated with the customer to be removed.
+     *
+     * @return true if successfully removed, false otherwise.
+     * */
     public Customer requestCustomer(UUID customerID) {
 
         try {
@@ -193,6 +258,13 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**requestCustomerAccounts returns Hashtable containing accounts associated with a specific customer with the
+     *                         specified UUID object
+     *
+     * @param customerUUID UUID object of the customer to retrieve accounts for
+     *
+     * @return Hashtable<Integer, Account> returns Hashtable of account objects specific to the specified customer
+     * */
     @Override
     public Hashtable requestCustomerAccounts(UUID customerUUID) {
         if (this.customerHashtable.containsKey(customerUUID.hashCode())) {
@@ -202,10 +274,18 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+
+    /**getNumberAccounts returns current total number of accounts registered with the bank
+     *
+     * @return total number of accounts registered with the bank
+     * */
     int getNumberAccounts() {
         return this.NUMBER_OF_ACCOUNTS;
     }
 
+    /**getNUMBER_OF_CUSTOMERS returns current number of customers registered with the bank
+     *
+     * @return number of customers registered with the bank*/
     int getNUMBER_OF_CUSTOMERS() {
         return this.NUMBER_OF_CUSTOMERS;
     }
@@ -219,6 +299,11 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**getCustomerTable returns the customer hash table of the bank. if the current customerHashtable is null,
+     *                  a new Hashtable object is returned
+     *
+     * @return new generic Hashtable object
+     * */
     public Hashtable getCustomerTable() {
         try {
             return customerHashtable;
@@ -229,6 +314,10 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    /**updateAccountTable updates the account table by cycling through the each customer in the customer hash table and
+     *                    adding each account of the customer to the bank's comprehensive account hash table IFF the
+     *                    bank's comprehensive account hash table does not already contain the account
+     * */
     public void updateAccountTable() {
         try {
             Enumeration<Integer> enumKeys = customerHashtable.keys();
@@ -244,9 +333,8 @@ public class RealBank implements Serializable, Bank {
                 while (acctKeys.hasMoreElements()) {
                     Integer acctKey = acctKeys.nextElement();
                     Account tempAcct = tempHash.get(acctKey);
-                    if (!(tempAcct == null))
+                    if (!(tempAcct == null) && !accountHashtable.contains(tempAcct))
                         accountHashtable.put(acctKey, tempAcct);
-
                 }
             }
         } catch (NullPointerException n) {

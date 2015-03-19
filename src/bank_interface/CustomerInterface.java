@@ -5,7 +5,11 @@ import bank_package.RealBank;
 
 import java.util.UUID;
 
-/*This "CustomerInterface" class will be the class which primarily interacts with the customer. When the customer
+/**
+ * @author William Robert Howerton III
+ * @version 2.1.5
+ *
+ * This "CustomerInterface" class will be the class which primarily interacts with the customer. When the customer
 * logs in to the bank system, they will be prompted for their CUSTOMER ID. This is their primary login name. The
 * interface will prompt the user to create a new account if they do not have a CUSTOMER ID, or if they supplied a
 * CUSTOMER ID which is not found in the hash table. Upon finding the correct customer associated with their CUSTOMER ID,
@@ -33,6 +37,13 @@ class CustomerInterface {
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
     private CustomerInterfaceState currentCustomerInterfaceState;
 
+
+    /**
+     * CustomerInterface creates a new customer interface based around the real bank object passed. user information is
+     * retrieved from the real bank is used to verify the user retrieved for the user upon logging in
+     *
+     * @param newRealBank a RealBank object to build the Customer Interface around
+     */
     private CustomerInterface(RealBank newRealBank) {
         try {
             realBank = newRealBank;
@@ -58,12 +69,15 @@ class CustomerInterface {
 
     }
 
-    /*@func getInstance: Singleton instance retriever.. ensures no two instances of customer interface exist at any
-    * one time.
-    * @param thisBank: RealBank to pass to the CustomerInterface constructor
-    *
-    * @return CustomerInterface: if the current SINGLETON_INSTANCE is null, a new instance is constructed and
-    * returned. otherwise, this method will return the current instance.*/
+    /** getInstance: Singleton instance retriever.. ensures no two instances of customer interface exist at any
+     *                one time.
+     *
+     * @param thisBank RealBank to pass to the CustomerInterface constructor
+     *
+     * @return SINGLETON_INSTANCE:
+     *                      if the current SINGLETON_INSTANCE is null, a new instance is constructed and
+     *                       returned. otherwise, this method will return the current instance.
+     */
     public static CustomerInterface getInstance(RealBank thisBank) {
         if (!(SINGLETON_INSTANCE == null)) {
             return SINGLETON_INSTANCE;
@@ -73,12 +87,10 @@ class CustomerInterface {
         }
     }
 
-    /*@func START(): after the CustomerInterface is instantiated, the Start() function is called to get everything
-    * moving in the right direction. the while loops call the correct methods depending on which state it is in.
+    /** START(): after the CustomerInterface is instantiated, the Start() function is called to get everything
+     * moving in the right direction. the while loops call the correct methods depending on which state it is in.
     *
-    * @param null
-    *
-    * @return void*/
+     * */
     public void START() {
 
         try {
@@ -107,14 +119,13 @@ class CustomerInterface {
                 this.enterPassword();
             }
         }
-
-        /*dataIO.setRealBank(realBank);
-        dataIO.saveAllBankDataToFile("DEFAULT");*/
-
-
     }
 
 
+    /** getCustomerUUID: returns UUID of the customer currently logged in
+     *
+     * @return returns the UUID object of the customer currently logged in
+     * */
     public UUID getCustomerUUID() {
         if (!(CustomerUUID == null)) {
             return CustomerUUID;
@@ -124,6 +135,10 @@ class CustomerInterface {
         }
     }
 
+    /** setCustomerUUID(UUID newCustomerUUID) updates the UUID of the customer interface
+     *
+     * @param newCustomerUUID UUID of the customer logging in through a subclass
+     * */
     public void setCustomerUUID(UUID newCustomerUUID) {
         try {
             CustomerUUID = newCustomerUUID;
@@ -132,26 +147,53 @@ class CustomerInterface {
         }
     }
 
+    /** setCustomerInterfaceState utilizing the State design pattern, this method updates the current Customer Interface state with the
+     *                                 new state.
+     *
+     * @param newCustomerInterfaceState new state passed to Customer Interface
+     *
+     * */
     public void setCustomerInterfaceState(CustomerInterfaceState newCustomerInterfaceState) {
         this.currentCustomerInterfaceState = newCustomerInterfaceState;
     }
 
+    /** logOff: method logOff() is called on current state of the customer interface
+     *               disconnects the user from the user interface.
+     * */
     public void logOff() {
         currentCustomerInterfaceState.logOff();
     }
 
+    /**@func enterUUID: method enterUUID() is called on current state of the customer interface
+     *                  prompts user to enter their provided UUID
+     *                  Note: function changes based on current state
+     * */
     public void enterUUID() {
         currentCustomerInterfaceState.enterUUID();
     }
 
+    /** enterPassword called on the current state of the customer interface
+     *                     prompts user to enter their password
+     *                     Note: function changes based on current state
+     * */
     public void enterPassword() {
         currentCustomerInterfaceState.enterPassword();
     }
 
+    /** hasAccount: method hasAccount() is called on current state of the customer interface
+     *                   essentially initializes the registration process
+     *                   Note: function changes based on current state
+     *
+     * @param hasAccount passing false will ask the user if they would like to register, passing true will automatically
+     *                   direct them to fill out their customer information
+     * */
     public void hasAccount(boolean hasAccount) {
         currentCustomerInterfaceState.hasAccount(hasAccount);
     }
 
+    /** requestInformation start of the login process; prompts user for desired actions to take during the login
+     *                          process
+     */
     public void requestInformation() {
         currentCustomerInterfaceState.requestInformation();
     }
@@ -160,14 +202,23 @@ class CustomerInterface {
         currentCustomerInterfaceState.startTransaction();
     }
 
+    /**addAccount initiates the account adding process
+     *
+     * */
     public void addAccount() {
         currentCustomerInterfaceState.addAccount();
     }
 
+    /** getBankProxy returns current bankProxy of the customer interface.
+     *@return current bank proxy object
+     * */
     public BankProxy getBankProxy() {
         return bankProxy;
     }
 
+    /** saveBankDataToFile calls on the bank proxy object to save all information to file through object output stream
+     *
+     * */
     public void saveBankDataToFile() {
         bankProxy.saveAllBankDataToFile();
     }
