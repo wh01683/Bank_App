@@ -5,7 +5,7 @@ import bank_package.CreditReport;
 import bank_package.Customer;
 import utility.uScanner;
 
-class HasNoAccount implements CustomerInterfaceState {
+public class HasNoAccount implements CustomerInterfaceState {
 
     private static BankProxy bankProxy;
     private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
@@ -18,6 +18,14 @@ class HasNoAccount implements CustomerInterfaceState {
     private final uScanner EMAIL_GET_SCANNER = new uScanner("Please enter your e-mail address. We totally won't sell it!", 0, 100);
     private final CustomerInterface customerInterface;
 
+    /**
+     * HasNoAccount creates the HasNoAccount state, used by the CustomerInterface class. Represents the state during which
+     * the customer may choose to either register or log in under an existing profile
+     *
+     * @param newBankProxy      BankProxy object passed from the CustomerInterface constructor. used to access customer specific
+     *                          data used for customer addition
+     * @param customerInterface an instance of the customerInterface, used to set states when the state changes.
+     */
     public HasNoAccount(CustomerInterface customerInterface, BankProxy newBankProxy) {
         this.customerInterface = customerInterface;
         bankProxy = newBankProxy;
@@ -38,7 +46,9 @@ class HasNoAccount implements CustomerInterfaceState {
     /**hasAccount This method asks the user whether they would like to register or not, accepting a non-case-sensitive
      *            yes for true and a non-case-sensitive no as false
    *
-     * @return boolean returns user's answer in boolean form*/
+     * @param wantsToRegister boolean is false by default, only true if the user already stated they want to register,
+     *                        thereby avoiding asking them twice.
+     *                        */
     @Override
     public void hasAccount(boolean wantsToRegister) {
         if (!wantsToRegister) {
@@ -52,6 +62,9 @@ class HasNoAccount implements CustomerInterfaceState {
         }
     }
 
+    /**
+     * saves current bank data, logs the user out of the system, and changes the state to LoggedOff
+     * */
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
@@ -60,25 +73,33 @@ class HasNoAccount implements CustomerInterfaceState {
         customerInterface.hasAccount(false);
 
     }
-
+    /**
+     * not allowed in this state
+     * */
     @Override
     public void requestInformation() {
         System.out.println("You must log in first.");
     }
-
-    @Override
+/**
+ * not allowed in this state
+ * */
+@Override
     public void startTransaction() {
         System.out.println("You must log in first.");
     }
-
-    @Override
+/**
+ * not allowed in this state
+ * */
+@Override
     public void addAccount() {
         System.out.println("You must log in first.");
 
     }
 
-
-    void registerNewCustomer() {
+/**
+ * registerNewCustomer asks the user if they would like to register with the bank and redirects them based on their response
+ * */
+void registerNewCustomer() {
 
         boolean wantsRegister = wantsToRegister();
          /*if the customer does NOT have an account and the customer WANTS to register, the new customer will be registered
@@ -95,8 +116,16 @@ class HasNoAccount implements CustomerInterfaceState {
         }
     }
 
-
-    private void getNewCustomerInformation() {
+/**
+ * getNewCustomerInformation method invoked to register a new customer using information input by the user to pass on
+ *                           to the Customer constructor. Prompts user for their name, email, custom password, and invokes
+ *                           the fillCreditReport method if the user is at least 18 years old. The password is checked for
+ *                           strength using a local instantiation of the PasswordChecker class and the email is checked
+ *                           for validity using a local instantiation of the EmailValidator class. After creating the new
+ *                           customer, the static CustomerInterface-wide UUID is set to that of the new customer to be
+ *                           used for information retrieval later.
+ *                           */
+private void getNewCustomerInformation() {
         PasswordChecker passwordChecker = new PasswordChecker();
         EmailValidator emailValidator = new EmailValidator();
         String tempName = NAME_SCANNER.stringGet();
@@ -131,46 +160,15 @@ class HasNoAccount implements CustomerInterfaceState {
         }
     }
 
-    /**@hasAccount
-     *            This method asks the user whether they have an account or not, accepting a non-case-sensitive yes for true and
-     *            a non-case-sensitive no as false
-   *
-     * @param
-     *
-     * @return boolean
-     *              returns user's answer in boolean form. will ALWAYS return true or false, the method calls itself
-     *                recursively until the user can enter a valid response.*/
-  /*private boolean hasAccount() {
-        String answer = this.HAVE_ACCOUNT_SCANNER.stringGet();
-
-        if (answer.equalsIgnoreCase("YES"))
-            return true;
-
-        else if (answer.equalsIgnoreCase("NO"))
-            return false;
-
-        else if (answer.equalsIgnoreCase("RETURN")) {
-            getInstance(BANK);
-        } else if (answer.equalsIgnoreCase("EXIT")) {
-            System.out.println("Exiting.");
-            System.exit(0);
-        } else if(answer.equals(dataIO.hiding)){
-            dataIO.printAllCustomerInformation();
-        }
-        else
-            System.out.println("Incorrect response.");
-
-        return hasAccount();
-
-    }*/
-
-
-    /**fillCreditReportInformation This method is used when creating a new customer. This method is only called if the new customer
+    /**
+     * fillCreditReportInformation This method is used when creating a new customer. This method is only called if the new customer
      *                             is older than 17 years old. They are requested to fill in their credit information.
     *
     * @param tempAge: age passed to the fill credit report. In reality, it is unnecessary because the user will never
     *                 see this method if their age is less than 18; the tempAge is printed purely for debugging and verification
-     * @return new CreditReport returns a new credit report for the customer, filled in with their provided information*/
+     *
+     * @return new CreditReport returns a new credit report for the customer, filled in with their provided information
+     * */
     CreditReport fillCredReportInformation(int tempAge) {
         double amountOfLatePayments = 0;
 
@@ -186,7 +184,11 @@ class HasNoAccount implements CustomerInterfaceState {
         return new CreditReport(tempAge, latePaymentsOnRecord, amountOfLatePayments, recentCredInquiries, credLimit,
                 accountBalance, lenCredHistory);
     }
-
+    /**
+     * wantsToRegister asks the user if they want to register or not, whilst giving them the option to return, logoff,
+     *                 exit the system entirely, or register.
+     *
+     * @return true if the customer would like to register.*/
     private boolean wantsToRegister() {
         final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, LOGOFF, EXIT", 2, 6);
 
@@ -207,12 +209,14 @@ class HasNoAccount implements CustomerInterfaceState {
 
     }
 
-    /**getLatePaymentAmounts This method is called by the fillCreditReportInformation method IFF the user had more than
+    /**
+     * getLatePaymentAmounts This method is called by the fillCreditReportInformation method IFF the user had more than
      *                       0 late payments on record
     *
     * @param newNumberOfLatePayments: number of latePayments on customer's record
      *
-     * @return latePay.doubleGet() returns a new double value with the total value of late payments on record*/
+     * @return latePay.doubleGet() returns a new double value with the total value of late payments on record
+     * */
     private double getLatePaymentAmounts(int newNumberOfLatePayments) {
         uScanner latePay = new uScanner("You indicated you have " + newNumberOfLatePayments + " late payments on record.\n"
                 + "Please enter the total amount of the late payments.", 0, 2000000000);
