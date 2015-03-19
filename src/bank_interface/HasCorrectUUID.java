@@ -11,6 +11,14 @@ class HasCorrectUUID implements CustomerInterfaceState {
     private static BankProxy bankProxy;
     private final CustomerInterface customerInterface;
 
+    /**
+     * HasCorrectUUID state class used by CustomerInterface, represents the state entered when the customer provides
+     * a correct UUID and must then enter a password
+     *
+     * @param newBankProxy         new BankProxy object passed from the CustomerInterface constructor; used to retrieve customer
+     *                             information for password verification & etc.
+     * @param newCustomerInterface instance of the customerInterface, used to set the customerInterface state
+     */
     public HasCorrectUUID(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
         bankProxy = newBankProxy;
         this.customerInterface = newCustomerInterface;
@@ -19,11 +27,19 @@ class HasCorrectUUID implements CustomerInterfaceState {
     }
 
 
+    /**
+     * hasAccount useless in HasCorrectUUID state
+     *
+     * @param isRegistered false by default, not necessary here
+     */
     @Override
     public void hasAccount(boolean isRegistered) {
         System.out.println("You are already registered.");
     }
 
+    /**
+     * logOff saves current bank data to a file and logs the customer off
+     * */
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
@@ -33,6 +49,9 @@ class HasCorrectUUID implements CustomerInterfaceState {
 
     }
 
+    /**
+     * requestInformation not used in this state, they have not entered their password yet
+     * */
     @Override
     public void requestInformation() {
 
@@ -41,24 +60,42 @@ class HasCorrectUUID implements CustomerInterfaceState {
 
     }
 
+    /**
+     * startTransaction not used in this state. If this method is ever invoked during this state, the customer is
+     *                  prompted for their password before allowing them to proceed.
+     * */
     @Override
     public void startTransaction() {
         System.out.println("Must enter your pass word first.");
         customerInterface.enterPassword();
     }
 
+    /**
+     * addAccount not used in this state. If this method is ever invoked during this state, the customer is
+     *            prompted for their password before allowing them to proceed.
+     * */
     @Override
     public void addAccount() {
         System.out.println("Must enter your pass word first.");
         customerInterface.enterPassword();
     }
 
+    /**
+     * enterUUID not used in this state. If this method is ever invoked during this state, the customer is
+     *           prompted for their password before allowing them to proceed.
+     */
     @Override
     public void enterUUID() {
         System.out.println("You have already entered your UUID, please enter your password.");
         customerInterface.enterPassword();
     }
 
+    /** enterPassword creates a final String variable "realPass" to store the value of the customer's actual password on
+     *                file. Customer is prompted for their password as long as the String they entered does not match
+     *                their password on file. Customers are given 5 attempts before the system exits. Upon a successful
+     *                match, the current state is set to "LoggedOn" and the "requestInformation" method is invoked to
+     *                initialize the logged-in process loop inside the LoggedOn class.
+     * */
     @Override
     public void enterPassword() {
         /*if they do have an account, they are requested to provide their UUID*/
