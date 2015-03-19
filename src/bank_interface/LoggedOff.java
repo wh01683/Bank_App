@@ -3,34 +3,46 @@ package bank_interface;
 
 import utility.uScanner;
 
-class LoggedOff implements CustomerInterfaceState {
+public class LoggedOff implements CustomerInterfaceState {
 
     /*login or register prompt.*/
     private static final uScanner logInOrRegister = new uScanner("----LOGIN--------------REGISTER-------------EXIT----", 4, 8);
     private final CustomerInterface customerInterface;
 
+    /**
+     * LoggedOff creates a LoggedOff state used by the customer interface class (default start state)
+     *
+     * @param newCustomerInterface customer interface instance passed through customer interface constructor. used to
+     *                             set and update states of the customer interface
+     */
     public LoggedOff(CustomerInterface newCustomerInterface) {
         this.customerInterface = newCustomerInterface;
     }
 
+    /**
+     * enterUUID not allowed in this state
+     */
     @Override
     public void enterUUID() {
         System.out.println("No.");
         customerInterface.hasAccount(false);
     }
-
-    @Override
+/**
+ * enterPassword not allowed in this state
+ * */
+@Override
     public void enterPassword() {
         System.out.println("You must enter your UUID first.");
         customerInterface.hasAccount(false);
     }
 
-    /*@func hasAccount: this is the entry point to the program they simply type whether they want to login or register,
-     and they are redirected to the appropriate state and the appropriate handling method based on what they choose
-
-     @param isRegistered: default false.
-     @return : void*/
-    @Override
+ /**hasAccount: this is the entry point to the program they simply type whether they want to login or register,
+  *           and they are redirected to the appropriate state and the appropriate handling method based on what they choose
+  *
+  *@param isRegistered: default false.
+  *
+  **/
+ @Override
     public void hasAccount(boolean isRegistered) {
 
             String loginOrRegister = logInOrRegister.stringGet();
@@ -51,26 +63,34 @@ class LoggedOff implements CustomerInterfaceState {
 
 
     }
-
-    @Override
+/**
+ * logOff not allowed in this state, user is already logged off
+ * */
+@Override
     public void logOff() {
         System.out.println("You are already logged off.");
         customerInterface.hasAccount(false);
     }
-
-    @Override
+/**
+ * requestInformation not allowed in this state
+ * */
+@Override
     public void requestInformation() {
         System.out.println("You must log in first.");
         customerInterface.hasAccount(false);
     }
-
-    @Override
+/**
+ * startTransaction not allowed in this state
+ * */
+@Override
     public void startTransaction() {
         System.out.println("You must log in first.");
         customerInterface.hasAccount(false);
     }
-
-    @Override
+/**
+ * addAccount not allowed in this state
+ * */
+@Override
     public void addAccount() {
         System.out.println("You must log in first.");
         customerInterface.hasAccount(false);
