@@ -61,8 +61,13 @@ public class PasswordChecker {
                 }
             }
 
-            System.out.println("Did not have 1 of each: lower case, uppercase, special, number.");
-            return numberOfLowerCaseLetters > 0 && numberOfNumbers > 0 && numberOfSpecialCharacters > 0 && numberOfUpperCaseLetters > 0;
+
+            if (!(numberOfLowerCaseLetters > 0 && numberOfNumbers > 0 && numberOfSpecialCharacters > 0 && numberOfUpperCaseLetters > 0)) {
+                System.out.println("Did not have 1 of each: lower case, uppercase, special, number.");
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
@@ -106,8 +111,12 @@ public class PasswordChecker {
                 }
             }
 
-            System.out.println("Did not have 1 of each: lower case, uppercase, special, number.");
-            return numberOfLowerCaseLetters > 0 && numberOfNumbers > 0 && numberOfSpecialCharacters > 0 && numberOfUpperCaseLetters > 0;
+            if (!(numberOfLowerCaseLetters > 0 && numberOfNumbers > 0 && numberOfSpecialCharacters > 0 && numberOfUpperCaseLetters > 0)) {
+                System.out.println("Did not have 1 of each: lower case, uppercase, special, number.");
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 }
