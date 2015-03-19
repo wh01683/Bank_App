@@ -8,8 +8,8 @@ import javax.swing.*;
  */
 public class BankLogin {
     private JPanel panel1;
-    private JTextField textField2;
-    private JPasswordField passwordField1;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
     private JButton createNewAccountButton;
     private JButton loginButton;
 

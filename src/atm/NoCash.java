@@ -1,4 +1,4 @@
-package state_pattern;
+package atm;
 
 /**
  * Created by robert on 3/15/2015.

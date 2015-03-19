@@ -100,6 +100,7 @@ class HasNoAccount implements CustomerInterfaceState {
 
 
     private void getNewCustomerInformation() {
+        PasswordChecker passwordChecker = new PasswordChecker();
         EmailValidator emailValidator = new EmailValidator();
         String tempName = NAME_SCANNER.stringGet();
         int tempAge = AGE_SCANNER.intGet();
@@ -111,6 +112,10 @@ class HasNoAccount implements CustomerInterfaceState {
             tempCreditReport = fillCredReportInformation(tempAge);
         final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 5, 20);
         String tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
+        while (!(passwordChecker.checkStringPassWithASCIIValues(tempPassword))) {
+            System.out.printf("Password not strong enough.\n");
+            tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
+        }
         String tempEmail = EMAIL_GET_SCANNER.alphaNumericStringGet();
         while (!(emailValidator.validate(tempEmail))) {
             System.out.println("Not a valid e-mail address.\n");
