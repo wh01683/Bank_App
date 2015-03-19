@@ -8,11 +8,18 @@ import java.util.UUID;
 /**
  * Created by robert on 3/15/2015.
  */
-class HasIncorrectUUID implements CustomerInterfaceState {
+public class HasIncorrectUUID implements CustomerInterfaceState {
 
     private static BankProxy bankProxy;
     private final CustomerInterface customerInterface;
 
+    /**
+     * HasIncorrectUUID constructs a new HasIncorrectUUID state used by CustomerInterface class
+     *
+     * @param newCustomerInterface Customer interface instance passed via Customer Interface constructor, used to set
+     *                             the new current state of the customer interface
+     * @param newBankProxy         bank proxy object used to retrieve information about the customer
+     */
     public HasIncorrectUUID(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
 
         bankProxy = newBankProxy;
@@ -20,6 +27,13 @@ class HasIncorrectUUID implements CustomerInterfaceState {
 
     }
 
+    /**
+     * enterUUID after registering or stating they have an account, the customer is prompted to enter their UUID here.
+     * This method does not verify whether or not the UUID belongs to the customer or not. The user simply
+     * enters their UUID and the method checks whether or not the bank has the UUID on file through the bankProxy.
+     * They are given 5 attempts before the system closes. Upon a successful match, the state is changed to
+     * HasCorrectUUID and the customer is prompted for their password.
+     */
 
     public void enterUUID() {
         uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID you received when you registered.", 0, 37);
@@ -53,15 +67,19 @@ class HasIncorrectUUID implements CustomerInterfaceState {
         customerInterface.setCustomerInterfaceState(customerInterface.hasIncorrectUUID);
 
     }
-
-    @Override
-    public void enterPassword() {
+/**
+ * enterPassword not allowed in this state
+ * */
+@Override
+public void enterPassword() {
         System.out.println("You must enter your UUID first.");
         customerInterface.enterUUID();
     }
-
-    @Override
-    public void hasAccount(boolean isRegistered) {
+/**
+ * hasAccount redirects the customer based on current state
+ * */
+@Override
+public void hasAccount(boolean isRegistered) {
 
         if (isRegistered) {
             customerInterface.setCustomerInterfaceState(customerInterface.hasIncorrectUUID);
@@ -71,35 +89,48 @@ class HasIncorrectUUID implements CustomerInterfaceState {
         customerInterface.hasAccount(false);
 
     }
-
-    @Override
-    public void logOff() {
-        System.out.println("Have a great day!");
+/**
+ * logOff saves bank data to file, changes current state to LoggedOff, and brings up the first menu
+ * */
+@Override
+public void logOff() {
+    System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
         customerInterface.hasAccount(false);
     }
 
+    /**
+     * requestInformation not allowed in this state
+     * */
     @Override
     public void requestInformation() {
         System.out.println("You must log in first.");
         customerInterface.enterUUID();
     }
-
-    @Override
-    public void startTransaction() {
+/**
+ * startTransaction not allowed in this state
+ * */
+@Override
+public void startTransaction() {
         System.out.println("You must log in first.");
         customerInterface.enterUUID();
     }
-
-    @Override
-    public void addAccount() {
+/**
+ * addAccount not allowed in this state
+ * */
+@Override
+public void addAccount() {
         System.out.println("You must log in first.");
         customerInterface.enterUUID();
     }
-
-    private boolean wantsToRegister() {
-        final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, LOGOFF, EXIT", 2, 6);
+/**
+ * wantsToRegister on incorrect UUID enter, customer is asked whether they would like to register and redirected appropriately
+ *
+ * @return true if they want to register, false otherwise
+ * */
+private boolean wantsToRegister() {
+    final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, LOGOFF, EXIT", 2, 6);
         String answer = WANT_REGISTER_SCANNER.stringGet();
 
         if (answer.equalsIgnoreCase("YES")) {
