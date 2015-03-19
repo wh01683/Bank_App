@@ -11,7 +11,7 @@ import java.util.Hashtable;
  * @author robert
  * Created on 3/15/2015
  */
-class LoggedIn implements CustomerInterfaceState {
+public class LoggedIn implements CustomerInterfaceState {
 
     private static DataIO dataIO;
     private static BankProxy bankProxy;
@@ -24,6 +24,15 @@ class LoggedIn implements CustomerInterfaceState {
     private final AccountFactory accountFactory = new AccountFactory();
 
 
+    /**
+     * LoggedIn constructor of the LoggedIn state class, utilized by CustomerInterface class.
+     *
+     * @param newBankProxy         bank proxy object passed by the CustomerInterface class when the CustomerInterface is created
+     *                             the bank proxy provides the LoggedIn state with the information it needs about the customer
+     *                             and its accounts, but restricts it from editing some vital parts of the RealBank class
+     * @param newCustomerInterface instance of the CustomerInterface class; used to set new states
+     * @param newDataIO            new instance of a pre-created DataIO object passed by the CustomerInterface invoker.
+     */
     public LoggedIn(CustomerInterface newCustomerInterface, BankProxy newBankProxy, DataIO newDataIO) {
         bankProxy = newBankProxy;
         dataIO = newDataIO;
@@ -31,21 +40,34 @@ class LoggedIn implements CustomerInterfaceState {
     }
 
 
+    /**
+     * enterUUID method prompts user for their UUID to login. in this state (Logged In), the method is unnecessary
+     * */
     @Override
     public void enterUUID() {
         System.out.println("You are currently logged in.");
     }
 
+    /**
+     * enterPassword enterPassword method prompts user for the password. In this state (Logged In), the method is unnecessary
+ * */
     @Override
     public void enterPassword() {
         System.out.println("You are currently logged in.");
     }
 
+    /**
+     * hasAccount prompts user for registering/logging in. In this state (Logged In), method is unnecessary
+     * */
     @Override
     public void hasAccount(boolean isRegistered) {
         System.out.println("You are currently logged in.");
     }
 
+    /**
+     * logOff logs the user out of the system and resets the CustomerInterface state after saving all current data to
+     *        the appropriate file.
+     *        */
     @Override
     public void logOff() {
         System.out.println("Have a great day!");
@@ -54,16 +76,32 @@ class LoggedIn implements CustomerInterfaceState {
         customerInterface.hasAccount(false);
     }
 
+    /**
+     * requestInformation initiates the "logged in" process, allowing users to add/remove accounts, access information, etc
+     * */
     @Override
     public void requestInformation() {
         initiateLoginProcesses();
     }
 
+    /**
+     * startTransaction invokes the processTransaction method and calls the uScanner to prompt the user for a choice
+     * */
     @Override
     public void startTransaction() {
         this.processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
     }
 
+    /**addAccount allows the logged in customer to add a new bank account under their name by passing their request
+     *            (as a string) to the AccountFactory object. If a null account is returned by the Account Factory,
+     *            the customer did not qualify for the account and nothing is added. Otherwise, the Account Factory returns
+     *            a new account object created with their desired opening balance. Once the account is created, the
+     *            information of the newly created account is printed back to the customer for confirmation. After the
+     *            new account is added, the customer is given the opportunity to continue adding more accounts or return
+     *            to the previous menu or log off. If at any time the method does not recognize an input string, the
+     *            method is called recursively to give the opportunity to correct their input.
+     *
+     *            */
     @Override
     public void addAccount() {
         try {
@@ -108,6 +146,11 @@ class LoggedIn implements CustomerInterfaceState {
         }
     }
 
+    /**
+     * initiateLoginProcesses called when the customer first logs in. Prompts the user for directions and redirects them
+     *                        towards the appropriate methods based on the customer's request string.
+     *
+     *                        */
     private void initiateLoginProcesses() {
 
         final uScanner PROCESS_REQUEST_SCANNER = new uScanner("What would you like to do, " + customerInterface.getBankProxy().requestCustomer(customerInterface.getCustomerUUID()).getName() +
@@ -144,11 +187,19 @@ class LoggedIn implements CustomerInterfaceState {
                 * to try the process again.*/
             System.out.println("Your request could not be processed, please try again.");
             initiateLoginProcesses();
+            }
+
         }
-
-    }
     }
 
+    /**
+     * printInformation invoked by the initiateLoginProcess method, this method prints information requested by the user.
+     *                  the method is called recursively after information is printed to mimic staying in the same menu.
+     *                  During each iteration, the request string is checked for commands matching various "logOffRequest"
+     *                  strings, defined by the method of similar name.
+     *
+     * @param request string representation of the information requested by the user.
+     * */
     void printInformation(String request) {
         try {
         if (!isLogOffRequest(request)) {
@@ -180,6 +231,18 @@ class LoggedIn implements CustomerInterfaceState {
 
     }
 
+    /**
+     * processTransaction method to process transactions requested by the user. A request in string form is passed through
+     *                    as a param. During each transaction choice, the method handles cases such as: owner does not own
+     *                    account, invalid account number, depositing too large of an amount, withdrawing too large, and attempting
+     *                    to withdraw or deposit negative amounts
+     *
+     *                    Transfer requests also handle cases where the transfer TO and transfer FROM account numbers are
+     *                    the same, attempting to initialize transfers while only 1 account is owned, and cases where one
+     *                    half of the transaction is valid (method will undo the other half)
+     *
+     * @param transactionChoice string representation of the transaction desired by the customer.
+     * */
     private void processTransaction(String transactionChoice) {
 
 
@@ -360,6 +423,13 @@ class LoggedIn implements CustomerInterfaceState {
 
     }
 
+    /** isLogOffRequest method used to store recurring return/logoff style commands in the interest of avoid code
+     *                  duplication. Handles "EXIT", "LOGOFF", "EXIT" and returns false if none of them are matched,
+     *                  granting permission for the invoking process to continue
+     *
+     * @param request string representation of the customer's request to be evaluated
+     *
+     * @return returns true (otherwise exits/logs off) if the strings are matched, otherwise returns false*/
     private boolean isLogOffRequest(String request) {
         if (request.equalsIgnoreCase("MENU") | request.equalsIgnoreCase("LOGOFF") | request.equalsIgnoreCase("EXIT")) {
             if (request.equalsIgnoreCase("MENU")) {
@@ -377,7 +447,11 @@ class LoggedIn implements CustomerInterfaceState {
         } else return false;
     }
 
-
+    /**
+     * getAccountHeaders stores headers used for displaying account information to the user
+     *
+     * @return String representation of the account information headers.
+ * */
     String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
