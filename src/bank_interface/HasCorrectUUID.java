@@ -6,7 +6,7 @@ import utility.uScanner;
 /**
  * Created by robert on 3/15/2015.
  */
-class HasCorrectUUID implements CustomerInterfaceState {
+public class HasCorrectUUID implements CustomerInterfaceState {
 
     private static BankProxy bankProxy;
     private final CustomerInterface customerInterface;
@@ -16,7 +16,7 @@ class HasCorrectUUID implements CustomerInterfaceState {
      * a correct UUID and must then enter a password
      *
      * @param newBankProxy         new BankProxy object passed from the CustomerInterface constructor; used to retrieve customer
-     *                             information for password verification & etc.
+     *                             information for password verification and etc.
      * @param newCustomerInterface instance of the customerInterface, used to set the customerInterface state
      */
     public HasCorrectUUID(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
