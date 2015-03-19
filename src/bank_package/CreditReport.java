@@ -170,7 +170,7 @@ public class CreditReport implements Serializable {
         //max is 120
         int tempScore = 20;
 
-        tempScore += (this.LENGTH_OF_CREDIT_HISTORY / this.CUSTOMER_AGE) * 100;
+        tempScore += (this.LENGTH_OF_CREDIT_HISTORY / (this.CUSTOMER_AGE + 1)) * 100;
 
         if (tempScore > 120) {
             tempScore = 120;

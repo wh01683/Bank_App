@@ -268,15 +268,14 @@ public class DataIO {
         try {
 
             File newFile = new File(System.getProperty("user.dir") + "/bankData.txt");
-
+            newFile.createNewFile();
             if(!newFile.createNewFile()){
             }
 
-            FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + "/bankData.txt");
+            FileInputStream fis = new FileInputStream(newFile);
+
             ObjectInputStream bankDataReader = new ObjectInputStream(fis);
-
             this.realBank = (RealBank) bankDataReader.readObject();
-
 
             /*bankDataReader.close();
             fis.close();
@@ -287,11 +286,12 @@ public class DataIO {
             System.out.printf("File not found in DataIO : readAllBankDataFromFile");
             System.exit(1);
         } catch (EOFException p) {
-            p.printStackTrace();
+            System.out.printf("EOF caught.\n");
         } catch (java.io.IOException e) {
             e.printStackTrace();
             System.exit(1);
         } catch (ClassNotFoundException k){
+            System.out.printf("Classes written to file differ from those read.");
             k.printStackTrace();
             System.exit(1);
         }
