@@ -35,13 +35,10 @@ class HasNoAccount implements CustomerInterfaceState {
         System.out.println("You must register first.");
     }
 
-    /**@hasAccount
-     *                This method asks the user whether they would like to register or not, accepting a non-case-sensitive
-     *                yes for true and a non-case-sensitive no as false
+    /**hasAccount This method asks the user whether they would like to register or not, accepting a non-case-sensitive
+     *            yes for true and a non-case-sensitive no as false
    *
-     * @param
-     *
-   * @return boolean: returns user's answer in boolean form*/
+     * @return boolean returns user's answer in boolean form*/
     @Override
     public void hasAccount(boolean wantsToRegister) {
         if (!wantsToRegister) {
@@ -168,9 +165,8 @@ class HasNoAccount implements CustomerInterfaceState {
     }*/
 
 
-    /**@fillCreditReportInformation
-     *                   This method is used when creating a new customer. This method is only called if the new customer
-     *                   is older than 17 years old. They are requested to fill in their credit information.
+    /**fillCreditReportInformation This method is used when creating a new customer. This method is only called if the new customer
+     *                             is older than 17 years old. They are requested to fill in their credit information.
     *
     * @param tempAge: age passed to the fill credit report. In reality, it is unnecessary because the user will never
     *                 see this method if their age is less than 18; the tempAge is printed purely for debugging and verification
@@ -211,8 +207,8 @@ class HasNoAccount implements CustomerInterfaceState {
 
     }
 
-    /**@getLatePaymentAmounts
-     *                   This method is called by the fillCreditReportInformation method IFF the user had more than 0 late payments on record
+    /**getLatePaymentAmounts This method is called by the fillCreditReportInformation method IFF the user had more than
+     *                       0 late payments on record
     *
     * @param newNumberOfLatePayments: number of latePayments on customer's record
      *

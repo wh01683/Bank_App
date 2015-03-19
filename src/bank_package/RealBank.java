@@ -37,8 +37,8 @@ public class RealBank implements Serializable, Bank {
     /**
      * getAccountHashtable retrieves the current comprehensive account hashtable of the bank
      *
-     * @return returns Hashtable<Integer, Account> object with user's accounts. keys associated with the accounts are
-     * the account numbers themselves.
+     * @return returns Hashtable object with user's accounts. keys associated with the accounts are
+     *         the account numbers themselves.
      */
     public Hashtable getAccountHashTable() {
         try {
@@ -263,7 +263,8 @@ public class RealBank implements Serializable, Bank {
      *
      * @param customerUUID UUID object of the customer to retrieve accounts for
      *
-     * @return Hashtable<Integer, Account> returns Hashtable of account objects specific to the specified customer
+     * @return returns Hashtable of account objects specific to the specified customer using integer account numbers as
+     *         keys
      * */
     @Override
     public Hashtable requestCustomerAccounts(UUID customerUUID) {

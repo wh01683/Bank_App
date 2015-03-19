@@ -18,7 +18,7 @@ public class EmailValidator {
     /**
      * Validate hex with regular expression
      *
-     * @param hex hex for validation
+     * @param hex email string for validation
      * @return true valid hex, false invalid hex
      */
     public boolean validate(final String hex) {

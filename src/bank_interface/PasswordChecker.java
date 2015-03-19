@@ -24,15 +24,14 @@ public class PasswordChecker {
     * */
 
 
-    /**
-     * checkPasswordWithASCIIValues
-     * <p/>
-     * checks strength of password by examining the decimal integer ASCII values of chars in the password. after checking
-     * for appropriate length, the function uses 4 counters to keep track of whether or not a lower case letter, uppercase
-     * letter, number, and special char has been seen. counters are incremented when a char has an integer value within
-     * the range specified.
+    /**checkPasswordWithASCIIValues checks strength of password by examining the decimal integer ASCII values of chars
+     *                              in the password. after checking for appropriate length, the function uses 4 counters
+     *                              to keep track of whether or not a lower case letter, uppercase letter, number, and
+     *                              special char has been seen. counters are incremented when a char has an integer
+     *                              value within the range specified.
      *
-     * @param userPassword: a char[] array is in the JPasswordField by default, so this method can deal with that specifically.
+     * @param userPassword: a char[] array is in the JPasswordField by default, so this method can deal with that
+     *                      specifically.
      * @return true if the password is strong enough and of appropriate length, false otherwise.
      */
     public boolean checkPasswordWithASCIIValues(final char[] userPassword) {
@@ -67,19 +66,16 @@ public class PasswordChecker {
         }
     }
 
-    /**checkPasswordWithASCIIValues
+    /**checkPasswordWithASCIIValues checks strength of password by examining the decimal integer ASCII values of chars
+     *                              in the password. after checking for appropriate length, the function uses 4 counters
+     *                              to keep track of whether or not a lower case letter, uppercase letter, number, and
+     *                              special char has been seen. counters are incremented when a char has an integer
+     *                              value within the range specified.
      *
-     * checks strength of password by examining the decimal integer ASCII values of chars in the password. after checking
-     * for appropriate length, the function uses 4 counters to keep track of whether or not a lower case letter, uppercase
-     * letter, number, and special char has been seen. counters are incremented when a char has an integer value within
-     * the range specified.
+     * @param stringPassword: when the user enters a password when creating an account, they input as a string.
      *
-     * @param stringPassword:
-     *                      when the user enters a password when creating an account, they input as a string.
-     *
-     * @return
-     *       true if the password is strong enough and of appropriate length, false otherwise.
-     *    */
+     * @return true if the password is strong enough and of appropriate length, false otherwise.
+     **/
 
     public boolean checkStringPassWithASCIIValues(final String stringPassword) {
 

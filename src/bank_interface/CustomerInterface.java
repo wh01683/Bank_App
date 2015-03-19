@@ -20,7 +20,9 @@ import java.util.UUID;
 * withdraw money from their accounts and transfer money between accounts.
 *
 */
-class CustomerInterface {
+
+
+public class CustomerInterface {
     private static CustomerInterface SINGLETON_INSTANCE;
     private static UUID CustomerUUID;
     private static DataIO dataIO;
@@ -164,7 +166,7 @@ class CustomerInterface {
         currentCustomerInterfaceState.logOff();
     }
 
-    /**@func enterUUID: method enterUUID() is called on current state of the customer interface
+    /**enterUUID: method enterUUID() is called on current state of the customer interface
      *                  prompts user to enter their provided UUID
      *                  Note: function changes based on current state
      * */
