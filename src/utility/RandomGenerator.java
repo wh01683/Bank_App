@@ -8,8 +8,6 @@ public class RandomGenerator implements Serializable {
 
     private final Random r = new Random();
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final String HEX_ALPHABET = "abcdefABCDEF0123456789";
-    private final int NUM_IN_HEX = HEX_ALPHABET.length();
     private final String ALPHA_NUMERIC = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final int LENGTH_OF_ALPHA_NUMERIC = ALPHA_NUMERIC.length();
     private final int NUM_IN_ALPHABET = ALPHABET.length();
