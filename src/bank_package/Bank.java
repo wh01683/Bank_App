@@ -3,7 +3,6 @@ package bank_package;
 import acct.Account;
 
 import java.util.Hashtable;
-import java.util.UUID;
 
 
 /**Bank Interface defines the methods available to the Bank Proxy and ultimately the customer. the goal is to restrict
@@ -21,19 +20,19 @@ public interface Bank {
 /**
  * requestCustomer requests a single customer object from the real bank using a UUID object
  *
- * @param customerUUID UUID object used to locate the correct customer requested
+ * @param email email object used to locate the correct customer requested
  *
  * @return returns the customer object requested
  * */
-Customer requestCustomer(UUID customerUUID);
+Customer requestCustomer(String email);
 /**
  * requestCustomerAccounts returns the account hashtable of the customer associated with the given UUID
  *
- * @param customerUUID UUID used to locate the correct customer and retrieve the correct accounts
+ * @param email email used to locate the correct customer and retrieve the correct accounts
  *
  * @return Hashtable object containing Accounts and their associated account numbers as keys.
  * */
-Hashtable requestCustomerAccounts(UUID customerUUID);
+Hashtable requestCustomerAccounts(String email);
 
     /**
      * removeAccount removes a specific account from the bank's account hashtable and from the customer's personal account
@@ -55,11 +54,11 @@ boolean hasAccount(Integer accountNumber);
 /**
  * hasCustomer asks the real bank if it contains the customer associated with the given UUID
  *
- * @param customerUUID UUID of the requested customer
+ * @param email email of the requested customer
  *
  * @return true if customer exists, false otherwise
  * */
-boolean hasCustomer(UUID customerUUID);
+boolean hasCustomer(String email);
 /**
  * addCustomer adds specific customer to the bank's customer hash table and adds its accounts (if any) to the bank's
  *             account hash table

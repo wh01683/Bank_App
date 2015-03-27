@@ -85,7 +85,7 @@ public class HasCorrectUUID implements CustomerInterfaceState {
      *           prompted for their password before allowing them to proceed.
      */
     @Override
-    public void enterUUID() {
+    public void enterEmail() {
         System.out.println("You have already entered your UUID, please enter your password.");
         customerInterface.enterPassword();
     }
@@ -101,7 +101,7 @@ public class HasCorrectUUID implements CustomerInterfaceState {
         /*if they do have an account, they are requested to provide their UUID*/
         /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
          * their password ON RECORD is set to a final String "realPass"*/
-        final String realPass = bankProxy.requestCustomer(customerInterface.getCustomerUUID()).getPASSWORD();
+        final String realPass = bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()).getPASSWORD();
         /*the user is prompted for their password, which is stored in enteredPass*/
         uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.\nBACK, LOGOFF.", 4, 20);
         String enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();

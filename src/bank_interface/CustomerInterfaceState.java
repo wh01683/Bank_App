@@ -6,7 +6,7 @@ public interface CustomerInterfaceState {
     /**
      * enterUUID prompts the user for their UUID in the appropriate state
      */
-    void enterUUID();
+    void enterEmail();
 
     /**
      * enterPassword prompts the user for their password and checks for correctness in the appropriate state

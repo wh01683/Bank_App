@@ -5,7 +5,6 @@ import acct.Account;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Hashtable;
-import java.util.UUID;
 
 
 public class BankProxy implements Bank {
@@ -35,14 +34,14 @@ public class BankProxy implements Bank {
     /**
      * requestCustomer requests a single customer from the real bank given a UUID
      *
-     * @param customerUUID UUID of the requested customer
+     * @param email email of the requested customer
      *
      * @return customer object associated with the given UUID
      * */
     @Override
-    public Customer requestCustomer(UUID customerUUID) {
+    public Customer requestCustomer(String email) {
         if (!(realBank == null)) {
-            return realBank.requestCustomer(customerUUID);
+            return realBank.requestCustomer(email);
         } else {
             return null;
         }
@@ -52,14 +51,14 @@ public class BankProxy implements Bank {
     /**
      * requestCustomerAccounts returns account hash table associated with a single customer
      *
-     * @param customerUUID UUID of the customer requesting the accounts
+     * @param email email of the customer requesting the accounts
      *
      * @return returns a Hashtable object with Accounts as values and their respective account numbers as keys
      * */
     @Override
-    public Hashtable requestCustomerAccounts(UUID customerUUID) {
+    public Hashtable requestCustomerAccounts(String email) {
         if (!(realBank == null)) {
-            return realBank.requestCustomerAccounts(customerUUID);
+            return realBank.requestCustomerAccounts(email);
         } else {
             return null;
         }
@@ -98,13 +97,13 @@ public class BankProxy implements Bank {
     /**
      * hasCustomer asks the bank if a customer exists or not
      *
-     * @param customerUUID UUID associated with the desired customer
+     * @param email email associated with the desired customer
      *
      * @return true if customer exists, false otherwise
      * */
     @Override
-    public boolean hasCustomer(UUID customerUUID) {
-        return realBank.hasCustomer(customerUUID);
+    public boolean hasCustomer(String email) {
+        return realBank.hasCustomer(realBank.getCustomerUUID(email));
     }
 
     /**

@@ -3,8 +3,6 @@ package bank_interface;
 import bank_package.BankProxy;
 import utility.uScanner;
 
-import java.util.UUID;
-
 /**
  * Created by robert on 3/15/2015.
  */
@@ -35,55 +33,56 @@ public class HasAccount implements CustomerInterfaceState {
      *           HasCorrectUUID and the customer is prompted for their password.
      * */
     @Override
-    public void enterUUID() {
+    public void enterEmail() {
 
         try {
-            uScanner UUID_SCANNER = new uScanner("Please enter the Customer ID.\nBACK, LOGOFF", 0, 37);
-            UUID newCustomerUUID;
+            uScanner EMAIL_SCANNER = new uScanner("Please enter your Email.\nBACK, LOGOFF", 0, 50);
 
-            String uuidInput = UUID_SCANNER.alphaNumericStringGet();
 
-            while (!(uuidInput.equalsIgnoreCase("BACK"))) {
+            String emailInput = EMAIL_SCANNER.alphaNumericStringGet();
 
-                if (uuidInput.equalsIgnoreCase("LOGOFF")) {
+            while (!(emailInput.equalsIgnoreCase("BACK"))) {
+
+                if (emailInput.equalsIgnoreCase("LOGOFF")) {
                     System.out.println("Have a great day!");
                     customerInterface.saveBankDataToFile();
                     customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
                     customerInterface.startLoginProcess(false);
-                } else if (!bankProxy.hasCustomer(UUID.fromString(uuidInput))) {
+
+                } else if (!bankProxy.hasCustomer(emailInput)) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
             * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
             * They are given 5 attempts total before the system exits.*/
                     System.out.println("We could not find your ID, please try again.");
                     boolean wantsToRegister = wantsToRegister();
-                    int uuidCounter = 1;
+                    int emailInputCounter = 1;
 
-                    while (!bankProxy.hasCustomer(UUID.fromString(uuidInput)) && uuidCounter < 7) {
-                        if (uuidCounter == 6) {
+                    while (!bankProxy.hasCustomer(emailInput) && emailInputCounter < 7) {
+                        if (emailInputCounter == 6) {
                             System.out.println("All attempts exhausted. System exiting.");
                             System.exit(1);
                         }
                         if (wantsToRegister) {
                             customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
                             customerInterface.startLoginProcess(false);
-                        } else if (uuidCounter < 6) {
-                            System.out.println(uuidCounter + " attempts remaining of 5. Please try again.");
-                            uuidInput = UUID_SCANNER.alphaNumericStringGet();
-                            if (uuidInput.equalsIgnoreCase("BACK")) {
+                        } else if (emailInputCounter < 6) {
+                            System.out.println(emailInputCounter + " attempts remaining of 5. Please try again.");
+                            emailInput = EMAIL_SCANNER.alphaNumericStringGet();
+                            if (emailInput.equalsIgnoreCase("BACK")) {
                                 customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
                                 customerInterface.startLoginProcess(false);
-                            } else if (uuidInput.equalsIgnoreCase("LOGOFF")) {
+                            } else if (emailInput.equalsIgnoreCase("LOGOFF")) {
                                 System.out.println("Have a great day!");
                                 customerInterface.logOff();
                             }
                         }
-                        uuidCounter++;
+                        emailInputCounter++;
                     }
                     customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
                 }
 
                 customerInterface.setCustomerInterfaceState(customerInterface.hasCorrectUUID);
-                customerInterface.setCustomerUUID(UUID.fromString(uuidInput));
+                customerInterface.setCustomer(bankProxy.requestCustomer(emailInput));
                 customerInterface.enterPassword();
             }
 
@@ -91,7 +90,7 @@ public class HasAccount implements CustomerInterfaceState {
 
         } catch (IllegalArgumentException p) {
             System.out.printf("Invalid UUID entered at HasAccount : enterUUID");
-            enterUUID();
+            enterEmail();
         }
     }
 

@@ -1,6 +1,7 @@
 package bank_interface;
 
 import bank_package.BankProxy;
+import bank_package.Customer;
 import bank_package.RealBank;
 
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class CustomerInterface {
     private static DataIO dataIO;
     private static RealBank realBank;
     private static BankProxy bankProxy;
+    private static Customer customer;
     final CustomerInterfaceState loggedOff;
     final CustomerInterfaceState loggedIn;
     final CustomerInterfaceState hasAccount;
@@ -120,26 +122,26 @@ public class CustomerInterface {
     }
 
 
-    /** getCustomerUUID: returns UUID of the customer currently logged in
+    /** getCustomer: returns UUID of the customer currently logged in
      *
      * @return returns the UUID object of the customer currently logged in
      * */
-    public UUID getCustomerUUID() {
-        if (!(CustomerUUID == null)) {
-            return CustomerUUID;
+    public Customer getCustomer() {
+        if (!(customer == null)) {
+            return customer;
         } else {
-            System.out.printf("CustomerUUID in CustomerInterface is null. Returning null.");
+            System.out.printf("Customer not set, returning null");
             return null;
         }
     }
 
     /** setCustomerUUID(UUID newCustomerUUID) updates the UUID of the customer interface
      *
-     * @param newCustomerUUID UUID of the customer logging in through a subclass
+     * @param newCustomer new customer to which this instance of the CustomerInterface belongs
      * */
-    public void setCustomerUUID(UUID newCustomerUUID) {
+    public void setCustomer(Customer newCustomer) {
         try {
-            CustomerUUID = newCustomerUUID;
+            customer = newCustomer;
         } catch (NullPointerException uuid) {
             System.out.printf("Null pointer caught in CustomerInterface : setCustomerUUID\nparameter cannot be null.");
         }
@@ -167,7 +169,7 @@ public class CustomerInterface {
      *                  Note: function changes based on current state
      * */
     public void enterUUID() {
-        currentCustomerInterfaceState.enterUUID();
+        currentCustomerInterfaceState.enterEmail();
     }
 
     /** enterPassword called on the current state of the customer interface
@@ -220,5 +222,6 @@ public class CustomerInterface {
     public void saveBankDataToFile() {
         bankProxy.saveAllBankDataToFile();
     }
+
 
 }

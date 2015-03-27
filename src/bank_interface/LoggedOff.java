@@ -34,7 +34,7 @@ public class LoggedOff implements CustomerInterfaceState {
      * enterUUID not allowed in this state
      */
     @Override
-    public void enterUUID() {
+    public void enterEmail() {
         System.out.println("No.");
         customerInterface.startLoginProcess(false);
     }
@@ -165,7 +165,7 @@ public class LoggedOff implements CustomerInterfaceState {
             System.out.printf("You have been successfully added, %s.\nYour new Customer UUID is %s. DO NOT LOSE THIS! Your" +
                             " password is %s.\nYou may now log on and experience all the benefits we have to offer!\n",
                     newCustomer.getName(), newCustomer.getUUID(), newCustomer.getPASSWORD());
-            customerInterface.setCustomerUUID(newCustomer.getUUID());
+            customerInterface.setCustomer(newCustomer);
         } else {
             System.out.println("This UUID is already in our system. Logging off.");
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);

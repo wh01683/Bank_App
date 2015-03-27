@@ -18,6 +18,7 @@ public class RealBank implements Serializable, Bank {
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
+    private Hashtable<Integer, UUID> emailUUIDHashTable;
     /*ToDo: Declare Hashtables static and adapt saveData methods to cope with this.*/
 
     public RealBank(String name, int numberAccounts, int numberCustomers) {
@@ -87,6 +88,7 @@ public class RealBank implements Serializable, Bank {
             for (int i = 0; i < numberCustomers; i++) {
                 Customer tempCustomer = new Customer();
                 customerHashtable.put(tempCustomer.getUUID().hashCode(), tempCustomer);
+                emailUUIDHashTable.put(tempCustomer.getEmail().hashCode(), tempCustomer.getUUID());
 
                 for (int k = 0; k < r.nextInt(10); k++) { //generates anywhere between 10 and 0 random accounts
                     Account tempAccount = testAccountFactory.getRandomAccount(tempCustomer);
@@ -110,6 +112,7 @@ public class RealBank implements Serializable, Bank {
 
         try {
             customerHashtable.put(customer.getUUID().hashCode(), customer);
+            emailUUIDHashTable.put(customer.getEmail().hashCode(), customer.getUUID());
             this.NUMBER_OF_CUSTOMERS++;
             Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
             while (acctKeys.hasMoreElements()) {
@@ -155,7 +158,12 @@ public class RealBank implements Serializable, Bank {
     public boolean removeCustomer(Customer customer) {
 
         try {
-            if (accountHashtable.contains(customer)) {
+
+            if (customerHashtable.contains(customer)) {
+
+                customerHashtable.remove(customer.getUUID().hashCode());
+                emailUUIDHashTable.remove(customer.getEmail().hashCode());
+
                 accountHashtable.remove(customer.getUUID().hashCode());
                 this.NUMBER_OF_CUSTOMERS--;
 
@@ -197,11 +205,29 @@ public class RealBank implements Serializable, Bank {
     /**hasCustomer overrides Bank interface's hasCustomer. used by BankProxy object. Method used to ask the bank whether
      *             or not it has a customer object associated with the given UUID object
      *
-     * @param customerUUID UUID object associated with the customer. Customer's hash key calculated from the UUID.
+     * @param email email associated with the customer. Customer's hash key calculated from the UUID.
      *
      * @return true if found, false otherwise.
      * */
+
     @Override
+    public boolean hasCustomer(String email) {
+        try {
+            return !customerHashtable.isEmpty() && hasCustomer(emailUUIDHashTable.get(email.hashCode()));
+        } catch (NullPointerException n) {
+            System.out.println("Null pointer exception in RealBank : hasCustomer.");
+            return false;
+        }
+    }
+
+    /**
+     * hasCustomer overrides Bank interface's hasCustomer. used by BankProxy object. Method used to ask the bank whether
+     * or not it has a customer object associated with the given UUID object
+     *
+     * @param customerUUID UUID object associated with the customer. Customer's hash key calculated from the UUID.
+     * @return true if found, false otherwise.
+     */
+
     public boolean hasCustomer(UUID customerUUID) {
         try {
             return !customerHashtable.isEmpty() && customerHashtable.containsKey(customerUUID.hashCode());
@@ -238,15 +264,15 @@ public class RealBank implements Serializable, Bank {
 
     /**requestCustomer method used to retrieve customer from the realBank using a given UUID object
      *
-     * @param customerID UUID object associated with the customer to be removed.
+     * @param email email associated with the customer.
      *
      * @return true if successfully removed, false otherwise.
      * */
-    public Customer requestCustomer(UUID customerID) {
+    public Customer requestCustomer(String email) {
 
         try {
-            if (this.customerHashtable.containsKey(customerID.hashCode())) {
-                return this.customerHashtable.get(customerID.hashCode());
+            if (this.customerHashtable.containsKey(emailUUIDHashTable.get(email.hashCode()))) {
+                return this.customerHashtable.get(emailUUIDHashTable.get(email.hashCode()));
             } else {
                 return null;
             }
@@ -261,15 +287,15 @@ public class RealBank implements Serializable, Bank {
     /**requestCustomerAccounts returns Hashtable containing accounts associated with a specific customer with the
      *                         specified UUID object
      *
-     * @param customerUUID UUID object of the customer to retrieve accounts for
+     * @param email email object of the customer to retrieve accounts for
      *
      * @return returns Hashtable of account objects specific to the specified customer using integer account numbers as
      *         keys
      * */
     @Override
-    public Hashtable requestCustomerAccounts(UUID customerUUID) {
-        if (this.customerHashtable.containsKey(customerUUID.hashCode())) {
-            return customerHashtable.get(customerUUID.hashCode()).getAccountHashtable();
+    public Hashtable requestCustomerAccounts(String email) {
+        if (this.customerHashtable.containsKey(emailUUIDHashTable.get(email.hashCode()))) {
+            return customerHashtable.get(emailUUIDHashTable.get(email.hashCode())).getAccountHashtable();
         } else {
             return null;
         }
@@ -345,5 +371,20 @@ public class RealBank implements Serializable, Bank {
         }
 
 
+    }
+
+    public UUID getCustomerUUID(String email) {
+
+        try {
+            if (emailUUIDHashTable.containsKey(email.hashCode())) {
+                return emailUUIDHashTable.get(email.hashCode());
+            } else {
+                return null;
+            }
+
+        } catch (NullPointerException l) {
+            System.out.printf("Customer not found.");
+            return null;
+        }
     }
 }
