@@ -79,7 +79,7 @@ public class HasAccount implements CustomerInterfaceState {
                         }
                         uuidCounter++;
                     }
-                    customerInterface.setCustomerInterfaceState(customerInterface.hasIncorrectUUID);
+                    customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
                 }
 
                 customerInterface.setCustomerInterfaceState(customerInterface.hasCorrectUUID);
@@ -108,7 +108,7 @@ public class HasAccount implements CustomerInterfaceState {
      * not allowed in this state
  * */
     @Override
-    public void hasAccount(boolean isRegistered) {
+    public void startLoginProcess(boolean isRegistered) {
         System.out.println("You are already registered.");
     }
 

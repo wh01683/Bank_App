@@ -84,7 +84,7 @@ public class BankProxy implements Bank {
     }
 
     /**
-     * hasAccount asks the real bank if an account exists or not
+     * startLoginProcess asks the real bank if an account exists or not
      *
      * @param accountNumber account number associated with the account object
      *

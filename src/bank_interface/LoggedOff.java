@@ -36,14 +36,14 @@ public class LoggedOff implements CustomerInterfaceState {
         customerInterface.hasAccount(false);
     }
 
- /**hasAccount: this is the entry point to the program they simply type whether they want to login or register,
+    /**startLoginProcess: this is the entry point to the program they simply type whether they want to login or register,
   *           and they are redirected to the appropriate state and the appropriate handling method based on what they choose
   *
   *@param isRegistered: default false.
   *
   **/
  @Override
-    public void hasAccount(boolean isRegistered) {
+ public void startLoginProcess(boolean isRegistered) {
 
             String loginOrRegister = logInOrRegister.stringGet();
 
@@ -58,7 +58,7 @@ public class LoggedOff implements CustomerInterfaceState {
             System.exit(0);
         } else {
             System.out.printf("Request could not be processed.");
-            hasAccount(false);
+            startLoginProcess(false);
         }
 
 

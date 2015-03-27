@@ -177,7 +177,7 @@ public class RealBank implements Serializable, Bank {
         return false;
     }
 
-    /**hasAccount overrides Bank interface's hasAccount. Used by BankProxy object. Method used to ask the bank whether or not
+    /**startLoginProcess overrides Bank interface's startLoginProcess. Used by BankProxy object. Method used to ask the bank whether or not
      *            it has an account object associated with the given account number
      *
      * @param accountNumber account number interger to check for.
@@ -189,7 +189,7 @@ public class RealBank implements Serializable, Bank {
         try {
             return accountHashtable.containsKey(accountNumber);
         } catch (NullPointerException n) {
-            System.out.printf("null pointer caught in RealBank : hasAccount");
+            System.out.printf("null pointer caught in RealBank : startLoginProcess");
             return false;
         }
     }

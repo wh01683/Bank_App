@@ -57,10 +57,10 @@ public class LoggedIn implements CustomerInterfaceState {
     }
 
     /**
-     * hasAccount prompts user for registering/logging in. In this state (Logged In), method is unnecessary
+     * startLoginProcess prompts user for registering/logging in. In this state (Logged In), method is unnecessary
      * */
     @Override
-    public void hasAccount(boolean isRegistered) {
+    public void startLoginProcess(boolean isRegistered) {
         System.out.println("You are currently logged in.");
     }
 

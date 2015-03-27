@@ -28,12 +28,12 @@ public class HasCorrectUUID implements CustomerInterfaceState {
 
 
     /**
-     * hasAccount useless in HasCorrectUUID state
+     * startLoginProcess useless in HasCorrectUUID state
      *
      * @param isRegistered false by default, not necessary here
      */
     @Override
-    public void hasAccount(boolean isRegistered) {
+    public void startLoginProcess(boolean isRegistered) {
         System.out.println("You are already registered.");
     }
 

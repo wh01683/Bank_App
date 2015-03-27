@@ -43,14 +43,14 @@ public class HasNoAccount implements CustomerInterfaceState {
         System.out.println("You must register first.");
     }
 
-    /**hasAccount This method asks the user whether they would like to register or not, accepting a non-case-sensitive
+    /**startLoginProcess This method asks the user whether they would like to register or not, accepting a non-case-sensitive
      *            yes for true and a non-case-sensitive no as false
    *
      * @param wantsToRegister boolean is false by default, only true if the user already stated they want to register,
      *                        thereby avoiding asking them twice.
      *                        */
     @Override
-    public void hasAccount(boolean wantsToRegister) {
+    public void startLoginProcess(boolean wantsToRegister) {
         if (!wantsToRegister) {
             registerNewCustomer();
             customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);

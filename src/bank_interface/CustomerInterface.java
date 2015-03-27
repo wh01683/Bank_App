@@ -33,7 +33,6 @@ public class CustomerInterface {
     final CustomerInterfaceState hasAccount;
     final CustomerInterfaceState hasNoAccount;
     final CustomerInterfaceState hasCorrectUUID;
-    final CustomerInterfaceState hasIncorrectUUID;
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
@@ -62,7 +61,6 @@ public class CustomerInterface {
         hasAccount = new HasAccount(this, bankProxy);
         hasNoAccount = new HasNoAccount(this, bankProxy);
         hasCorrectUUID = new HasCorrectUUID(this, bankProxy);
-        hasIncorrectUUID = new HasIncorrectUUID(this, bankProxy);
         loggedIn = new LoggedIn(this, bankProxy, dataIO);
 
         currentCustomerInterfaceState = loggedOff;
@@ -114,7 +112,7 @@ public class CustomerInterface {
             this.hasAccount(true);
         }
         while (!this.currentCustomerInterfaceState.equals(loggedOff)) {
-            while (this.currentCustomerInterfaceState.equals(hasAccount) | this.currentCustomerInterfaceState.equals(hasIncorrectUUID)) {
+            while (this.currentCustomerInterfaceState.equals(hasAccount)) {
                 this.enterUUID();
             }
             while (this.currentCustomerInterfaceState.equals(hasCorrectUUID)) {
@@ -182,7 +180,7 @@ public class CustomerInterface {
         currentCustomerInterfaceState.enterPassword();
     }
 
-    /** hasAccount: method hasAccount() is called on current state of the customer interface
+    /** startLoginProcess: method startLoginProcess() is called on current state of the customer interface
      *                   essentially initializes the registration process
      *                   Note: function changes based on current state
      *
@@ -190,7 +188,7 @@ public class CustomerInterface {
      *                   direct them to fill out their customer information
      * */
     public void hasAccount(boolean hasAccount) {
-        currentCustomerInterfaceState.hasAccount(hasAccount);
+        currentCustomerInterfaceState.startLoginProcess(hasAccount);
     }
 
     /** requestInformation start of the login process; prompts user for desired actions to take during the login

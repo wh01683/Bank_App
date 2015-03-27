@@ -255,14 +255,14 @@ class RandomCustomerInterface {
 
         }
 
-        /*@hasAccount
+        /*@startLoginProcess
         *
         * This method asks the user whether they have an account or not, accepting a non-case-sensitive yes for true and
         * a non-case-sensitive no as false
         *
         * @param void: not required
         * @return boolean: returns user's answer in boolean form*/
-        /*private boolean hasAccount() {
+        /*private boolean startLoginProcess() {
             //String answer = this.HAVE_ACCOUNT_SCANNER.stringGet();
 
             if (r.getRandomBoolean())
@@ -273,11 +273,11 @@ class RandomCustomerInterface {
 
             else {
                 System.out.println("Incorrect response.");
-                return hasAccount();
+                return startLoginProcess();
             }
         }*/
 
-        /*@hasAccount
+        /*@startLoginProcess
            *
            * This method asks the user whether they would like to register or not, accepting a non-case-sensitive
            * yes for true and a non-case-sensitive no as false
