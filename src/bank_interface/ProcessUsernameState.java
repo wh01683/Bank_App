@@ -46,7 +46,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
                 if (emailInput.equalsIgnoreCase("LOGOFF")) {
                     System.out.println("Have a great day!");
                     customerInterface.saveBankDataToFile();
-                    customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+                    customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
                     customerInterface.startLoginProcess(false);
 
                 } else if (!bankProxy.hasCustomer(emailInput)) {
@@ -63,13 +63,13 @@ public class ProcessUsernameState implements CustomerInterfaceState {
                             System.exit(1);
                         }
                         if (wantsToRegister) {
-                            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+                            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
                             customerInterface.startLoginProcess(false);
                         } else if (emailInputCounter < 6) {
                             System.out.println(emailInputCounter + " attempts remaining of 5. Please try again.");
                             emailInput = EMAIL_SCANNER.alphaNumericStringGet();
                             if (emailInput.equalsIgnoreCase("BACK")) {
-                                customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+                                customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
                                 customerInterface.startLoginProcess(false);
                             } else if (emailInput.equalsIgnoreCase("LOGOFF")) {
                                 System.out.println("Have a great day!");
@@ -78,15 +78,15 @@ public class ProcessUsernameState implements CustomerInterfaceState {
                         }
                         emailInputCounter++;
                     }
-                    customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+                    customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
                 }
 
-                customerInterface.setCustomerInterfaceState(customerInterface.hasCorrectUUID);
+                customerInterface.setCustomerInterfaceState(customerInterface.processPasswordState);
                 customerInterface.setCustomer(bankProxy.requestCustomer(emailInput));
                 customerInterface.enterPassword();
             }
 
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
 
         } catch (IllegalArgumentException p) {
             System.out.printf("Invalid UUID entered at HasAccount : enterUUID");
@@ -118,7 +118,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     public void logOff() {
         System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
-        customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
         customerInterface.startLoginProcess(false);
 
     }
@@ -164,12 +164,12 @@ public class ProcessUsernameState implements CustomerInterfaceState {
         if (answer.equalsIgnoreCase("YES")) {
             return true;
         } else if (answer.equalsIgnoreCase("NO")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+            customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
             customerInterface.enterUUID();
         } else if (answer.equalsIgnoreCase("LOGOFF")) {
             System.out.println("Have a great day!");
             customerInterface.saveBankDataToFile();
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
             customerInterface.startLoginProcess(false);
         } else if (answer.equalsIgnoreCase("EXIT")) {
             System.out.println("Exiting.");

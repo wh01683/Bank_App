@@ -44,7 +44,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     public void logOff() {
         System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
-        customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+        customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
         customerInterface.startLoginProcess(false);
 
     }
@@ -125,7 +125,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
             System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
                     " on file, " + realPass + "\nYou may now access your bank account information!\n");
             System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedIn);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
             customerInterface.requestInformation();
         } else {
             System.out.println("Invalid password, exiting.");
@@ -134,13 +134,13 @@ public class ProcessPasswordState implements CustomerInterfaceState {
         }
 
         if (enteredPass.equalsIgnoreCase("BACK")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+            customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
             customerInterface.enterUUID();
         }
         if (enteredPass.equalsIgnoreCase("LOGOFF")) {
             System.out.println("Have a great day!");
             customerInterface.saveBankDataToFile();
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
             customerInterface.startLoginProcess(false);
         }
     }

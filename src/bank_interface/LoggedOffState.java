@@ -59,10 +59,10 @@ public class LoggedOffState implements CustomerInterfaceState {
             String loginOrRegister = logInOrRegister.stringGet();
 
         if (loginOrRegister.equalsIgnoreCase("REGISTER")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
             customerInterface.startLoginProcess(true);
         } else if (loginOrRegister.equalsIgnoreCase("LOGIN")) {
-                customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+            customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
                 customerInterface.enterUUID();
         } else if (loginOrRegister.equalsIgnoreCase("EXIT")) {
             System.out.printf("Exiting..");
@@ -122,9 +122,9 @@ public class LoggedOffState implements CustomerInterfaceState {
         if (wantsRegister) {
             getNewCustomerInformation();
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            customerInterface.setCustomerInterfaceState(customerInterface.hasAccount);
+            customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
         } else {
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
             customerInterface.startLoginProcess(false);
         }
     }
@@ -168,7 +168,7 @@ public class LoggedOffState implements CustomerInterfaceState {
             customerInterface.setCustomer(newCustomer);
         } else {
             System.out.println("This UUID is already in our system. Logging off.");
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
             customerInterface.startLoginProcess(false);
         }
     }
@@ -211,7 +211,7 @@ public class LoggedOffState implements CustomerInterfaceState {
         if (answer.equalsIgnoreCase("YES")) {
             return true;
         } else if (answer.equalsIgnoreCase("NO")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
         } else if (answer.equalsIgnoreCase("LOGOFF")) {
             customerInterface.logOff();
         } else if (answer.equalsIgnoreCase("EXIT")) {

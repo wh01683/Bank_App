@@ -30,10 +30,10 @@ public class CustomerInterface {
     private static RealBank realBank;
     private static BankProxy bankProxy;
     private static Customer customer;
-    final CustomerInterfaceState loggedOff;
-    final CustomerInterfaceState loggedIn;
-    final CustomerInterfaceState hasAccount;
-    final CustomerInterfaceState hasCorrectUUID;
+    final CustomerInterfaceState loggedOffState;
+    final CustomerInterfaceState loggedInState;
+    final CustomerInterfaceState processUsernameState;
+    final CustomerInterfaceState processPasswordState;
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
@@ -58,12 +58,12 @@ public class CustomerInterface {
             System.exit(1);
         }
 
-        loggedOff = new LoggedOffState(this);
-        hasAccount = new HasAccount(this, bankProxy);
-        hasCorrectUUID = new ProcessPasswordState(this, bankProxy);
-        loggedIn = new LoggedInState(this, bankProxy, dataIO);
+        loggedOffState = new LoggedOffState(this);
+        loggedInState = new LoggedInState(this, bankProxy, dataIO);
+        processUsernameState = new ProcessUsernameState(this, bankProxy);
+        processPasswordState = new ProcessUsernameState(this, bankProxy);
 
-        currentCustomerInterfaceState = loggedOff;
+        currentCustomerInterfaceState = loggedOffState;
 
 
 
@@ -108,14 +108,14 @@ public class CustomerInterface {
         }
 
 
-        while (this.currentCustomerInterfaceState.equals(loggedOff)) {
+        while (this.currentCustomerInterfaceState.equals(loggedOffState)) {
             this.startLoginProcess(true);
         }
-        while (!this.currentCustomerInterfaceState.equals(loggedOff)) {
-            while (this.currentCustomerInterfaceState.equals(hasAccount)) {
+        while (!this.currentCustomerInterfaceState.equals(loggedOffState)) {
+            while (this.currentCustomerInterfaceState.equals(processUsernameState)) {
                 this.enterUUID();
             }
-            while (this.currentCustomerInterfaceState.equals(hasCorrectUUID)) {
+            while (this.currentCustomerInterfaceState.equals(processPasswordState)) {
                 this.enterPassword();
             }
         }
@@ -184,11 +184,11 @@ public class CustomerInterface {
      *                   essentially initializes the registration process
      *                   Note: function changes based on current state
      *
-     * @param hasAccount passing false will ask the user if they would like to register, passing true will automatically
+     * @param processUsernameState passing false will ask the user if they would like to register, passing true will automatically
      *                   direct them to fill out their customer information
      * */
-    public void startLoginProcess(boolean hasAccount) {
-        currentCustomerInterfaceState.startLoginProcess(hasAccount);
+    public void startLoginProcess(boolean processUsernameState) {
+        currentCustomerInterfaceState.startLoginProcess(processUsernameState);
     }
 
     /** requestInformation start of the login process; prompts user for desired actions to take during the login
