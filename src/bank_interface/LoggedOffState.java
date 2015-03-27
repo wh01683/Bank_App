@@ -111,7 +111,7 @@ public class LoggedOffState implements CustomerInterfaceState {
 
 
     /**
-     * getNewCustomerInformation method invoked to register a new customer using information input by the user to pass on
+     * setNewCustomerInformation method invoked to register a new customer using information input by the user to pass on
      * to the Customer constructor. Prompts user for their name, email, custom password, and invokes
      * the fillCreditReport method if the user is at least 18 years old. The password is checked for
      * strength using a local instantiation of the PasswordChecker class and the email is checked
@@ -119,7 +119,7 @@ public class LoggedOffState implements CustomerInterfaceState {
      * customer, the static CustomerInterface-wide UUID is set to that of the new customer to be
      * used for information retrieval later.
      */
-    private void getNewCustomerInformation(String tempName, String tempEmail, int tempAge, String tempPassword, CreditReport tempCreditReport) {
+    private void setNewCustomerInformation(String tempName, String tempEmail, int tempAge, String tempPassword, CreditReport tempCreditReport) {
 
         Customer newCustomer = new Customer(tempName, tempEmail, tempAge, tempPassword, tempCreditReport);
         if (bankProxy.addCustomer(newCustomer)) {
