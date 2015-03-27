@@ -61,7 +61,7 @@ public class LoggedOffState implements CustomerInterfaceState {
 
 
         if (loginOrRegister.equalsIgnoreCase("REGISTER")) {
-            registerNewCustomer(true);
+            //registerNewCustomer(true);
         } else if (loginOrRegister.equalsIgnoreCase("LOGIN")) {
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
             customerInterface.enterEmail();
@@ -111,25 +111,6 @@ public class LoggedOffState implements CustomerInterfaceState {
 
 
     /**
-     * registerNewCustomer asks the user if they would like to register with the bank and redirects them based on their response
-     */
-    void registerNewCustomer(boolean wantsToRegister) {
-
-         /*if the customer does NOT have an account and the customer WANTS to register, the new customer will be registered
-         * the current newCustomerID of the instance will be set to the newly registered customer's UUID and the new customer is
-         * added to the instance's customerHashTable*/
-
-        if (wantsToRegister) {
-            getNewCustomerInformation();
-            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-        } else {
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-            customerInterface.startLoginProcess(false);
-        }
-    }
-
-    /**
      * getNewCustomerInformation method invoked to register a new customer using information input by the user to pass on
      * to the Customer constructor. Prompts user for their name, email, custom password, and invokes
      * the fillCreditReport method if the user is at least 18 years old. The password is checked for
@@ -138,36 +119,16 @@ public class LoggedOffState implements CustomerInterfaceState {
      * customer, the static CustomerInterface-wide UUID is set to that of the new customer to be
      * used for information retrieval later.
      */
-    private void getNewCustomerInformation() {
-        PasswordChecker passwordChecker = new PasswordChecker();
-        EmailValidator emailValidator = new EmailValidator();
-        String tempName = NAME_SCANNER.stringGet();
-        int tempAge = AGE_SCANNER.intGet();
-        CreditReport tempCreditReport;
-        if (tempAge < 18) /*if the user is younger than 18, they do not have a credit report so a default credit report
-        is created for the user with all values initiated at 0*/
-            tempCreditReport = new CreditReport(0);
-        else
-            tempCreditReport = fillCredReportInformation(tempAge);
-        final uScanner NEW_PASSWORD_SCANNER = new uScanner("Please enter your new custom password for your account.", 5, 20);
-        String tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
-        while (!(passwordChecker.checkStringPassWithASCIIValues(tempPassword))) {
-            System.out.printf("Password not strong enough.\n");
-            tempPassword = NEW_PASSWORD_SCANNER.alphaNumericStringGet();
-        }
-        String tempEmail = EMAIL_GET_SCANNER.alphaNumericStringGet();
-        while (!(emailValidator.validate(tempEmail))) {
-            System.out.println("Not a valid e-mail address.\n");
-            tempEmail = EMAIL_GET_SCANNER.alphaNumericStringGet();
-        }
+    private void getNewCustomerInformation(String tempName, String tempEmail, int tempAge, String tempPassword, CreditReport tempCreditReport) {
+
         Customer newCustomer = new Customer(tempName, tempEmail, tempAge, tempPassword, tempCreditReport);
         if (bankProxy.addCustomer(newCustomer)) {
-            System.out.printf("You have been successfully added, %s.\nYour new Customer UUID is %s. DO NOT LOSE THIS! Your" +
+            System.out.printf("You have been successfully added, %s.\nYour registered Email is %s. Your" +
                             " password is %s.\nYou may now log on and experience all the benefits we have to offer!\n",
-                    newCustomer.getName(), newCustomer.getUUID(), newCustomer.getPASSWORD());
+                    newCustomer.getName(), newCustomer.getEmail(), newCustomer.getPASSWORD());
             customerInterface.setCustomer(newCustomer);
         } else {
-            System.out.println("This UUID is already in our system. Logging off.");
+            System.out.println("Cannot add customer. Logging off.");
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
             customerInterface.startLoginProcess(false);
         }
