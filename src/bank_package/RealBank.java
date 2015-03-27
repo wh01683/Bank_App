@@ -167,7 +167,6 @@ public class RealBank implements Serializable, Bank {
                 customerHashtable.remove(customer.getUUID().hashCode());
                 emailUUIDHashTable.remove(customer.getEmail().hashCode());
 
-                accountHashtable.remove(customer.getUUID().hashCode());
                 this.NUMBER_OF_CUSTOMERS--;
 
                 Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
@@ -274,8 +273,8 @@ public class RealBank implements Serializable, Bank {
     public Customer requestCustomer(String email) {
 
         try {
-            if (this.customerHashtable.containsKey(emailUUIDHashTable.get(email.hashCode()))) {
-                return this.customerHashtable.get(emailUUIDHashTable.get(email.hashCode()));
+            if (this.customerHashtable.containsKey(emailUUIDHashTable.get(email.hashCode()).hashCode())) {
+                return this.customerHashtable.get(emailUUIDHashTable.get(email.hashCode()).hashCode());
             } else {
                 return null;
             }
@@ -297,8 +296,8 @@ public class RealBank implements Serializable, Bank {
      * */
     @Override
     public Hashtable requestCustomerAccounts(String email) {
-        if (this.customerHashtable.containsKey(emailUUIDHashTable.get(email.hashCode()))) {
-            return customerHashtable.get(emailUUIDHashTable.get(email.hashCode())).getAccountHashtable();
+        if (this.customerHashtable.containsKey(emailUUIDHashTable.get(email.hashCode()).hashCode())) {
+            return customerHashtable.get(emailUUIDHashTable.get(email.hashCode()).hashCode()).getAccountHashtable();
         } else {
             return null;
         }

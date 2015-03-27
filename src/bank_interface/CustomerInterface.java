@@ -61,7 +61,7 @@ public class CustomerInterface {
         loggedOffState = new LoggedOffState(this, bankProxy);
         loggedInState = new LoggedInState(this, bankProxy, dataIO);
         processUsernameState = new ProcessUsernameState(this, bankProxy);
-        processPasswordState = new ProcessUsernameState(this, bankProxy);
+        processPasswordState = new ProcessPasswordState(this, bankProxy);
 
         currentCustomerInterfaceState = loggedOffState;
 

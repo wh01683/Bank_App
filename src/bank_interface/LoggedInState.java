@@ -214,7 +214,7 @@ public class LoggedInState implements CustomerInterfaceState {
                 dataIO.printAccountInformation(customerInterface.getCustomer().getAccountHashtable());
                 printInformation(REQUEST_SCANNER.stringGet());
             } else if (request.equalsIgnoreCase("ALL")) {
-                dataIO.printAllCustomerPrivateInformation(customerInterface.getCustomer().hashCode(), customerInterface.getCustomer().getAccountHashtable());
+                dataIO.printAllCustomerPrivateInformation(customerInterface.getCustomer().getUUID().hashCode(), customerInterface.getCustomer().getAccountHashtable());
                 printInformation(REQUEST_SCANNER.stringGet());
             } else {
                 System.out.println("Could not process your request: " + request + " Please try again");

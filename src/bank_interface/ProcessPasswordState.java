@@ -55,7 +55,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     @Override
     public void requestInformation() {
 
-        System.out.println("Must enter your pass word first.");
+        System.out.println("Must enter your password first.");
         customerInterface.enterPassword();
 
     }
@@ -66,7 +66,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      * */
     @Override
     public void startTransaction() {
-        System.out.println("Must enter your pass word first.");
+        System.out.println("Must enter your password first.");
         customerInterface.enterPassword();
     }
 
@@ -76,7 +76,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      * */
     @Override
     public void addAccount() {
-        System.out.println("Must enter your pass word first.");
+        System.out.println("Must enter your password first.");
         customerInterface.enterPassword();
     }
 
@@ -86,7 +86,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      */
     @Override
     public void enterEmail() {
-        System.out.println("You have already entered your UUID, please enter your password.");
+        System.out.println("You have already entered your Email, please enter your password.");
         customerInterface.enterPassword();
     }
 

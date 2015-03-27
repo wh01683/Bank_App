@@ -61,7 +61,6 @@ public class LoggedOffState implements CustomerInterfaceState {
 
 
         if (loginOrRegister.equalsIgnoreCase("REGISTER")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
             registerNewCustomer(true);
         } else if (loginOrRegister.equalsIgnoreCase("LOGIN")) {
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);

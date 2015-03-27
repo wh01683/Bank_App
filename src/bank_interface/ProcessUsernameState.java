@@ -64,7 +64,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
                         }
                         if (wantsToRegister) {
                             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-                            customerInterface.startLoginProcess(false);
+                            customerInterface.startLoginProcess(true);
                         } else if (emailInputCounter < 6) {
                             System.out.println(emailInputCounter + " attempts remaining of 5. Please try again.");
                             emailInput = EMAIL_SCANNER.alphaNumericStringGet();
@@ -99,7 +99,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
      * */
     @Override
     public void enterPassword() {
-        System.out.println("You must enter your UUID first.");
+        System.out.println("You must enter your Email first.");
         customerInterface.enterEmail();
     }
 
