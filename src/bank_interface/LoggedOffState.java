@@ -6,7 +6,7 @@ import bank_package.CreditReport;
 import bank_package.Customer;
 import utility.uScanner;
 
-public class LoggedOff implements CustomerInterfaceState {
+public class LoggedOffState implements CustomerInterfaceState {
 
     /*login or register prompt.*/
     private static final uScanner logInOrRegister = new uScanner("----LOGIN--------------REGISTER-------------EXIT----", 4, 8);
@@ -21,12 +21,12 @@ public class LoggedOff implements CustomerInterfaceState {
     private final uScanner EMAIL_GET_SCANNER = new uScanner("Please enter your e-mail address. We totally won't sell it!", 0, 100);
     private final CustomerInterface customerInterface;
     /**
-     * LoggedOff creates a LoggedOff state used by the customer interface class (default start state)
+     * LoggedOffState creates a LoggedOffState state used by the customer interface class (default start state)
      *
      * @param newCustomerInterface customer interface instance passed through customer interface constructor. used to
      *                             set and update states of the customer interface
      */
-    public LoggedOff(CustomerInterface newCustomerInterface) {
+    public LoggedOffState(CustomerInterface newCustomerInterface) {
         this.customerInterface = newCustomerInterface;
     }
 

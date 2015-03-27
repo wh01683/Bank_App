@@ -6,20 +6,20 @@ import utility.uScanner;
 /**
  * Created by robert on 3/15/2015.
  */
-public class HasCorrectUUID implements CustomerInterfaceState {
+public class ProcessPasswordState implements CustomerInterfaceState {
 
     private static BankProxy bankProxy;
     private final CustomerInterface customerInterface;
 
     /**
-     * HasCorrectUUID state class used by CustomerInterface, represents the state entered when the customer provides
+     * ProcessPasswordState state class used by CustomerInterface, represents the state entered when the customer provides
      * a correct UUID and must then enter a password
      *
      * @param newBankProxy         new BankProxy object passed from the CustomerInterface constructor; used to retrieve customer
      *                             information for password verification and etc.
      * @param newCustomerInterface instance of the customerInterface, used to set the customerInterface state
      */
-    public HasCorrectUUID(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
+    public ProcessPasswordState(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
         bankProxy = newBankProxy;
         this.customerInterface = newCustomerInterface;
 
@@ -28,7 +28,7 @@ public class HasCorrectUUID implements CustomerInterfaceState {
 
 
     /**
-     * startLoginProcess useless in HasCorrectUUID state
+     * startLoginProcess useless in ProcessPasswordState state
      *
      * @param isRegistered false by default, not necessary here
      */

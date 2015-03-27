@@ -58,10 +58,10 @@ public class CustomerInterface {
             System.exit(1);
         }
 
-        loggedOff = new LoggedOff(this);
+        loggedOff = new LoggedOffState(this);
         hasAccount = new HasAccount(this, bankProxy);
-        hasCorrectUUID = new HasCorrectUUID(this, bankProxy);
-        loggedIn = new LoggedIn(this, bankProxy, dataIO);
+        hasCorrectUUID = new ProcessPasswordState(this, bankProxy);
+        loggedIn = new LoggedInState(this, bankProxy, dataIO);
 
         currentCustomerInterfaceState = loggedOff;
 

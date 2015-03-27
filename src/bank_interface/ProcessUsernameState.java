@@ -6,7 +6,7 @@ import utility.uScanner;
 /**
  * Created by robert on 3/15/2015.
  */
-public class HasAccount implements CustomerInterfaceState {
+public class ProcessUsernameState implements CustomerInterfaceState {
 
     private static BankProxy bankProxy;
     private final CustomerInterface customerInterface;
@@ -18,7 +18,7 @@ public class HasAccount implements CustomerInterfaceState {
      *                             certain customer information
      * @param newCustomerInterface instance of CustomerInterface, used to set new states when the state changes.
      */
-    public HasAccount(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
+    public ProcessUsernameState(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
 
         this.customerInterface = newCustomerInterface;
         bankProxy = newBankProxy;
@@ -30,7 +30,7 @@ public class HasAccount implements CustomerInterfaceState {
      *           This method does not verify whether or not the UUID belongs to the customer or not. The user simply
      *           enters their UUID and the method checks whether or not the bank has the UUID on file through the bankProxy.
      *           They are given 5 attempts before the system closes. Upon a successful match, the state is changed to
-     *           HasCorrectUUID and the customer is prompted for their password.
+     *           ProcessPasswordState and the customer is prompted for their password.
      * */
     @Override
     public void enterEmail() {
@@ -112,7 +112,7 @@ public class HasAccount implements CustomerInterfaceState {
     }
 
     /**
-     * saves all bank information to file, changes the current state to LoggedOff, and brings up the first menu
+     * saves all bank information to file, changes the current state to LoggedOffState, and brings up the first menu
  * */
     @Override
     public void logOff() {

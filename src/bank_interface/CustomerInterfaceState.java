@@ -20,7 +20,7 @@ public interface CustomerInterfaceState {
      */
     void startLoginProcess(boolean isRegistered);
 /**
- * logOff saves bank data, changes state to LoggedOff and brings up first menu. Same in all states.
+ * logOff saves bank data, changes state to LoggedOffState and brings up first menu. Same in all states.
  * */
 void logOff();
 /**

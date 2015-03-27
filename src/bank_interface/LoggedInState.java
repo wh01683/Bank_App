@@ -11,7 +11,7 @@ import java.util.Hashtable;
  * @author robert
  * Created on 3/15/2015
  */
-public class LoggedIn implements CustomerInterfaceState {
+public class LoggedInState implements CustomerInterfaceState {
 
     private static DataIO dataIO;
     private static BankProxy bankProxy;
@@ -25,15 +25,15 @@ public class LoggedIn implements CustomerInterfaceState {
 
 
     /**
-     * LoggedIn constructor of the LoggedIn state class, utilized by CustomerInterface class.
+     * LoggedInState constructor of the LoggedInState state class, utilized by CustomerInterface class.
      *
      * @param newBankProxy         bank proxy object passed by the CustomerInterface class when the CustomerInterface is created
-     *                             the bank proxy provides the LoggedIn state with the information it needs about the customer
+     *                             the bank proxy provides the LoggedInState state with the information it needs about the customer
      *                             and its accounts, but restricts it from editing some vital parts of the RealBank class
      * @param newCustomerInterface instance of the CustomerInterface class; used to set new states
      * @param newDataIO            new instance of a pre-created DataIO object passed by the CustomerInterface invoker.
      */
-    public LoggedIn(CustomerInterface newCustomerInterface, BankProxy newBankProxy, DataIO newDataIO) {
+    public LoggedInState(CustomerInterface newCustomerInterface, BankProxy newBankProxy, DataIO newDataIO) {
         bankProxy = newBankProxy;
         dataIO = newDataIO;
         this.customerInterface = newCustomerInterface;
@@ -141,7 +141,7 @@ public class LoggedIn implements CustomerInterfaceState {
                 addAccount();
             }
         } catch (NullPointerException q) {
-            System.out.printf("Null pointer caught in LoggedIn : addAccount");
+            System.out.printf("Null pointer caught in LoggedInState : addAccount");
             addAccount();
         }
     }
@@ -224,7 +224,7 @@ public class LoggedIn implements CustomerInterfaceState {
         }
 
         } catch (NullPointerException e) {
-            System.out.printf("Null pointer caught in LoggedIn : printInformation");
+            System.out.printf("Null pointer caught in LoggedInState : printInformation");
             printInformation(REQUEST_SCANNER.stringGet());
         }
 
@@ -416,7 +416,7 @@ public class LoggedIn implements CustomerInterfaceState {
             }
 
         } catch (NullPointerException e) {
-            System.out.printf("Null pointer caught in LoggedIn : processTransaction");
+            System.out.printf("Null pointer caught in LoggedInState : processTransaction");
             processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
         }
         processTransaction(TRANSACTION_REQUEST_SCANNER.stringGet());
