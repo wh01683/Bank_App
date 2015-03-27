@@ -115,8 +115,14 @@ public class BankProxy implements Bank {
      * */
     @Override
     public boolean addCustomer(Customer customer) {
-        realBank.addCustomer(customer);
-        return true;
+
+        if (!(realBank == null)) {
+            realBank.addCustomer(customer);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 /**

@@ -58,7 +58,7 @@ public class CustomerInterface {
             System.exit(1);
         }
 
-        loggedOffState = new LoggedOffState(this);
+        loggedOffState = new LoggedOffState(this, bankProxy);
         loggedInState = new LoggedInState(this, bankProxy, dataIO);
         processUsernameState = new ProcessUsernameState(this, bankProxy);
         processPasswordState = new ProcessUsernameState(this, bankProxy);
@@ -113,7 +113,7 @@ public class CustomerInterface {
         }
         while (!this.currentCustomerInterfaceState.equals(loggedOffState)) {
             while (this.currentCustomerInterfaceState.equals(processUsernameState)) {
-                this.enterUUID();
+                this.enterEmail();
             }
             while (this.currentCustomerInterfaceState.equals(processPasswordState)) {
                 this.enterPassword();
@@ -168,7 +168,7 @@ public class CustomerInterface {
      *                  prompts user to enter their provided UUID
      *                  Note: function changes based on current state
      * */
-    public void enterUUID() {
+    public void enterEmail() {
         currentCustomerInterfaceState.enterEmail();
     }
 

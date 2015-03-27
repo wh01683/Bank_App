@@ -81,7 +81,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     }
 
     /**
-     * enterUUID not used in this state. If this method is ever invoked during this state, the customer is
+     * enterEmail not used in this state. If this method is ever invoked during this state, the customer is
      *           prompted for their password before allowing them to proceed.
      */
     @Override
@@ -135,7 +135,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
 
         if (enteredPass.equalsIgnoreCase("BACK")) {
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-            customerInterface.enterUUID();
+            customerInterface.enterEmail();
         }
         if (enteredPass.equalsIgnoreCase("LOGOFF")) {
             System.out.println("Have a great day!");

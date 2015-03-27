@@ -31,6 +31,9 @@ public class RealBank implements Serializable, Bank {
         if (accountHashtable == null) {
             accountHashtable = new Hashtable<Integer, Account>(numberAccounts * 2);
         }
+        if (emailUUIDHashTable == null) {
+            emailUUIDHashTable = new Hashtable<Integer, UUID>(numberAccounts * 2);
+        }
 
 
     }

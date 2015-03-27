@@ -26,7 +26,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     }
 
     /**
-     * enterUUID after registering or stating they have an account, the customer is prompted to enter their UUID here.
+     * enterEmail after registering or stating they have an account, the customer is prompted to enter their UUID here.
      *           This method does not verify whether or not the UUID belongs to the customer or not. The user simply
      *           enters their UUID and the method checks whether or not the bank has the UUID on file through the bankProxy.
      *           They are given 5 attempts before the system closes. Upon a successful match, the state is changed to
@@ -89,7 +89,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
 
         } catch (IllegalArgumentException p) {
-            System.out.printf("Invalid UUID entered at HasAccount : enterUUID");
+            System.out.printf("Invalid UUID entered at HasAccount : enterEmail");
             enterEmail();
         }
     }
@@ -100,7 +100,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     @Override
     public void enterPassword() {
         System.out.println("You must enter your UUID first.");
-        customerInterface.enterUUID();
+        customerInterface.enterEmail();
     }
 
     /**
@@ -129,7 +129,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     @Override
     public void requestInformation() {
         System.out.println("You must log in first.");
-        customerInterface.enterUUID();
+        customerInterface.enterEmail();
     }
 
     /**
@@ -138,7 +138,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     @Override
     public void startTransaction() {
         System.out.println("You must log in first.");
-        customerInterface.enterUUID();
+        customerInterface.enterEmail();
     }
 
     /**
@@ -147,7 +147,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     @Override
     public void addAccount() {
         System.out.println("You must log in first.");
-        customerInterface.enterUUID();
+        customerInterface.enterEmail();
     }
 
     /**
@@ -165,7 +165,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
             return true;
         } else if (answer.equalsIgnoreCase("NO")) {
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-            customerInterface.enterUUID();
+            customerInterface.enterEmail();
         } else if (answer.equalsIgnoreCase("LOGOFF")) {
             System.out.println("Have a great day!");
             customerInterface.saveBankDataToFile();

@@ -26,8 +26,9 @@ public class LoggedOffState implements CustomerInterfaceState {
      * @param newCustomerInterface customer interface instance passed through customer interface constructor. used to
      *                             set and update states of the customer interface
      */
-    public LoggedOffState(CustomerInterface newCustomerInterface) {
+    public LoggedOffState(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
         this.customerInterface = newCustomerInterface;
+        bankProxy = newBankProxy;
     }
 
     /**
@@ -58,12 +59,13 @@ public class LoggedOffState implements CustomerInterfaceState {
 
             String loginOrRegister = logInOrRegister.stringGet();
 
+
         if (loginOrRegister.equalsIgnoreCase("REGISTER")) {
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-            customerInterface.startLoginProcess(true);
+            registerNewCustomer(true);
         } else if (loginOrRegister.equalsIgnoreCase("LOGIN")) {
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-                customerInterface.enterUUID();
+            customerInterface.enterEmail();
         } else if (loginOrRegister.equalsIgnoreCase("EXIT")) {
             System.out.printf("Exiting..");
             System.exit(0);
@@ -112,14 +114,13 @@ public class LoggedOffState implements CustomerInterfaceState {
     /**
      * registerNewCustomer asks the user if they would like to register with the bank and redirects them based on their response
      */
-    void registerNewCustomer() {
+    void registerNewCustomer(boolean wantsToRegister) {
 
-        boolean wantsRegister = wantsToRegister();
          /*if the customer does NOT have an account and the customer WANTS to register, the new customer will be registered
          * the current newCustomerID of the instance will be set to the newly registered customer's UUID and the new customer is
          * added to the instance's customerHashTable*/
 
-        if (wantsRegister) {
+        if (wantsToRegister) {
             getNewCustomerInformation();
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
