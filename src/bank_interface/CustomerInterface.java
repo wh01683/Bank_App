@@ -31,7 +31,6 @@ public class CustomerInterface {
     final CustomerInterfaceState loggedOff;
     final CustomerInterfaceState loggedIn;
     final CustomerInterfaceState hasAccount;
-    final CustomerInterfaceState hasNoAccount;
     final CustomerInterfaceState hasCorrectUUID;
     /*private constructor... creates new customer interface using the current bank's information (passed through param)
     * and the customer's unique ID also passed through param.*/
@@ -59,7 +58,6 @@ public class CustomerInterface {
 
         loggedOff = new LoggedOff(this);
         hasAccount = new HasAccount(this, bankProxy);
-        hasNoAccount = new HasNoAccount(this, bankProxy);
         hasCorrectUUID = new HasCorrectUUID(this, bankProxy);
         loggedIn = new LoggedIn(this, bankProxy, dataIO);
 
@@ -108,8 +106,8 @@ public class CustomerInterface {
         }
 
 
-        while (this.currentCustomerInterfaceState.equals(hasNoAccount) | this.currentCustomerInterfaceState.equals(loggedOff)) {
-            this.hasAccount(true);
+        while (this.currentCustomerInterfaceState.equals(loggedOff)) {
+            this.startLoginProcess(true);
         }
         while (!this.currentCustomerInterfaceState.equals(loggedOff)) {
             while (this.currentCustomerInterfaceState.equals(hasAccount)) {
@@ -187,7 +185,7 @@ public class CustomerInterface {
      * @param hasAccount passing false will ask the user if they would like to register, passing true will automatically
      *                   direct them to fill out their customer information
      * */
-    public void hasAccount(boolean hasAccount) {
+    public void startLoginProcess(boolean hasAccount) {
         currentCustomerInterfaceState.startLoginProcess(hasAccount);
     }
 

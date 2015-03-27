@@ -73,7 +73,7 @@ public class LoggedIn implements CustomerInterfaceState {
         System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
-        customerInterface.hasAccount(false);
+        customerInterface.startLoginProcess(false);
     }
 
     /**

@@ -49,7 +49,7 @@ public class HasAccount implements CustomerInterfaceState {
                     System.out.println("Have a great day!");
                     customerInterface.saveBankDataToFile();
                     customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
-                    customerInterface.hasAccount(false);
+                    customerInterface.startLoginProcess(false);
                 } else if (!bankProxy.hasCustomer(UUID.fromString(uuidInput))) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
             * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
@@ -64,14 +64,14 @@ public class HasAccount implements CustomerInterfaceState {
                             System.exit(1);
                         }
                         if (wantsToRegister) {
-                            customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
-                            customerInterface.hasAccount(false);
+                            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+                            customerInterface.startLoginProcess(false);
                         } else if (uuidCounter < 6) {
                             System.out.println(uuidCounter + " attempts remaining of 5. Please try again.");
                             uuidInput = UUID_SCANNER.alphaNumericStringGet();
                             if (uuidInput.equalsIgnoreCase("BACK")) {
-                                customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
-                                customerInterface.hasAccount(false);
+                                customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
+                                customerInterface.startLoginProcess(false);
                             } else if (uuidInput.equalsIgnoreCase("LOGOFF")) {
                                 System.out.println("Have a great day!");
                                 customerInterface.logOff();
@@ -87,7 +87,7 @@ public class HasAccount implements CustomerInterfaceState {
                 customerInterface.enterPassword();
             }
 
-            customerInterface.setCustomerInterfaceState(customerInterface.hasNoAccount);
+            customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
 
         } catch (IllegalArgumentException p) {
             System.out.printf("Invalid UUID entered at HasAccount : enterUUID");
@@ -120,7 +120,7 @@ public class HasAccount implements CustomerInterfaceState {
         System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
-        customerInterface.hasAccount(false);
+        customerInterface.startLoginProcess(false);
 
     }
 
@@ -171,7 +171,7 @@ public class HasAccount implements CustomerInterfaceState {
             System.out.println("Have a great day!");
             customerInterface.saveBankDataToFile();
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOff);
-            customerInterface.hasAccount(false);
+            customerInterface.startLoginProcess(false);
         } else if (answer.equalsIgnoreCase("EXIT")) {
             System.out.println("Exiting.");
             System.exit(0);
