@@ -111,13 +111,16 @@ public class LoggedOffState implements CustomerInterfaceState {
 
 
     /**
-     * setNewCustomerInformation method invoked to register a new customer using information input by the user to pass on
-     * to the Customer constructor. Prompts user for their name, email, custom password, and invokes
-     * the fillCreditReport method if the user is at least 18 years old. The password is checked for
-     * strength using a local instantiation of the PasswordChecker class and the email is checked
-     * for validity using a local instantiation of the EmailValidator class. After creating the new
-     * customer, the static CustomerInterface-wide UUID is set to that of the new customer to be
-     * used for information retrieval later.
+     * used to send the new customer's information from the register new customer form in the gui to the customer interface.
+     * new customer information passed through the params and a new customer is created with the given information
+     *
+     * @param tempName name of the new customer passed from the gui form
+     * @param tempEmail email of the new customer passed from the gui form. Check for validity before passing
+     * @param tempAge age of the new customer passed from the gui form.
+     * @param tempPassword password of the new customer passed from the gui form. Check for validity before passing.
+     * @param tempCreditReport credit report of the new customer. created separately using the gui form.
+     *
+     *
      */
     private void setNewCustomerInformation(String tempName, String tempEmail, int tempAge, String tempPassword, CreditReport tempCreditReport) {
 
