@@ -7,9 +7,9 @@ import javax.swing.*;
  * 3/16/15
  */
 public class BankDashboard {
-    private JTabbedPane tabbedPane1;
     private JPanel panel1;
-    private JList list1;
+    private JLabel userName;
+    private JTable accountsTable;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("BankDashboard");

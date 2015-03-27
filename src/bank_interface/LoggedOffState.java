@@ -57,7 +57,7 @@ public class LoggedOffState implements CustomerInterfaceState {
  @Override
  public void startLoginProcess(boolean isRegistered) {
 
-            String loginOrRegister = logInOrRegister.stringGet();
+        String loginOrRegister = logInOrRegister.stringGet();
 
 
         if (loginOrRegister.equalsIgnoreCase("REGISTER")) {
