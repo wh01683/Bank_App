@@ -12,21 +12,21 @@ import java.util.UUID;
 
 public interface Account {
 
-    public double getBalance();
+    double getBalance();
 
-    public String getType();
+    String getType();
 
-    public double getMinRequiredBalance();
+    double getMinRequiredBalance();
 
-    public double deposit(double amount);
+    double deposit(double amount);
 
-    public double withdraw(double amount);
+    double withdraw(double amount);
 
-    public Integer getACCOUNT_NUMBER();
+    Integer getACCOUNT_NUMBER();
 
-    public boolean checkWithdrawLimits(double withdrawal);
+    boolean checkWithdrawLimits(double withdrawal);
 
-    public Account applyForNewAccount(Customer customer, double openingBalance);
+    Account applyForNewAccount(Customer customer, double openingBalance);
 
-    public UUID getOwner();
+    UUID getOwner();
 }

@@ -86,19 +86,26 @@ public class uScanner implements Serializable {
      * @return returns a String of letters with a length within boundaries specified by the constructor
      * */
     public String stringGet() throws NoSuchElementException {
-        String val = getString();
 
-        while (!val.matches("[a-zA-Z]+")) {
+        try {
+            String val = getString();
 
-            System.out.println("Must enter letters only.");
-            val = getString();
+            while (!val.matches("[a-zA-Z]+")) {
 
-            while (val.length() < this.MIN | val.length() > this.MAX) {
-                System.out.println("Must be longer than " + this.MIN + " and shorter than " + this.MAX + " characters long.");
+                System.out.println("Must enter letters only.");
                 val = getString();
+
+                while (val.length() < this.MIN | val.length() > this.MAX) {
+                    System.out.println("Must be longer than " + this.MIN + " and shorter than " + this.MAX + " characters long.");
+                    val = getString();
+                }
             }
+            return val;
+
+        } catch (NullPointerException p) {
+            System.out.println("No string entered.");
+            return stringGet();
         }
-        return val;
     }
 
     /**

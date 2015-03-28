@@ -1,25 +1,21 @@
 package gui;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import bank_interface.CustomerInterface;
-import bank_interface.DataIO;
 
 /**
  * William Trent Holliday
  * 3/16/15
  */
-public class BankLogin {
+class BankLogin {
     private JPanel panel1;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton createNewAccountButton;
     private JButton loginButton;
 
-    public BankLogin() {
+    private BankLogin() {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {

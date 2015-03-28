@@ -1,7 +1,7 @@
 package bank_interface;
 
 
-public interface CustomerInterfaceState {
+interface CustomerInterfaceState {
 
     /**
      * enterUUID prompts the user for their UUID in the appropriate state

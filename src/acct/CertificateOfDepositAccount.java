@@ -96,9 +96,11 @@ class CertificateOfDepositAccount implements Account, Serializable{
         }
     }
 
-    public void update() {
-        this.accountBalance *= (this.INTEREST_RATE+1);
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    public void update() {
+//        this.accountBalance *= (this.INTEREST_RATE+1);
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
     @Override
     public Account applyForNewAccount(Customer customer, double openingBalance) {

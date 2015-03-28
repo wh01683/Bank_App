@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 /*ToDo: make a more realistic ChexSystems class that calculates ChexSystems score based on customer history (like CreditScore)*/
-public class ChexSystems implements Serializable {
+class ChexSystems implements Serializable {
     private final int CHEX_SYSTEMS_SCORE;
 
     /**

@@ -4,12 +4,11 @@ import acct.Account;
 
 import java.util.Hashtable;
 
-
 /**Bank Interface defines the methods available to the Bank Proxy and ultimately the customer. the goal is to restrict
 * their access and not give customers the ability to edit balances(aside from making a deposit or withdrawal), add/remove
 * other customers, etc.*/
 
-public interface Bank {
+interface Bank {
 
     /**
      * addAccount adds an account object to the bank's account tables and to the appropriate customer's account tables

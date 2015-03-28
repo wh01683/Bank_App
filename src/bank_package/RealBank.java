@@ -54,29 +54,31 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
-    /**getNewRandomBank retrieves new randomly generated bank; used for testing purposes.
-     *       Properties:
-     *                  Name between 0 and 10 chars long
-     *                  50 to 500 accountHashtable initial size
-     *                  50 to 500 customerHashtable initial size
-     *                  50 to 500 randomly generated customers added,
-     *                  each customer has 0 to 10 randomly generated accounts
-     *
-     * @return randomly created bank
-     * */
-    public RealBank getNewRandomBank() {
-
-        RealBank randomBank = new RealBank(random.nameGen(0, 10), random.getInts(50, 500), random.getInts(50, 500));
-        addRandomCustomers(random.getInts(50, 500));
-        return randomBank;
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**getNewRandomBank retrieves new randomly generated bank; used for testing purposes.
+//     *       Properties:
+//     *                  Name between 0 and 10 chars long
+//     *                  50 to 500 accountHashtable initial size
+//     *                  50 to 500 customerHashtable initial size
+//     *                  50 to 500 randomly generated customers added,
+//     *                  each customer has 0 to 10 randomly generated accounts
+//     *
+//     * @return randomly created bank
+//     * */
+//    public RealBank getNewRandomBank() {
+//
+//        RealBank randomBank = new RealBank(random.nameGen(0, 10), random.getInts(50, 500), random.getInts(50, 500));
+//        addRandomCustomers(random.getInts(50, 500));
+//        return randomBank;
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
     /**addRandomCustomers adds a specified number of random customers, each with 0 to 10 accounts
      *
      ** @param numberCustomers number of customers to be created.
      *
      * */
-    public void addRandomCustomers(int numberCustomers) {
+    private void addRandomCustomers(int numberCustomers) {
 
         try {
 
@@ -152,40 +154,42 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
-    /**removeCustomer removes a customer and all of its associated accounts from the bank's hash tables
-     *
-     * @param customer customer object to be removed
-     *
-     * @return true if successfully removed, false otherwise
-     * */
-    public boolean removeCustomer(Customer customer) {
-
-        try {
-
-            if (customerHashtable.contains(customer)) {
-
-                customerHashtable.remove(customer.getUUID().hashCode());
-                emailUUIDHashTable.remove(customer.getEmail().hashCode());
-
-                this.NUMBER_OF_CUSTOMERS--;
-
-                Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
-                while (acctKeys.hasMoreElements()) {
-                    Integer acctKey = acctKeys.nextElement();
-                    Account tempAcct = customer.getAccount(acctKey);
-                    if (!(tempAcct == null)) {
-                        accountHashtable.remove(acctKey);
-                        this.NUMBER_OF_ACCOUNTS--;
-                    }
-                }
-                return true;
-            }
-        } catch (NullPointerException n) {
-            System.out.printf("Null pointer exception caught in RealBank : removeCustomer");
-            return false;
-        }
-        return false;
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**removeCustomer removes a customer and all of its associated accounts from the bank's hash tables
+//     *
+//     * @param customer customer object to be removed
+//     *
+//     * @return true if successfully removed, false otherwise
+//     * */
+//    public boolean removeCustomer(Customer customer) {
+//
+//        try {
+//
+//            if (customerHashtable.contains(customer)) {
+//
+//                customerHashtable.remove(customer.getUUID().hashCode());
+//                emailUUIDHashTable.remove(customer.getEmail().hashCode());
+//
+//                this.NUMBER_OF_CUSTOMERS--;
+//
+//                Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
+//                while (acctKeys.hasMoreElements()) {
+//                    Integer acctKey = acctKeys.nextElement();
+//                    Account tempAcct = customer.getAccount(acctKey);
+//                    if (!(tempAcct == null)) {
+//                        accountHashtable.remove(acctKey);
+//                        this.NUMBER_OF_ACCOUNTS--;
+//                    }
+//                }
+//                return true;
+//            }
+//        } catch (NullPointerException n) {
+//            System.out.printf("Null pointer exception caught in RealBank : removeCustomer");
+//            return false;
+//        }
+//        return false;
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
     /**startLoginProcess overrides Bank interface's startLoginProcess. Used by BankProxy object. Method used to ask the bank whether or not
      *            it has an account object associated with the given account number
@@ -250,7 +254,6 @@ public class RealBank implements Serializable, Bank {
 
         try {
             if (accountHashtable.containsKey(accountNumber)) {
-                Account tempAccountToBeRemoved = accountHashtable.get(accountNumber);
                 customerHashtable.get(accountHashtable.get(accountNumber).getOwner().hashCode()).getAccountHashtable().remove(accountNumber);
                 accountHashtable.remove(accountNumber);
                 this.NUMBER_OF_ACCOUNTS--;
@@ -308,14 +311,14 @@ public class RealBank implements Serializable, Bank {
      *
      * @return total number of accounts registered with the bank
      * */
-    int getNumberAccounts() {
+    private int getNumberAccounts() {
         return this.NUMBER_OF_ACCOUNTS;
     }
 
     /**getNUMBER_OF_CUSTOMERS returns current number of customers registered with the bank
      *
      * @return number of customers registered with the bank*/
-    int getNUMBER_OF_CUSTOMERS() {
+    private int getNUMBER_OF_CUSTOMERS() {
         return this.NUMBER_OF_CUSTOMERS;
     }
 
@@ -343,37 +346,39 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
-    /**updateAccountTable updates the account table by cycling through the each customer in the customer hash table and
-     *                    adding each account of the customer to the bank's comprehensive account hash table IFF the
-     *                    bank's comprehensive account hash table does not already contain the account
-     * */
-    public void updateAccountTable() {
-        try {
-            Enumeration<Integer> enumKeys = customerHashtable.keys();
-
-            while (enumKeys.hasMoreElements()) {
-                Integer key = enumKeys.nextElement();
-                Customer temp = customerHashtable.get(key);
-
-                Hashtable<Integer, Account> tempHash = temp.getAccountHashtable();
-                Enumeration<Integer> acctKeys = tempHash.keys();
-
-
-                while (acctKeys.hasMoreElements()) {
-                    Integer acctKey = acctKeys.nextElement();
-                    Account tempAcct = tempHash.get(acctKey);
-                    if (!(tempAcct == null) && !accountHashtable.contains(tempAcct))
-                        accountHashtable.put(acctKey, tempAcct);
-                }
-            }
-        } catch (NullPointerException n) {
-            System.out.printf("null pointer caught in RealBank : updateAccountTable");
-        } catch (NoSuchElementException e) {
-            System.out.printf("no such element caught in RealBank : updateAccountTable");
-        }
-
-
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**updateAccountTable updates the account table by cycling through the each customer in the customer hash table and
+//     *                    adding each account of the customer to the bank's comprehensive account hash table IFF the
+//     *                    bank's comprehensive account hash table does not already contain the account
+//     * */
+//    public void updateAccountTable() {
+//        try {
+//            Enumeration<Integer> enumKeys = customerHashtable.keys();
+//
+//            while (enumKeys.hasMoreElements()) {
+//                Integer key = enumKeys.nextElement();
+//                Customer temp = customerHashtable.get(key);
+//
+//                Hashtable<Integer, Account> tempHash = temp.getAccountHashtable();
+//                Enumeration<Integer> acctKeys = tempHash.keys();
+//
+//
+//                while (acctKeys.hasMoreElements()) {
+//                    Integer acctKey = acctKeys.nextElement();
+//                    Account tempAcct = tempHash.get(acctKey);
+//                    if (!(tempAcct == null) && !accountHashtable.contains(tempAcct))
+//                        accountHashtable.put(acctKey, tempAcct);
+//                }
+//            }
+//        } catch (NullPointerException n) {
+//            System.out.printf("null pointer caught in RealBank : updateAccountTable");
+//        } catch (NoSuchElementException e) {
+//            System.out.printf("no such element caught in RealBank : updateAccountTable");
+//        }
+//
+//
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
     public UUID getCustomerUUID(String email) {
 

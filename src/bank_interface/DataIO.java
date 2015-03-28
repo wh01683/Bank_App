@@ -8,8 +8,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /*DATA Input/Output class for storing all the write -to-file methods and headers, etc.*/
-public class DataIO {
-    String hiding = "ishallpass";
+class DataIO {
+    // --Commented out by Inspection (3/27/15 8:02 PM):String hiding = "ishallpass";
     private RealBank realBank;
 
     public DataIO() {
@@ -83,180 +83,192 @@ public class DataIO {
         System.out.println("Finished printing accounts.");
     }
 
-    /**
-     * writeCustomerAndAccountInformationToFile writes BOTH the customer and the customer's account formation to a file
-     * using nested hashtable enumerations. when a customer is printed, the
-     * method will print all of the accounts associated with that particular
-     * customer when the method has printed all the accounts associated with that
-     * customer, we will move on to the next customer
-     */
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**
+//     * writeCustomerAndAccountInformationToFile writes BOTH the customer and the customer's account formation to a file
+//     * using nested hashtable enumerations. when a customer is printed, the
+//     * method will print all of the accounts associated with that particular
+//     * customer when the method has printed all the accounts associated with that
+//     * customer, we will move on to the next customer
+//     */
+//
+//    public void writeCustomerAndAccountInformationToFile() {
+//
+//        try {
+//            PrintWriter writer = new PrintWriter(String.format("%s/writeBankData.txt", System.getProperty("user.dir")));
+//
+//            Enumeration enumKeys = getRealBank().getCustomerTable().keys();
+//            while (enumKeys.hasMoreElements()) {
+//                Integer key = (Integer) enumKeys.nextElement();
+//                writer.println(getRealBank().getCustomerTable().get(key).toString());
+//                Enumeration acctKeys = getRealBank().getAccountHashTable().keys();
+//                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                writer.println(getCustomerHeaders());
+//                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                writer.println(getAccountHeaders());
+//
+//                while (acctKeys.hasMoreElements()) {
+//                    Integer acctKey = (Integer) acctKeys.nextElement();
+//                    writer.println(getRealBank().getAccountHashTable().get(acctKey).toString());
+//        }
+//                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                writer.println(getCustomerHeaders());
+//                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//            }
+//            writer.close();
+//
+//        } catch (FileNotFoundException f) {
+//            System.out.println("bankData.txt not found in current directory.");
+//            System.exit(1);
+//        }
+//        System.out.println("Finished writing to file.");
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
-    public void writeCustomerAndAccountInformationToFile() {
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**
+//     *  printAllCustomerInformation prints all customer information to the console.
+//    */
+//
+//    public void printAllCustomerInformation() {
+//
+//        Enumeration enumKeys = getRealBank().getCustomerTable().keys();
+//
+//        int tempCount = 10;
+//        while (enumKeys.hasMoreElements()) {
+//            if (tempCount == 10) {
+//                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                System.out.println(getCustomerHeaders());
+//                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                tempCount = 0;
+//            }
+//            System.out.println(getRealBank().getCustomerTable().get(enumKeys.nextElement()).toString());
+//            tempCount++;
+//        }
+//
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
-        try {
-            PrintWriter writer = new PrintWriter(String.format("%s/writeBankData.txt", System.getProperty("user.dir")));
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**
+//     * printAllAccountInformation() prints all information concerning ACCOUNTS ONLY to the console. will contain
+//     *                              information related to the user associated with the account, but will only print out accounts on file.
+//     * */
+//    public void printAllAccountInformation() {
+//
+//        try {
+//            Enumeration enumKeys = getRealBank().getAccountHashTable().keys();
+//
+//            int tempCount = 10;
+//            while (enumKeys.hasMoreElements()) {
+//                if (tempCount == 10) {
+//                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                    System.out.println(getAccountHeaders());
+//                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                    tempCount = 0;
+//                }
+//                System.out.println(getRealBank().getAccountHashTable().get(enumKeys.nextElement()).toString());
+//                tempCount++;
+//            }
+//        } catch (NullPointerException n) {
+//            System.out.println("Null pointer thrown in DataIO : printAllAccountInformation");
+//            System.exit(1);
+//        }
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
-            Enumeration enumKeys = getRealBank().getCustomerTable().keys();
-            while (enumKeys.hasMoreElements()) {
-                Integer key = (Integer) enumKeys.nextElement();
-                writer.println(getRealBank().getCustomerTable().get(key).toString());
-                Enumeration acctKeys = getRealBank().getAccountHashTable().keys();
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                writer.println(getCustomerHeaders());
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                writer.println(getAccountHeaders());
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**
+//     *  writeCustomerInformationToFile() writes the current RealBank object's CUSTOMER information to a file. does not print account information
+//     */
+//    public void writeCustomerInformationToFile() {
+//        try {
+//            PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/writeBankData.txt");
+//            Enumeration enumKeys = this.getRealBank().getCustomerTable().keys();
+//
+//            int tempCount = 10;
+//            while (enumKeys.hasMoreElements()) {
+//                if (tempCount == 10) {
+//                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                    System.out.println(getCustomerHeaders());
+//                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                    tempCount = 0;
+//        }
+//                writer.println(this.getRealBank().getCustomerTable().get(enumKeys.nextElement()).toString());
+//                tempCount++;
+//            }
+//            writer.close();
+//
+//        } catch (FileNotFoundException f) {
+//            System.out.println("writeBankData.txt not found in current directory.");
+//            System.exit(1);
+//        }
+//        System.out.println("Finished writing customers to file.");
+//
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
-                while (acctKeys.hasMoreElements()) {
-                    Integer acctKey = (Integer) acctKeys.nextElement();
-                    writer.println(getRealBank().getAccountHashTable().get(acctKey).toString());
-        }
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                writer.println(getCustomerHeaders());
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            }
-            writer.close();
-
-        } catch (FileNotFoundException f) {
-            System.out.println("bankData.txt not found in current directory.");
-            System.exit(1);
-        }
-        System.out.println("Finished writing to file.");
-    }
-
-    /**
-     *  printAllCustomerInformation prints all customer information to the console.
-    */
-
-    public void printAllCustomerInformation() {
-
-        Enumeration enumKeys = getRealBank().getCustomerTable().keys();
-
-        int tempCount = 10;
-        while (enumKeys.hasMoreElements()) {
-            if (tempCount == 10) {
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                System.out.println(getCustomerHeaders());
-                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                tempCount = 0;
-            }
-            System.out.println(getRealBank().getCustomerTable().get(enumKeys.nextElement()).toString());
-            tempCount++;
-        }
-
-    }
-
-    /**
-     * printAllAccountInformation() prints all information concerning ACCOUNTS ONLY to the console. will contain
-     *                              information related to the user associated with the account, but will only print out accounts on file.
-     * */
-    public void printAllAccountInformation() {
-
-        try {
-            Enumeration enumKeys = getRealBank().getAccountHashTable().keys();
-
-            int tempCount = 10;
-            while (enumKeys.hasMoreElements()) {
-                if (tempCount == 10) {
-                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    System.out.println(getAccountHeaders());
-                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    tempCount = 0;
-                }
-                System.out.println(getRealBank().getAccountHashTable().get(enumKeys.nextElement()).toString());
-                tempCount++;
-            }
-        } catch (NullPointerException n) {
-            System.out.println("Null pointer thrown in DataIO : printAllAccountInformation");
-            System.exit(1);
-        }
-    }
-
-    /**
-     *  writeCustomerInformationToFile() writes the current RealBank object's CUSTOMER information to a file. does not print account information
-     */
-    public void writeCustomerInformationToFile() {
-        try {
-            PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/writeBankData.txt");
-            Enumeration enumKeys = this.getRealBank().getCustomerTable().keys();
-
-            int tempCount = 10;
-            while (enumKeys.hasMoreElements()) {
-                if (tempCount == 10) {
-                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    System.out.println(getCustomerHeaders());
-                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    tempCount = 0;
-        }
-                writer.println(this.getRealBank().getCustomerTable().get(enumKeys.nextElement()).toString());
-                tempCount++;
-            }
-            writer.close();
-
-        } catch (FileNotFoundException f) {
-            System.out.println("writeBankData.txt not found in current directory.");
-            System.exit(1);
-        }
-        System.out.println("Finished writing customers to file.");
-
-    }
-
-    /**
-     * writeAccountInformationToFile() writes the current RealBank object's ACCOUNT information to a txt file in a format legible by humans
-     * */
-    public void writeAccountInformationToFile() {
-
-        try {
-            PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/writeBankData.txt");
-
-            Enumeration enumKeys = getRealBank().getAccountHashTable().keys();
-            int tempCount = 10;
-
-            while (enumKeys.hasMoreElements()) {
-                if (tempCount == 10) {
-                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    writer.println(getAccountHeaders());
-                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    tempCount = 0;
-        }
-
-                writer.println(getRealBank().getAccountHashTable().get(enumKeys.nextElement()).toString());
-                tempCount++;
-            }
-            writer.close();
-        } catch (FileNotFoundException f) {
-            System.out.printf("writeBankData.txt not found in current directory.");
-            System.exit(1);
-        }
-        System.out.println("Finished writing accounts to file.");
-    }
-
-
-    /**saveAllBankDataToFile saves the current RealBank object to a file named bankData.txt in the user's current
-     *                       directory using an object output stream. the File output stream and object output stream
-     *                       are closed when they are done.
-     *
-     * @param newRealBank to be saved, useful for passing and saving the most current bank
-     */
-    public void saveAllBankDataToFile(RealBank newRealBank) {
-
-        try {
-
-            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/bankData.txt");
-            ObjectOutputStream bankDataWriter = new ObjectOutputStream(fos);
-
-            bankDataWriter.writeObject(newRealBank);
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**
+//     * writeAccountInformationToFile() writes the current RealBank object's ACCOUNT information to a txt file in a format legible by humans
+//     * */
+//    public void writeAccountInformationToFile() {
+//
+//        try {
+//            PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + "/writeBankData.txt");
+//
+//            Enumeration enumKeys = getRealBank().getAccountHashTable().keys();
+//            int tempCount = 10;
+//
+//            while (enumKeys.hasMoreElements()) {
+//                if (tempCount == 10) {
+//                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                    writer.println(getAccountHeaders());
+//                    System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+//                    tempCount = 0;
+//        }
+//
+//                writer.println(getRealBank().getAccountHashTable().get(enumKeys.nextElement()).toString());
+//                tempCount++;
+//            }
+//            writer.close();
+//        } catch (FileNotFoundException f) {
+//            System.out.printf("writeBankData.txt not found in current directory.");
+//            System.exit(1);
+//        }
+//        System.out.println("Finished writing accounts to file.");
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
 
-            fos.close();
-            bankDataWriter.close();
-
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException n) {
-            System.out.printf("Null Pointer caught in DataIO: saveAllBankDataToFile");
-            System.exit(1);
-        }
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**saveAllBankDataToFile saves the current RealBank object to a file named bankData.txt in the user's current
+//     *                       directory using an object output stream. the File output stream and object output stream
+//     *                       are closed when they are done.
+//     *
+//     * @param newRealBank to be saved, useful for passing and saving the most current bank
+//     */
+//    public void saveAllBankDataToFile(RealBank newRealBank) {
+//
+//        try {
+//
+//            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/bankData.txt");
+//            ObjectOutputStream bankDataWriter = new ObjectOutputStream(fos);
+//
+//            bankDataWriter.writeObject(newRealBank);
+//
+//
+//            fos.close();
+//            bankDataWriter.close();
+//
+//        } catch (java.io.IOException e) {
+//            e.printStackTrace();
+//        } catch (NullPointerException n) {
+//            System.out.printf("Null Pointer caught in DataIO: saveAllBankDataToFile");
+//            System.exit(1);
+//        }
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
 
     /**realAllBankDataFromFile() reads bank information from a file called "bankData.txt" located in the project directory
@@ -326,7 +338,7 @@ public class DataIO {
      * getAccountHeaders stores headers used when printing account information to the console.
      *
      * @return returns string representation of the headers*/
-    String getAccountHeaders() {
+    private String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-7s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
@@ -334,7 +346,7 @@ public class DataIO {
  * getCustomerHeaders stores headers used when printing customer information to the console
  *
  * @return string representation of the headers*/
-    String getCustomerHeaders() {
+private String getCustomerHeaders() {
         return String.format("||%-36s||%-20s||%-20s||%-3s||%-4s||%-4s||", "CUSTOMER ID", "NAME", "PASSWORD", "AGE", "CRED", "CHEX");
     }
 

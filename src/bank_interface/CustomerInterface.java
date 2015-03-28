@@ -4,8 +4,6 @@ import bank_package.BankProxy;
 import bank_package.Customer;
 import bank_package.RealBank;
 
-import java.util.UUID;
-
 /**
  * @author William Robert Howerton III
  * @version 2.1.5
@@ -25,7 +23,7 @@ import java.util.UUID;
 
 public class CustomerInterface {
     private static CustomerInterface SINGLETON_INSTANCE;
-    private static UUID CustomerUUID;
+    // --Commented out by Inspection (3/27/15 8:02 PM):private static UUID CustomerUUID;
     private static DataIO dataIO;
     private static RealBank realBank;
     private static BankProxy bankProxy;
@@ -162,13 +160,15 @@ public class CustomerInterface {
         currentCustomerInterfaceState.enterEmail(email);
     }
 
-    /** enterPassword called on the current state of the customer interface
-     *                     prompts user to enter their password
-     *                     Note: function changes based on current state
-     * */
-    public void enterPassword(String password) {
-        currentCustomerInterfaceState.enterPassword(password);
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /** enterPassword called on the current state of the customer interface
+//     *                     prompts user to enter their password
+//     *                     Note: function changes based on current state
+//     * */
+//    public void enterPassword(String password) {
+//        currentCustomerInterfaceState.enterPassword(password);
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
     /** requestInformation start of the login process; prompts user for desired actions to take during the login
      *                          process
@@ -177,23 +177,29 @@ public class CustomerInterface {
         currentCustomerInterfaceState.requestInformation();
     }
 
-    public void startTransaction() {
-        currentCustomerInterfaceState.startTransaction();
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    public void startTransaction() {
+//        currentCustomerInterfaceState.startTransaction();
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
-    /**addAccount initiates the account adding process
-     *
-     * */
-    public void addAccount() {
-        currentCustomerInterfaceState.addAccount();
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /**addAccount initiates the account adding process
+//     *
+//     * */
+//    public void addAccount() {
+//        currentCustomerInterfaceState.addAccount();
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
-    /** getBankProxy returns current bankProxy of the customer interface.
-     *@return current bank proxy object
-     * */
-    public BankProxy getBankProxy() {
-        return bankProxy;
-    }
+// --Commented out by Inspection START (3/27/15 8:02 PM):
+//    /** getBankProxy returns current bankProxy of the customer interface.
+//     *@return current bank proxy object
+//     * */
+//    public BankProxy getBankProxy() {
+//        return bankProxy;
+//    }
+// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
     /** saveBankDataToFile calls on the bank proxy object to save all information to file through object output stream
      *

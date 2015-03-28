@@ -107,7 +107,7 @@ public class LoggedInState implements CustomerInterfaceState {
                 if (tempAccount == null) {
                     System.out.println("Account type invalid. Please try again.");
                     addAccount();
-                } else if (!(tempAccount == null)) {
+                } else {
                     bankProxy.addAccount(tempAccount);
                     bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()).addAccount(tempAccount);
                     System.out.println("Congratulations, " + bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()).getName() +
@@ -187,9 +187,10 @@ public class LoggedInState implements CustomerInterfaceState {
      *                  During each iteration, the request string is checked for commands matching various "logOffRequest"
      *                  strings, defined by the method of similar name.
      *
-     * @param request string representation of the information requested by the user.
+     * @param request s                Account tempAccountToBeRemoved = accountHashtable.get(accountNumber);
+    tring representation of the information requested by the user.
      * */
-    void printInformation(String request) {
+    private void printInformation(String request) {
         try {
 
             if (request.equalsIgnoreCase("CHEX")) {
@@ -363,7 +364,7 @@ public class LoggedInState implements CustomerInterfaceState {
                         }
 
 
-                        if (withdrew && deposit) {
+                        if (withdrew) {
                             System.out.printf("You successfully transferred %.2f from %s %d into account %s %d.\nYour " +
                                             "current balances are %.2f and %.2f respectively.\n", transferAmount,
                                     customerInterface.getCustomer().getAccount(tempTransferFromAccountNumber).getType(),
@@ -415,7 +416,7 @@ public class LoggedInState implements CustomerInterfaceState {
      *
      * @return String representation of the account information headers.
  * */
-    String getAccountHeaders() {
+    private String getAccountHeaders() {
         return String.format("||%-10s||%-10s||%-20s||%-20s||%-36s||%-4s||%-6s||%-4s||", "TYPE", "ACCT#", "BALANCE", "CUSTOMER NAME",
                 "CUSTOMER UUID", "CHEX", "ODRAFT", "MIN BAL");
     }
