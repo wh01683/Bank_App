@@ -5,6 +5,7 @@
       <entry_point TYPE="method" FQNAME="bank_package.CustomerInterface CustomerInterface(java.util.UUID newCustID, bank_package.Bank newBank)" />
     </entry_points>
   </component>
+  <component name="IdProvider" IDEtalkID="644567C0A137E49614CA7C045887FE7F" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/documentation" />
     <option name="OPTION_SCOPE" value="protected" />

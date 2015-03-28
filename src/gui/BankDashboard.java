@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * William Trent Holliday
@@ -21,4 +22,5 @@ public class BankDashboard {
 
     public BankDashboard() {
     }
+
 }
