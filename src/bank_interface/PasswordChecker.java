@@ -42,7 +42,7 @@ public class PasswordChecker {
         int numberOfNumbers = 0;
 
 
-        if (userPassword.length > 16 | userPassword.length < 8) {
+        if (userPassword.length > 32 | userPassword.length < 8) {
             System.out.println("Must be no longer than 16 and no shorter than 8 chars long.");
             return false;
         } else {
@@ -92,7 +92,7 @@ public class PasswordChecker {
         char[] userPassword = stringPassword.toCharArray();
 
 
-        if (userPassword.length > 16 | userPassword.length < 8) {
+        if (userPassword.length > 36 | userPassword.length < 8) {
             System.out.println("Must be no longer than 16 and no shorter than 8 chars long.");
             return false;
         } else {

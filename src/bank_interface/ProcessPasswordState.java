@@ -26,17 +26,6 @@ public class ProcessPasswordState implements CustomerInterfaceState {
 
     }
 
-
-    /**
-     * startLoginProcess useless in ProcessPasswordState state
-     *
-     * @param isRegistered false by default, not necessary here
-     */
-    @Override
-    public void startLoginProcess(boolean isRegistered) {
-        System.out.println("You are already registered.");
-    }
-
     /**
      * logOff saves current bank data to a file and logs the customer off
      * */
@@ -45,8 +34,6 @@ public class ProcessPasswordState implements CustomerInterfaceState {
         System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-        customerInterface.startLoginProcess(false);
-
     }
 
     /**
@@ -56,7 +43,6 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     public void requestInformation() {
 
         System.out.println("Must enter your password first.");
-        customerInterface.enterPassword();
 
     }
 
@@ -67,7 +53,6 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     @Override
     public void startTransaction() {
         System.out.println("Must enter your password first.");
-        customerInterface.enterPassword();
     }
 
     /**
@@ -77,17 +62,16 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     @Override
     public void addAccount() {
         System.out.println("Must enter your password first.");
-        customerInterface.enterPassword();
     }
 
     /**
      * enterEmail not used in this state. If this method is ever invoked during this state, the customer is
      *           prompted for their password before allowing them to proceed.
+     * @param email
      */
     @Override
-    public void enterEmail() {
+    public void enterEmail(String email) {
         System.out.println("You have already entered your Email, please enter your password.");
-        customerInterface.enterPassword();
     }
 
     /** enterPassword creates a final String variable "realPass" to store the value of the customer's actual password on
@@ -95,9 +79,10 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      *                their password on file. Customers are given 5 attempts before the system exits. Upon a successful
      *                match, the current state is set to "LoggedOn" and the "requestInformation" method is invoked to
      *                initialize the logged-in process loop inside the LoggedOn class.
-     * */
+     *
+     * @param password*/
     @Override
-    public void enterPassword() {
+    public void enterPassword(String password) {
         /*if they do have an account, they are requested to provide their UUID*/
         /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
          * their password ON RECORD is set to a final String "realPass"*/
@@ -135,13 +120,11 @@ public class ProcessPasswordState implements CustomerInterfaceState {
 
         if (enteredPass.equalsIgnoreCase("BACK")) {
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-            customerInterface.enterEmail();
         }
         if (enteredPass.equalsIgnoreCase("LOGOFF")) {
             System.out.println("Have a great day!");
             customerInterface.saveBankDataToFile();
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-            customerInterface.startLoginProcess(false);
         }
     }
 }

@@ -42,25 +42,19 @@ public class LoggedInState implements CustomerInterfaceState {
 
     /**
      * enterUUID method prompts user for their UUID to login. in this state (Logged In), the method is unnecessary
-     * */
+     *
+     * @param email*/
     @Override
-    public void enterEmail() {
+    public void enterEmail(String email) {
         System.out.println("You are currently logged in.");
     }
 
     /**
      * enterPassword enterPassword method prompts user for the password. In this state (Logged In), the method is unnecessary
- * */
+     *
+     * @param password*/
     @Override
-    public void enterPassword() {
-        System.out.println("You are currently logged in.");
-    }
-
-    /**
-     * startLoginProcess prompts user for registering/logging in. In this state (Logged In), method is unnecessary
-     * */
-    @Override
-    public void startLoginProcess(boolean isRegistered) {
+    public void enterPassword(String password) {
         System.out.println("You are currently logged in.");
     }
 
@@ -73,7 +67,6 @@ public class LoggedInState implements CustomerInterfaceState {
         System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-        customerInterface.startLoginProcess(false);
     }
 
     /**
@@ -161,8 +154,7 @@ public class LoggedInState implements CustomerInterfaceState {
             * trips "isLoggedIn" to false.*/
         String processRequest = PROCESS_REQUEST_SCANNER.stringGet();
 
-        if (!isLogOffRequest(processRequest)) {
-            if (processRequest.equalsIgnoreCase("INFORMATION")) {
+        if (processRequest.equalsIgnoreCase("INFORMATION")) {
             this.printInformation(INFORMATION_REQUEST_SCANNER.stringGet());
             initiateLoginProcesses();
             } else if (processRequest.equalsIgnoreCase("TRANSACTION")) {
@@ -181,14 +173,11 @@ public class LoggedInState implements CustomerInterfaceState {
                 System.out.println("Account not found, try again.\n");
                 bankProxy.removeAccount(ACCOUNT_NUMBER_SCANNER.intGet());
             }
-
-            } else {
+        } else {
                 /*if the user enters an invalid or unknown process, the method is called recursively and they're allowed
                 * to try the process again.*/
             System.out.println("Your request could not be processed, please try again.");
             initiateLoginProcesses();
-            }
-
         }
     }
 
@@ -202,7 +191,6 @@ public class LoggedInState implements CustomerInterfaceState {
      * */
     void printInformation(String request) {
         try {
-        if (!isLogOffRequest(request)) {
 
             if (request.equalsIgnoreCase("CHEX")) {
                 System.out.println("Your ChexSystems score is currently " + customerInterface.getCustomer().getChexSystemsScore() + ".");
@@ -220,8 +208,6 @@ public class LoggedInState implements CustomerInterfaceState {
                 System.out.println("Could not process your request: " + request + " Please try again");
                 printInformation(REQUEST_SCANNER.stringGet());
             }
-
-        }
 
         } catch (NullPointerException e) {
             System.out.printf("Null pointer caught in LoggedInState : printInformation");
@@ -423,29 +409,6 @@ public class LoggedInState implements CustomerInterfaceState {
 
     }
 
-    /** isLogOffRequest method used to store recurring return/logoff style commands in the interest of avoid code
-     *                  duplication. Handles "EXIT", "LOGOFF", "EXIT" and returns false if none of them are matched,
-     *                  granting permission for the invoking process to continue
-     *
-     * @param request string representation of the customer's request to be evaluated
-     *
-     * @return returns true (otherwise exits/logs off) if the strings are matched, otherwise returns false*/
-    private boolean isLogOffRequest(String request) {
-        if (request.equalsIgnoreCase("MENU") | request.equalsIgnoreCase("LOGOFF") | request.equalsIgnoreCase("EXIT")) {
-            if (request.equalsIgnoreCase("MENU")) {
-                initiateLoginProcesses();
-            } else if (request.equalsIgnoreCase("LOGOFF")) {
-                customerInterface.logOff();
-            } else {
-                if (request.equalsIgnoreCase("EXIT")) {
-                    customerInterface.saveBankDataToFile();
-                    System.out.println("Exiting...");
-                    System.exit(0);
-                }
-            }
-            return true;
-        } else return false;
-    }
 
     /**
      * getAccountHeaders stores headers used for displaying account information to the user

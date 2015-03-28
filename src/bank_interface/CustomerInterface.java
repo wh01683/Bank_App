@@ -107,18 +107,6 @@ public class CustomerInterface {
             System.exit(1);
         }
 
-
-        while (this.currentCustomerInterfaceState.equals(loggedOffState)) {
-            this.startLoginProcess(true);
-        }
-        while (!this.currentCustomerInterfaceState.equals(loggedOffState)) {
-            while (this.currentCustomerInterfaceState.equals(processUsernameState)) {
-                this.enterEmail();
-            }
-            while (this.currentCustomerInterfaceState.equals(processPasswordState)) {
-                this.enterPassword();
-            }
-        }
     }
 
 
@@ -167,28 +155,19 @@ public class CustomerInterface {
     /**enterUUID: method enterUUID() is called on current state of the customer interface
      *                  prompts user to enter their provided UUID
      *                  Note: function changes based on current state
+     *
+     * @param email email entered by the user in the gui form, used to log the customer in.
      * */
-    public void enterEmail() {
-        currentCustomerInterfaceState.enterEmail();
+    public void enterEmail(String email) {
+        currentCustomerInterfaceState.enterEmail(email);
     }
 
     /** enterPassword called on the current state of the customer interface
      *                     prompts user to enter their password
      *                     Note: function changes based on current state
      * */
-    public void enterPassword() {
-        currentCustomerInterfaceState.enterPassword();
-    }
-
-    /** startLoginProcess: method startLoginProcess() is called on current state of the customer interface
-     *                   essentially initializes the registration process
-     *                   Note: function changes based on current state
-     *
-     * @param processUsernameState passing false will ask the user if they would like to register, passing true will automatically
-     *                   direct them to fill out their customer information
-     * */
-    public void startLoginProcess(boolean processUsernameState) {
-        currentCustomerInterfaceState.startLoginProcess(processUsernameState);
+    public void enterPassword(String password) {
+        currentCustomerInterfaceState.enterPassword(password);
     }
 
     /** requestInformation start of the login process; prompts user for desired actions to take during the login

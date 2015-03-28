@@ -31,9 +31,13 @@ public class ProcessUsernameState implements CustomerInterfaceState {
      *           enters their UUID and the method checks whether or not the bank has the UUID on file through the bankProxy.
      *           They are given 5 attempts before the system closes. Upon a successful match, the state is changed to
      *           ProcessPasswordState and the customer is prompted for their password.
-     * */
+     *
+     * @param email customer's email passed from the gui form to retrieve the customer's actual email, used to check
+     *              password for validity
+     *
+     *              */
     @Override
-    public void enterEmail() {
+    public void enterEmail(String email) {
 
         try {
             uScanner EMAIL_SCANNER = new uScanner("Please enter your Email.\nBACK, LOGOFF", 0, 50);
@@ -47,7 +51,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
                     System.out.println("Have a great day!");
                     customerInterface.saveBankDataToFile();
                     customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-                    customerInterface.startLoginProcess(false);
+
 
                 } else if (!bankProxy.hasCustomer(emailInput)) {
             /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
@@ -64,13 +68,12 @@ public class ProcessUsernameState implements CustomerInterfaceState {
                         }
                         if (wantsToRegister) {
                             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-                            customerInterface.startLoginProcess(true);
                         } else if (emailInputCounter < 6) {
                             System.out.println(emailInputCounter + " attempts remaining of 5. Please try again.");
                             emailInput = EMAIL_SCANNER.alphaNumericStringGet();
                             if (emailInput.equalsIgnoreCase("BACK")) {
                                 customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-                                customerInterface.startLoginProcess(false);
+
                             } else if (emailInput.equalsIgnoreCase("LOGOFF")) {
                                 System.out.println("Have a great day!");
                                 customerInterface.logOff();
@@ -83,32 +86,23 @@ public class ProcessUsernameState implements CustomerInterfaceState {
 
                 customerInterface.setCustomerInterfaceState(customerInterface.processPasswordState);
                 customerInterface.setCustomer(bankProxy.requestCustomer(emailInput));
-                customerInterface.enterPassword();
             }
 
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
 
         } catch (IllegalArgumentException p) {
             System.out.printf("Invalid UUID entered at HasAccount : enterEmail");
-            enterEmail();
         }
     }
 
     /**
      * not allowed in this state
-     * */
+     *
+     * @param password*/
     @Override
-    public void enterPassword() {
+    public void enterPassword(String password) {
         System.out.println("You must enter your Email first.");
-        customerInterface.enterEmail();
-    }
-
-    /**
-     * not allowed in this state
- * */
-    @Override
-    public void startLoginProcess(boolean isRegistered) {
-        System.out.println("You are already registered.");
+        customerInterface.enterEmail(password);
     }
 
     /**
@@ -119,8 +113,6 @@ public class ProcessUsernameState implements CustomerInterfaceState {
         System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-        customerInterface.startLoginProcess(false);
-
     }
 
     /**
@@ -129,7 +121,6 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     @Override
     public void requestInformation() {
         System.out.println("You must log in first.");
-        customerInterface.enterEmail();
     }
 
     /**
@@ -138,7 +129,6 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     @Override
     public void startTransaction() {
         System.out.println("You must log in first.");
-        customerInterface.enterEmail();
     }
 
     /**
@@ -147,7 +137,6 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     @Override
     public void addAccount() {
         System.out.println("You must log in first.");
-        customerInterface.enterEmail();
     }
 
     /**
@@ -165,12 +154,11 @@ public class ProcessUsernameState implements CustomerInterfaceState {
             return true;
         } else if (answer.equalsIgnoreCase("NO")) {
             customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-            customerInterface.enterEmail();
         } else if (answer.equalsIgnoreCase("LOGOFF")) {
             System.out.println("Have a great day!");
             customerInterface.saveBankDataToFile();
             customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-            customerInterface.startLoginProcess(false);
+
         } else if (answer.equalsIgnoreCase("EXIT")) {
             System.out.println("Exiting.");
             System.exit(0);

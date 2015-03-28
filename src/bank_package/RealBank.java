@@ -207,7 +207,7 @@ public class RealBank implements Serializable, Bank {
     /**hasCustomer overrides Bank interface's hasCustomer. used by BankProxy object. Method used to ask the bank whether
      *             or not it has a customer object associated with the given UUID object
      *
-     * @param email email associated with the customer. Customer's hash key calculated from the UUID.
+     * @param email email associated with the customer.
      *
      * @return true if found, false otherwise.
      * */
@@ -286,10 +286,10 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
-    /**requestCustomerAccounts returns Hashtable containing accounts associated with a specific customer with the
-     *                         specified UUID object
+    /** returns Hashtable containing accounts associated with a specific customer with the given email
      *
-     * @param email email object of the customer to retrieve accounts for
+     *
+     * @param email email of the customer to retrieve accounts for
      *
      * @return returns Hashtable of account objects specific to the specified customer using integer account numbers as
      *         keys
