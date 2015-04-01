@@ -202,25 +202,4 @@ class CertificateOfDepositAccount implements Account, Serializable{
         return tempApproved;
     }
 
-    /**
-     * used to generate random accounts for randomly created customers while still testing the screening
-     * process by passing the customer and the desired opening balance through the params. The term length
-     * is generated randomly as an integer between 2 and 55.
-     *
-     * @param customer random customer applying
-     * @param openingBalance proposed opening balance for the new account
-     * @return returns new randomly created account if the customer qualifies. Otherwise, returns null.
-     * */
-    public Account applyForNewRandomAccount(Customer customer, double openingBalance) {
-
-        int desiredTermLength = random.getInts(2,55);
-
-        if(decideApproved(customer, openingBalance, desiredTermLength)){
-            return new CertificateOfDepositAccount(customer, openingBalance, desiredTermLength);
-        }
-        else{
-            System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Fixed-Term Certificate of Deposit Account at this time.");
-            return null;
-        }
-    }
 }
