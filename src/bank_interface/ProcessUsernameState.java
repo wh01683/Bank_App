@@ -98,7 +98,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     /**
      * not allowed in this state
      *
-     * @param password*/
+     * @param password customer's password*/
     @Override
     public void enterPassword(String password) {
         System.out.println("You must enter your Email first.");

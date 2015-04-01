@@ -117,6 +117,7 @@ public class uScanner implements Serializable {
      * */
     public String alphaNumericStringGet() throws NoSuchElementException {
 
+
         String val = getString();
 
         while (val.length() < this.MIN | val.length() > this.MAX) {

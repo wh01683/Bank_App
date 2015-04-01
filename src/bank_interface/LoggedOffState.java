@@ -5,11 +5,6 @@ import bank_package.BankProxy;
 
 public class LoggedOffState implements CustomerInterfaceState {
 
-    // --Commented out by Inspection START (3/27/15 8:02 PM):
-//    /*login or register prompt.*/
-//    private static final uScanner logInOrRegister = new uScanner("----LOGIN--------------REGISTER-------------EXIT----", 4, 8);
-// --Commented out by Inspection STOP (3/27/15 8:02 PM)
-    private static BankProxy bankProxy;
     // --Commented out by Inspection (3/27/15 8:02 PM):private final uScanner NAME_SCANNER = new uScanner("Please enter your name: ", 2, 50);
     // --Commented out by Inspection (3/27/15 8:02 PM):private final uScanner AGE_SCANNER = new uScanner("Please enter your age: ", 14, 99);
     // --Commented out by Inspection (3/27/15 8:02 PM):private final uScanner NUM_LATE_PAYMENTS_SCANNER = new uScanner("Please enter total number of late payments you've made, if any: ", -1, 101);
@@ -27,12 +22,12 @@ public class LoggedOffState implements CustomerInterfaceState {
      */
     public LoggedOffState(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
         this.customerInterface = newCustomerInterface;
-        bankProxy = newBankProxy;
+        BankProxy bankProxy = newBankProxy;
     }
 
     /**
      * enterUUID not allowed in this state
-     * @param email
+     * @param email customer's email
      */
     @Override
     public void enterEmail(String email) {
@@ -42,7 +37,7 @@ public class LoggedOffState implements CustomerInterfaceState {
 /**
  * enterPassword not allowed in this state
  *
- * @param password*/
+ * @param password customer's password*/
 @Override
 public void enterPassword(String password) {
     customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);

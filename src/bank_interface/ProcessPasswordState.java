@@ -67,7 +67,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     /**
      * enterEmail not used in this state. If this method is ever invoked during this state, the customer is
      *           prompted for their password before allowing them to proceed.
-     * @param email
+     * @param email customer's email
      */
     @Override
     public void enterEmail(String email) {

@@ -10,12 +10,10 @@ import java.util.UUID;
 
 class CertificateOfDepositAccount implements Account, Serializable{
     private static final uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
-    private final double INTEREST_RATE;
     private final Integer ACCOUNT_NUMBER;
     private final String TYPE = "FIXED CD";
     private final double MINIMUM_REQUIRED_BALANCE = 1000.00;
     private final Customer OWNER;
-    private final RandomGenerator random = new RandomGenerator();
     private double accountBalance;
 
     /**
@@ -29,8 +27,9 @@ class CertificateOfDepositAccount implements Account, Serializable{
     public CertificateOfDepositAccount(Customer customer, double openingBalance, int termLength) {
 
         this.OWNER = customer;
-        this.INTEREST_RATE = calculateInterestRate(termLength);
+        double INTEREST_RATE = calculateInterestRate(termLength);
         this.accountBalance += openingBalance;
+        RandomGenerator random = new RandomGenerator();
         this.ACCOUNT_NUMBER = random.acctGen();
 
     }

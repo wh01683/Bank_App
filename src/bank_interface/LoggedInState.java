@@ -43,7 +43,7 @@ public class LoggedInState implements CustomerInterfaceState {
     /**
      * enterUUID method prompts user for their UUID to login. in this state (Logged In), the method is unnecessary
      *
-     * @param email*/
+     * @param email customer's email*/
     @Override
     public void enterEmail(String email) {
         System.out.println("You are currently logged in.");
@@ -52,7 +52,7 @@ public class LoggedInState implements CustomerInterfaceState {
     /**
      * enterPassword enterPassword method prompts user for the password. In this state (Logged In), the method is unnecessary
      *
-     * @param password*/
+     * @param password customer's password*/
     @Override
     public void enterPassword(String password) {
         System.out.println("You are currently logged in.");
