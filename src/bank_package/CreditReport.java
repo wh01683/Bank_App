@@ -1,7 +1,6 @@
 package bank_package;
 
 import java.io.Serializable;
-import java.util.Random;
 
 public class CreditReport implements Serializable {
     private final int CREDIT_SCORE;
@@ -27,20 +26,6 @@ public class CreditReport implements Serializable {
         this.LENGTH_OF_CREDIT_HISTORY = lenCredHistory;
         this.CREDIT_SCORE = calculateCreditScore();
         this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
-    }
-
-    public CreditReport() {
-        Random r = new Random();
-        this.CUSTOMER_AGE = r.nextInt(120);
-        this.RECENT_LATE_PAYMENT_NUMBER = r.nextInt(50);
-        this.AMOUNT_OF_LATE_PAYMENTS = r.nextDouble() * 10000;
-        this.RECENT_CREDIT_INQUIRIES = r.nextInt(100);
-        this.CREDIT_LIMIT = r.nextDouble() * 200000.0;
-        this.CREDIT_ACCOUNT_BALANCE = r.nextDouble() * 20000.0;
-        this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
-        this.LENGTH_OF_CREDIT_HISTORY = r.nextInt(100);
-        this.CREDIT_SCORE = calculateCreditScore()+200;
-
     }
 
     public CreditReport(int age) {
@@ -85,10 +70,10 @@ public class CreditReport implements Serializable {
         return tempScore;
     }
 
-    /** getCUSTOMER_AGE returns the customer's age
+    /** getCustomerAge returns the customer's age
      *
      * @return customer's age*/
-    public int getCUSTOMER_AGE() {
+    public int getCustomerAge() {
         return this.CUSTOMER_AGE;
     }
 

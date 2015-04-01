@@ -28,7 +28,6 @@ class DataIO {
     void printAllCustomerPrivateInformation(Integer customerHashKey, Hashtable customerAccounts) {
         try {
 
-
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println(getCustomerHeaders());
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -42,8 +41,6 @@ class DataIO {
             System.out.println("Null Pointer caught in DataIO : printAllCustomerPrivateInformation");
             System.exit(1);
         }
-
-
     }
 
     /** printAccountInformation prints passed accounts from a hash table. these will almost always be a hashtable

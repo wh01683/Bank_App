@@ -1,20 +1,18 @@
 package bank_package;
 
 import acct.Account;
-import acct.AccountFactory;
-import utility.RandomGenerator;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 
 public class RealBank implements Serializable, Bank {
 
-    private static final Random r = new Random();
-    private static final RandomGenerator random = new RandomGenerator();
-    private static final AccountFactory testAccountFactory = new AccountFactory();
-    private int NUMBER_OF_CUSTOMERS;
-    private int NUMBER_OF_ACCOUNTS;
+    private int numberOfCustomers;
+    private int numberOfAccounts;
     private String name = "Sea Island Bank - Sandiest Bank in Idaho!";
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
@@ -23,8 +21,8 @@ public class RealBank implements Serializable, Bank {
 
     public RealBank(String name, int numberAccounts, int numberCustomers) {
         this.name = name;
-        this.NUMBER_OF_ACCOUNTS = numberAccounts;
-        this.NUMBER_OF_CUSTOMERS = numberCustomers;
+        this.numberOfAccounts = numberAccounts;
+        this.numberOfCustomers = numberCustomers;
         if (customerHashtable == null) {
             customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
         }
@@ -73,39 +71,6 @@ public class RealBank implements Serializable, Bank {
 //    }
 // --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
-    /**addRandomCustomers adds a specified number of random customers, each with 0 to 10 accounts
-     *
-     ** @param numberCustomers number of customers to be created.
-     *
-     * */
-    private void addRandomCustomers(int numberCustomers) {
-
-        try {
-
-            if (customerHashtable == null) {
-                customerHashtable = new Hashtable<Integer, Customer>(numberCustomers * 2);
-            }
-            if (accountHashtable == null) {
-                accountHashtable = new Hashtable<Integer, Account>(numberCustomers * 10);
-            }
-
-
-            for (int i = 0; i < numberCustomers; i++) {
-                Customer tempCustomer = new Customer();
-                customerHashtable.put(tempCustomer.getUUID().hashCode(), tempCustomer);
-                emailUUIDHashTable.put(tempCustomer.getEmail().hashCode(), tempCustomer.getUUID());
-
-                for (int k = 0; k < r.nextInt(10); k++) { //generates anywhere between 10 and 0 random accounts
-                    Account tempAccount = testAccountFactory.getRandomAccount(tempCustomer);
-                    if (!(tempAccount == null))
-                        tempCustomer.addAccount(tempAccount);
-                }
-                this.addCustomer(tempCustomer);
-            }
-        } catch (NullPointerException n) {
-            System.out.printf("Null pointer caught in RealBank : addRandomCustomers");
-        }
-    }
 
     /**addCustomer adds a new customer to the bank's customer hashtable and adds all accounts owned by the customer to
      *             the bank's account hash table.
@@ -118,14 +83,14 @@ public class RealBank implements Serializable, Bank {
         try {
             customerHashtable.put(customer.getUUID().hashCode(), customer);
             emailUUIDHashTable.put(customer.getEmail().hashCode(), customer.getUUID());
-            this.NUMBER_OF_CUSTOMERS++;
+            this.numberOfCustomers++;
             Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
             while (acctKeys.hasMoreElements()) {
                 Integer acctKey = acctKeys.nextElement();
                 Account tempAcct = customer.getAccount(acctKey);
                 if (!(tempAcct == null)) {
                     accountHashtable.put(acctKey, tempAcct);
-                    this.NUMBER_OF_ACCOUNTS++;
+                    this.numberOfAccounts++;
                 }
             }
             return true;
@@ -145,7 +110,7 @@ public class RealBank implements Serializable, Bank {
         try {
             accountHashtable.put(account.getACCOUNT_NUMBER(), account);
             customerHashtable.get(account.getOwner().hashCode()).addAccount(account);
-            this.NUMBER_OF_ACCOUNTS++;
+            this.numberOfAccounts++;
         } catch (NoSuchElementException e) {
             System.out.printf("No such element caught in RealBank : addAccount.\nOwner not in system.");
 
@@ -170,7 +135,7 @@ public class RealBank implements Serializable, Bank {
 //                customerHashtable.remove(customer.getUUID().hashCode());
 //                emailUUIDHashTable.remove(customer.getEmail().hashCode());
 //
-//                this.NUMBER_OF_CUSTOMERS--;
+//                this.numberOfCustomers--;
 //
 //                Enumeration<Integer> acctKeys = customer.getAccountHashtable().keys();
 //                while (acctKeys.hasMoreElements()) {
@@ -178,7 +143,7 @@ public class RealBank implements Serializable, Bank {
 //                    Account tempAcct = customer.getAccount(acctKey);
 //                    if (!(tempAcct == null)) {
 //                        accountHashtable.remove(acctKey);
-//                        this.NUMBER_OF_ACCOUNTS--;
+//                        this.numberOfAccounts--;
 //                    }
 //                }
 //                return true;
@@ -256,7 +221,7 @@ public class RealBank implements Serializable, Bank {
             if (accountHashtable.containsKey(accountNumber)) {
                 customerHashtable.get(accountHashtable.get(accountNumber).getOwner().hashCode()).getAccountHashtable().remove(accountNumber);
                 accountHashtable.remove(accountNumber);
-                this.NUMBER_OF_ACCOUNTS--;
+                this.numberOfAccounts--;
                 return true;
             } else {
                 return false;
@@ -312,19 +277,19 @@ public class RealBank implements Serializable, Bank {
      * @return total number of accounts registered with the bank
      * */
     private int getNumberAccounts() {
-        return this.NUMBER_OF_ACCOUNTS;
+        return this.numberOfAccounts;
     }
 
-    /**getNUMBER_OF_CUSTOMERS returns current number of customers registered with the bank
+    /**getNumberOfCustomers returns current number of customers registered with the bank
      *
      * @return number of customers registered with the bank*/
-    private int getNUMBER_OF_CUSTOMERS() {
-        return this.NUMBER_OF_CUSTOMERS;
+    private int getNumberOfCustomers() {
+        return this.numberOfCustomers;
     }
 
     public String toString() {
         try {
-            return this.name + "-" + this.getNUMBER_OF_CUSTOMERS() + "-" + this.getNumberAccounts();
+            return this.name + "-" + this.getNumberOfCustomers() + "-" + this.getNumberAccounts();
         } catch (NullPointerException e) {
             System.out.printf("null pointer caught RealBank : toString.\n instance likely has not been instantiated yet.");
             return null;

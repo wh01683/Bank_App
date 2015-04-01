@@ -20,7 +20,6 @@ interface Bank {
  * requestCustomer requests a single customer object from the real bank using a UUID object
  *
  * @param email email object used to locate the correct customer requested
- *
  * @return returns the customer object requested
  * */
 Customer requestCustomer(String email);
@@ -28,7 +27,6 @@ Customer requestCustomer(String email);
  * requestCustomerAccounts returns the account hashtable of the customer associated with the given UUID
  *
  * @param email email used to locate the correct customer and retrieve the correct accounts
- *
  * @return Hashtable object containing Accounts and their associated account numbers as keys.
  * */
 Hashtable requestCustomerAccounts(String email);
@@ -46,7 +44,6 @@ Hashtable requestCustomerAccounts(String email);
  * startLoginProcess asks the real bank if it contains the account object associated with the given account number
  *
  * @param accountNumber account number of the requested account
- *
  * @return true if account exists, false otherwise
  * */
 boolean hasAccount(Integer accountNumber);
@@ -54,7 +51,6 @@ boolean hasAccount(Integer accountNumber);
  * hasCustomer asks the real bank if it contains the customer associated with the given UUID
  *
  * @param email email of the requested customer
- *
  * @return true if customer exists, false otherwise
  * */
 boolean hasCustomer(String email);
@@ -62,7 +58,6 @@ boolean hasCustomer(String email);
  * addCustomer adds specific customer to the bank's customer hash table and adds its accounts (if any) to the bank's
  *             account hash table
  * @param customer customer object to be added
- *
  * @return returns true if added successfully, false otherwise
  * */
 boolean addCustomer(Customer customer);

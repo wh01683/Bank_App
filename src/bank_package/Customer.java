@@ -1,12 +1,10 @@
 package bank_package;
 
 import acct.Account;
-import utility.RandomGenerator;
 import utility.uScanner;
 
 import java.io.Serializable;
 import java.util.Hashtable;
-import java.util.Random;
 import java.util.UUID;
 
 
@@ -38,22 +36,6 @@ public class Customer implements Serializable {
         this.CREDIT_REPORT = newCreditReport;
         this.PASSWORD = password;
         this.EMAIL_ADDRESS = newEmail;
-    }
-
-    /**
-     * Customer constructor (no params) returns a randomized customer object
-     */
-    public Customer() {
-        this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
-        RandomGenerator random = new RandomGenerator();
-        Random r = new Random();
-        this.NAME = random.nameGen(2, r.nextInt(20));
-        this.CREDIT_REPORT = new CreditReport();
-        this.age = CREDIT_REPORT.getCUSTOMER_AGE();
-        this.PASSWORD = random.passwordGen(0, r.nextInt(15) + 5);
-        this.EMAIL_ADDRESS = random.emailGen();
-
-
     }
 
     /**getAccountHashtable returns a hash table containing all the bank accounts owned by the customer

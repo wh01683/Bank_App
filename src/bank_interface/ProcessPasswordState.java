@@ -80,7 +80,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      *                match, the current state is set to "LoggedOn" and the "requestInformation" method is invoked to
      *                initialize the logged-in process loop inside the LoggedOn class.
      *
-     * @param password*/
+     * @param password password to check for validity*/
     @Override
     public void enterPassword(String password) {
         /*if they do have an account, they are requested to provide their UUID*/
