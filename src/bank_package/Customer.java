@@ -13,7 +13,7 @@ public class Customer implements Serializable {
     private final UUID CUSTOMER_ID;
     private final String NAME;
     private final String PASSWORD;
-    private final CreditReport CREDIT_REPORT;
+    private CreditReport creditReport;
     private final ChexSystems CHEX_SCORE = new ChexSystems();
     private final String EMAIL_ADDRESS;
     private final Hashtable<Integer, Account> accountHashtable = new Hashtable<Integer, Account>(5);
@@ -33,7 +33,24 @@ public class Customer implements Serializable {
 
         this.age = tempAge;
         this.NAME = tempName;
-        this.CREDIT_REPORT = newCreditReport;
+        this.creditReport = newCreditReport;
+        this.PASSWORD = password;
+        this.EMAIL_ADDRESS = newEmail;
+    }
+
+    /**
+     * Constructor to create a new customer object without the credit report information.
+     *
+     * @param tempName name of the customer
+     * @param newEmail the email of the customer
+     * @param tempAge the age of the customer
+     * @param password the password for the customer
+     */
+    public Customer(String tempName, String newEmail, int tempAge, String password) {
+        this.CUSTOMER_ID = new UUID(16, 16).randomUUID();
+
+        this.age = tempAge;
+        this.NAME = tempName;
         this.PASSWORD = password;
         this.EMAIL_ADDRESS = newEmail;
     }
@@ -64,6 +81,14 @@ public class Customer implements Serializable {
         return this.NAME;
     }
 
+    /**
+     * Gets the age of the customer
+     * @return (int) the age of the customer
+     */
+    public int getAge(){
+        return this.age;
+    }
+
     /**getChexSystemsScore returns the customer's ChexSystems score. This score is what banks use to determine whether or not
      *                     a customer is eligible to open a checking account or not. The value ranges from 100 on the low side
      *                     to 899, just like a credit score. the Customer's chex score is randomly generated for both
@@ -78,7 +103,15 @@ public class Customer implements Serializable {
      *
      * @return the customer's numeric credit score.*/
     public int getCreditScore() {
-        return this.CREDIT_REPORT.getCreditScore();
+        return this.creditReport.getCreditScore();
+    }
+
+    /**
+     * Setter method for adding the credit report to the customer object.
+     * @param report The credit report to add.
+     */
+    public void setCreditReport(CreditReport report){
+        this.creditReport = report;
     }
 
     /**addAccount adds an account object to the customer's account hash table
