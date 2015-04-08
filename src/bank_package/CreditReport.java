@@ -3,42 +3,42 @@ package bank_package;
 import java.io.Serializable;
 
 public class CreditReport implements Serializable {
-    private final int CREDIT_SCORE;
-    private final int RECENT_LATE_PAYMENT_NUMBER;
-    private final int CUSTOMER_AGE;
-    private final int RECENT_CREDIT_INQUIRIES;
-    private final int LENGTH_OF_CREDIT_HISTORY;
-    private final double CREDIT_LIMIT;
-    private final double CREDIT_USED;
-    private final double CREDIT_ACCOUNT_BALANCE;
-    private final double AMOUNT_OF_LATE_PAYMENTS;
+    private int creditScore;
+    private int recentLatePaymentNumber;
+    private int customerAge;
+    private int recentCreditInquiries;
+    private int lengthOfCreditHistory;
+    private double creditLimit;
+    private double creditUsed;
+    private double creditAccountBalance;
+    private double amountOfLatePayments;
 
 
     public CreditReport(int age, int latePaymentsOnRecord, double amountOfLatePayments, int recentCredInquiries,
                         double credLimit, double accountBalance, int lenCredHistory) {
 
-        this.CUSTOMER_AGE = age;
-        this.RECENT_LATE_PAYMENT_NUMBER = latePaymentsOnRecord;
-        this.AMOUNT_OF_LATE_PAYMENTS = amountOfLatePayments;
-        this.RECENT_CREDIT_INQUIRIES = recentCredInquiries;
-        this.CREDIT_LIMIT = credLimit;
-        this.CREDIT_ACCOUNT_BALANCE = accountBalance;
-        this.LENGTH_OF_CREDIT_HISTORY = lenCredHistory;
-        this.CREDIT_SCORE = calculateCreditScore();
-        this.CREDIT_USED = (this.CREDIT_ACCOUNT_BALANCE / this.CREDIT_LIMIT) * 100;
+        this.customerAge = age;
+        this.recentLatePaymentNumber = latePaymentsOnRecord;
+        this.amountOfLatePayments = amountOfLatePayments;
+        this.recentCreditInquiries = recentCredInquiries;
+        this.creditLimit = credLimit;
+        this.creditAccountBalance = accountBalance;
+        this.lengthOfCreditHistory = lenCredHistory;
+        this.creditScore = calculateCreditScore();
+        this.creditUsed = (this.creditAccountBalance / this.creditLimit) * 100;
     }
 
     public CreditReport(int age) {
     /*for customers of age lesser than 18 and greater than 0*/
-        this.CUSTOMER_AGE = age;
-        this.RECENT_LATE_PAYMENT_NUMBER = 0;
-        this.RECENT_CREDIT_INQUIRIES = 0;
-        this.CREDIT_LIMIT = 0;
-        this.CREDIT_ACCOUNT_BALANCE = 0;
-        this.LENGTH_OF_CREDIT_HISTORY = 0;
-        this.CREDIT_SCORE = calculateCreditScore();
-        this.CREDIT_USED = (this.CREDIT_LIMIT / this.CREDIT_ACCOUNT_BALANCE) * 100;
-        this.AMOUNT_OF_LATE_PAYMENTS = 0;
+        this.customerAge = age;
+        this.recentLatePaymentNumber = 0;
+        this.recentCreditInquiries = 0;
+        this.creditLimit = 0;
+        this.creditAccountBalance = 0;
+        this.lengthOfCreditHistory = 0;
+        this.creditScore = calculateCreditScore();
+        this.creditUsed = (this.creditLimit / this.creditAccountBalance) * 100;
+        this.amountOfLatePayments = 0;
     }
 
     /**
@@ -47,7 +47,7 @@ public class CreditReport implements Serializable {
      * @return the customer's pre-calculated credit score.
      */
     public int getCreditScore() {
-        return this.CREDIT_SCORE;
+        return this.creditScore;
     }
 
     /**
@@ -74,7 +74,7 @@ public class CreditReport implements Serializable {
      *
      * @return customer's age*/
     public int getCustomerAge() {
-        return this.CUSTOMER_AGE;
+        return this.customerAge;
     }
 
     /** calcNewCreditScore calculates the customer's credit sub score based on how many new credit lines they've
@@ -83,8 +83,8 @@ public class CreditReport implements Serializable {
      * @return credit inquiry sub score
      */
     private int calcNewCreditScore() {
-        if (this.RECENT_CREDIT_INQUIRIES < 8)
-            return 80 - (this.RECENT_CREDIT_INQUIRIES * 10);
+        if (this.recentCreditInquiries < 8)
+            return 80 - (this.recentCreditInquiries * 10);
         else return 0;
     }
 
@@ -99,7 +99,7 @@ public class CreditReport implements Serializable {
         //min 0, max 279 (35% of credit score)
         double severity;
         int tempScore;
-        switch (this.RECENT_LATE_PAYMENT_NUMBER) {
+        switch (this.recentLatePaymentNumber) {
             case (0):
                 severity = 0;
                 break;
@@ -118,7 +118,7 @@ public class CreditReport implements Serializable {
                 severity = 10;
         }
 
-        double latePaymentMultiplier = severity * this.AMOUNT_OF_LATE_PAYMENTS;
+        double latePaymentMultiplier = severity * this.amountOfLatePayments;
 
         if (latePaymentMultiplier == 0 | latePaymentMultiplier < 1000) tempScore = 279;
         else if(latePaymentMultiplier < 3000) tempScore = 200;
@@ -130,8 +130,8 @@ public class CreditReport implements Serializable {
     }
 
     /**calcAmtOwedScore calculates the portion of the customer's credit score dependent on the amount of money they owe.
-     *                  if the customer's current balance is equal to 0 or if their CREDIT_USED percentage is less than
-     *                  10, they automatically get the max score. if their CREDIT_USED percentage is 50% or above, their
+     *                  if the customer's current balance is equal to 0 or if their creditUsed percentage is less than
+     *                  10, they automatically get the max score. if their creditUsed percentage is 50% or above, their
      *                  score for this portion is automatically 0
      *
      * @return the "amount owed" portion of their credit score.*/
@@ -139,9 +139,9 @@ public class CreditReport implements Serializable {
         //max is 239.7
         int tempScore;
 
-        if (this.CREDIT_ACCOUNT_BALANCE == 0 | this.CREDIT_USED < 10) tempScore = 239;
-        else if (this.CREDIT_USED < 20) tempScore = 200;
-        else if (this.CREDIT_USED < 50) tempScore = 100;
+        if (this.creditAccountBalance == 0 | this.creditUsed < 10) tempScore = 239;
+        else if (this.creditUsed < 20) tempScore = 200;
+        else if (this.creditUsed < 50) tempScore = 100;
         else tempScore = 0;
 
         return tempScore;
@@ -155,7 +155,7 @@ public class CreditReport implements Serializable {
         //max is 120
         int tempScore = 20;
 
-        tempScore += (this.LENGTH_OF_CREDIT_HISTORY / (this.CUSTOMER_AGE + 1)) * 100;
+        tempScore += (this.lengthOfCreditHistory / (this.customerAge + 1)) * 100;
 
         if (tempScore > 120) {
             tempScore = 120;

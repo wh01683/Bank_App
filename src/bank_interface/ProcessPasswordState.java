@@ -83,7 +83,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      * @param password password to check for validity*/
     @Override
     public void enterPassword(String password) {
-        /*if they do have an account, they are requested to provide their UUID*/
+
         /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
          * their password ON RECORD is set to a final String "realPass"*/
         final String realPass = bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()).getPASSWORD();
