@@ -19,12 +19,15 @@ public class CreateAccount extends JFrame implements FormGui {
     private JButton continueButton;
     private JButton cancelButton;
     private JPanel startPage;
-    private static CreateAccount createAccount;
-    private static CreditHistory creditHistory;
-    private static AccountCreationSummary accountSummary;
+    private CreditHistory creditHistory;
+    private AccountCreationSummary accountSummary;
 
 
     public CreateAccount() {
+        accountSummary = new AccountCreationSummary();
+        creditHistory = new CreditHistory(this, accountSummary);
+        accountSummary.setPrev(creditHistory);
+
         this.setTitle("Create Your account");
         loadForm();
 
@@ -33,22 +36,22 @@ public class CreateAccount extends JFrame implements FormGui {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (validateForm()) {
                     creditHistory.setCustomer(createCustomer());
-                    createAccount.setContentPane(creditHistory.getPanel());
-                    createAccount.setVisible(true);
+                    getCreateAccount().setContentPane(creditHistory.getPanel());
+                    getCreateAccount().setVisible(true);
                 }
             }
         });
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                createAccount.setVisible(false);
-                createAccount.dispose();
+                getCreateAccount().setVisible(false);
+                getCreateAccount().dispose();
             }
         });
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private boolean validateForm(){
+    public boolean validateForm(){
         if (this.nameField.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Name is a required field.");
             this.nameField.grabFocus();
@@ -87,6 +90,10 @@ public class CreateAccount extends JFrame implements FormGui {
 
     }
 
+    private CreateAccount getCreateAccount(){
+        return this;
+    }
+
     public Customer createCustomer(){
         String name = this.nameField.getText();
         String email = this.emailField.getText();
@@ -104,15 +111,8 @@ public class CreateAccount extends JFrame implements FormGui {
     public void loadForm() {
         this.setContentPane(startPage);
         this.setSize(375, 390);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        createAccount = new CreateAccount();
-        accountSummary = new AccountCreationSummary();
-        creditHistory = new CreditHistory(createAccount, accountSummary);
-
-        accountSummary.setPrev(creditHistory);
     }
 
 }

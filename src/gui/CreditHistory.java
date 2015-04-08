@@ -37,17 +37,26 @@ public class CreditHistory implements FormGui {
         creditNextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Customer customer = addCreditReportCustomer();
-                nextStep.populateAccountSummary(customer);
-                createAccount.setContentPane(nextStep.getPanel());
-                createAccount.setVisible(true);
+                if (validateForm()) {
+                    Customer customer = addCreditReportCustomer();
+                    nextStep.populateAccountSummary(customer);
+                    createAccount.setContentPane(nextStep.getPanel());
+                    createAccount.pack();
+                    createAccount.setVisible(true);
+                }
             }
         });
     }
 
     private Customer addCreditReportCustomer(){
         int age = customer.getAge();
-        int latePaymentsOnRecord = Integer.parseInt(this.numberOfLatePaymentsField.getText());
+        int latePaymentsOnRecord = 0;
+
+        // If the user entered something we try and convert it to an interger
+        if (this.numberOfLatePaymentsField.getText() != "") {
+            Integer.parseInt(this.numberOfLatePaymentsField.getText());
+        }
+
         double amountOfLatePayments = Double.parseDouble(this.latePaymentsAmountField.getText());
         int recentCredInquiries = Integer.parseInt(this.recentCreditInquiriesField.getText());
         double credLimit = Double.parseDouble(this.totalCreditLimitTextField.getText());
@@ -70,7 +79,20 @@ public class CreditHistory implements FormGui {
     @Override
     public void loadForm() {
         createAccount.setContentPane(getPanel());
-        createAccount.setVisible(true);
+        createAccount.pack();
+    }
+
+    @Override
+    public boolean validateForm() {
+        try{
+            Integer.parseInt(this.numberOfLatePaymentsField.getText());
+        }
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "The number of late payments field can only contain integer values.");
+            this.numberOfLatePaymentsField.grabFocus();
+            return false;
+        }
+        return true;
     }
 
     public void setCustomer(Customer customer){

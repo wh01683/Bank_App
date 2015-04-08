@@ -5,7 +5,7 @@ package gui;
  * 4/1/15
  */
 public interface FormGui {
-
     void loadForm();
+    boolean validateForm();
 
 }
