@@ -11,6 +11,9 @@ public class BankDashboard {
     private JPanel panel1;
     private JLabel userName;
     private JTable accountsTable;
+    private JButton createNewAccountButton;
+    private JButton logoutButton;
+    private JButton closeButton;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("BankDashboard");

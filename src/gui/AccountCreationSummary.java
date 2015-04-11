@@ -1,5 +1,6 @@
 package gui;
 
+import bank_interface.CustomerInterface;
 import bank_package.BankProxy;
 import bank_package.Customer;
 
@@ -38,8 +39,11 @@ public class AccountCreationSummary implements FormGui{
             public void actionPerformed(ActionEvent actionEvent) {
                 BankProxy proxy = BankGUI.getBankProxy();
                 proxy.addCustomer(customer);
+                CustomerInterface customerInterface = BankGUI.getCustomerInterface();
+                // Login
+                customerInterface.setCustomer(customer);
+                customerInterface.enterEmail(customer.getEmail());
 
-                System.out.println(proxy.requestCustomer(customer.getEmail()));
             }
         });
     }
