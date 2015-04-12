@@ -74,12 +74,13 @@ public class LoggedInState implements CustomerInterfaceState {
      *
      *
      * @param accountRequest String representation of the account type desired by the customer
+     * @param openingBalance opening balance passed to the account factory
      * @return returns feedback to the user based on the add account process
      * */
     @Override
-    public String addAccount(String accountRequest) {
+    public String addAccount(String accountRequest, double openingBalance) {
         try {
-                Account tempAccount = accountFactory.getAccount(accountRequest, bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()));
+            Account tempAccount = accountFactory.getAccount(accountRequest, bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()), openingBalance);
                 if (tempAccount == null) {
                     return ("Account type invalid.");
                 } else {

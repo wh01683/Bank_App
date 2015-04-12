@@ -1,14 +1,11 @@
 package acct;
 
 import bank_package.Customer;
-import utility.uScanner;
 
 import java.io.Serializable;
 
 
 public class AccountFactory implements Serializable {
-
-    private final uScanner openingBalanceScanner = new uScanner("Please enter available opening balance.", 0, 2000000000);
 
     /*Account factory for creating and applying to different types of accounts*/
 
@@ -18,28 +15,24 @@ public class AccountFactory implements Serializable {
      * passed through the params to provide information required to open the account.
      *
      * @param accountType String representation of the desired account type.
-     * @param customer    customer applying for the account
+     * @param customer customer applying for the account
+     * @param openingBalance opening balance of the account to be created
      * @return returns the desired, newly constructed account if the customer qualified for the account, returns null
      * otherwise
      */
-    public Account getAccount(String accountType, Customer customer) {
+    public Account getAccount(String accountType, Customer customer, double openingBalance) {
         if (accountType == null)
             return null;
         if (accountType.equalsIgnoreCase("CHECKING")) {
-            double tempOpeningBalance = openingBalanceScanner.doubleGet();
-            return new CheckingAccount(customer, tempOpeningBalance).applyForNewAccount(customer, tempOpeningBalance);
+            return new CheckingAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
         } else if (accountType.equalsIgnoreCase("SAVINGS")) {
-            double tempOpeningBalance = openingBalanceScanner.doubleGet();
-            return new SavingsAccount(customer, tempOpeningBalance).applyForNewAccount(customer, tempOpeningBalance);
+            return new SavingsAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
         } else if (accountType.equalsIgnoreCase("IRA")) {
-            double tempOpeningBalance = openingBalanceScanner.doubleGet();
-            return new IndividualRetirementAccount(customer, tempOpeningBalance).applyForNewAccount(customer, tempOpeningBalance);
+            return new IndividualRetirementAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
         } else if (accountType.equalsIgnoreCase("CD")) {
-            double tempOpeningBalance = openingBalanceScanner.doubleGet();
-            return new CertificateOfDepositAccount(customer, tempOpeningBalance, 10).applyForNewAccount(customer, tempOpeningBalance);
+            return new CertificateOfDepositAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
         } else if (accountType.equalsIgnoreCase("MMA")) {
-            double tempOpeningBalance = openingBalanceScanner.doubleGet();
-            return new MoneyMarketAccount(customer, tempOpeningBalance).applyForNewAccount(customer, tempOpeningBalance);
+            return new MoneyMarketAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
         }
         else
             return null;

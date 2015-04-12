@@ -90,12 +90,14 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     }
 
     /**
-     * not allowed in this state
+     * creates and adds a user specified account in the appropriate states
      *
-     * @param accountRequest String representation of the user's desired account type
-     * @return returns feedback to the user depending on the outcome of the account adding process.*/
+     * @param accountRequest String representation of the account type requested by the customer
+     * @param openingBalance opening balance passed to the account factory
+     * @return returns feedback to the user based on the outcome of the add account process
+     */
     @Override
-    public String addAccount(String accountRequest) {
+    public String addAccount(String accountRequest, double openingBalance) {
         return ("You must log in first.");
     }
 

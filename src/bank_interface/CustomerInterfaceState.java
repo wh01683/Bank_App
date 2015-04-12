@@ -38,9 +38,10 @@ interface CustomerInterfaceState {
     /**
      * creates and adds a user specified account in the appropriate states
      * @param accountRequest String representation of the account type requested by the customer
+     * @param openingBalance opening balance passed to the account factory
      * @return returns feedback to the user based on the outcome of the add account process
      */
-    String addAccount(String accountRequest);
+    String addAccount(String accountRequest, double openingBalance);
 
     /**
      * removes the account associated with the account number provided

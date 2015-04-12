@@ -185,10 +185,11 @@ public class CustomerInterface {
      * method is called recursively to give the opportunity to correct their input.
      *
      * @param accountRequest String representation of the account type desired by the customer
+     * @param openingBalance desired opening balance for the new account
      * @return returns feedback to the user based on the add account process
      */
-    public String addAccount(String accountRequest) {
-        return currentCustomerInterfaceState.addAccount(accountRequest);
+    public String addAccount(String accountRequest, double openingBalance) {
+        return currentCustomerInterfaceState.addAccount(accountRequest, openingBalance);
     }
 
     /**

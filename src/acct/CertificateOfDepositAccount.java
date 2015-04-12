@@ -2,18 +2,17 @@ package acct;
 
 import bank_package.Customer;
 import utility.RandomGenerator;
-import utility.uScanner;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 
 class CertificateOfDepositAccount implements Account, Serializable{
-    private static final uScanner termLength = new uScanner("Please enter desired Term Length. Please note this is fixed.", 0, 49);
     private final Integer ACCOUNT_NUMBER;
     private final String TYPE = "FIXED CD";
     private final double MINIMUM_REQUIRED_BALANCE = 1000.00;
     private final Customer OWNER;
+    private Integer termLength;
     private double accountBalance;
 
     /**
@@ -22,12 +21,11 @@ class CertificateOfDepositAccount implements Account, Serializable{
      *
      * @param customer       customer applying for the account
      * @param openingBalance initial balance to be deposited (must be above min required balance)
-     * @param termLength     length of the CD term in months. This affects interest rates.
      */
-    public CertificateOfDepositAccount(Customer customer, double openingBalance, int termLength) {
+    public CertificateOfDepositAccount(Customer customer, double openingBalance) {
 
         this.OWNER = customer;
-        double INTEREST_RATE = calculateInterestRate(termLength);
+        double INTEREST_RATE = calculateInterestRate(this.termLength);
         this.accountBalance += openingBalance;
         RandomGenerator random = new RandomGenerator();
         this.ACCOUNT_NUMBER = random.acctGen();
@@ -43,19 +41,6 @@ class CertificateOfDepositAccount implements Account, Serializable{
     public boolean checkWithdrawLimits(double withdrawal) {
         return withdrawal <= this.accountBalance;
     }
-
-
-    /**
-     * returns a String representation of the account
-     * @return a string representation of the account
-     *
-     * */
-    @Override
-    public String toString() {
-        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6d||%-7.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
-                this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
-    }
-
     /**
      * retrieves the account number associated with the account
      * @return returns the Integer account number
@@ -76,12 +61,12 @@ class CertificateOfDepositAccount implements Account, Serializable{
 
     /**
      * calculates interest rate for the account based on the requested term length
-     * @param termLength length of term (months)
+     * @param termLength length of term (months). Min 1, Max 48
      * @return interest rated granted based on term length
      * */
     private double calculateInterestRate(int termLength) {
 
-        /*Minimum length term is 1 month.*/
+        /*Max length term is 48 months.*/
 
         if (termLength > 48)
             return .15;
@@ -146,12 +131,6 @@ class CertificateOfDepositAccount implements Account, Serializable{
         }
     }
 
-// --Commented out by Inspection START (3/27/15 8:02 PM):
-//    public void update() {
-//        this.accountBalance *= (this.INTEREST_RATE+1);
-//    }
-// --Commented out by Inspection STOP (3/27/15 8:02 PM)
-
     /**
      * applies the customer for a new account by passing the customer and the proposed opening balance
      *
@@ -162,13 +141,11 @@ class CertificateOfDepositAccount implements Account, Serializable{
     @Override
     public Account applyForNewAccount(Customer customer, double openingBalance) {
 
-        int desiredTermLength = termLength.intGet();
-
-        if(decideApproved(customer, openingBalance, desiredTermLength)){
-            return new CertificateOfDepositAccount(customer, openingBalance, desiredTermLength);
+        if (decideApproved(customer, openingBalance)) {
+            return new CertificateOfDepositAccount(customer, openingBalance);
         }
         else{
-            System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Fixed-Term Certificate of Deposit Account at this time.");
+            this.termLength = 0;
             return null;
         }
 
@@ -182,7 +159,6 @@ class CertificateOfDepositAccount implements Account, Serializable{
     @Override
     public UUID getOwner() {
         return this.OWNER.getUUID();
-
     }
 
     /**
@@ -191,14 +167,29 @@ class CertificateOfDepositAccount implements Account, Serializable{
      *
      * @param customer customer applying for the account
      * @param openingBalance proposed opening balance
-     * @param desiredTermLength desired term length (months)
      * @return returns true if the customer qualifies, false otherwise
      * */
-    private boolean decideApproved(Customer customer,double openingBalance, int desiredTermLength) {
-        boolean tempApproved;
-        tempApproved = !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300 | openingBalance < this.MINIMUM_REQUIRED_BALANCE |
-        desiredTermLength < 1 | desiredTermLength > 48);
-        return tempApproved;
+    private boolean decideApproved(Customer customer, double openingBalance) {
+        return !(customer.getChexSystemsScore() < 450 | customer.getCreditScore() < 300 | openingBalance < this.MINIMUM_REQUIRED_BALANCE);
     }
 
+    /**
+     * sets the term length of the CD to the new desired term length
+     *
+     * @param newTermLength term length provided by user from drop-down menu
+     */
+    public void setTermLength(Integer newTermLength) {
+        this.termLength = newTermLength;
+    }
+
+    /**
+     * returns a String representation of the account
+     *
+     * @return a string representation of the account
+     */
+    @Override
+    public String toString() {
+        return String.format("||%-10s||%-10d||%-20.2f||%-20s||%-30s||%-4d||%-6d||%-7.0f||", this.TYPE, this.ACCOUNT_NUMBER, this.accountBalance,
+                this.OWNER.getName(), this.OWNER.getUUID(), this.OWNER.getChexSystemsScore(), 0, this.getMinRequiredBalance());
+    }
 }

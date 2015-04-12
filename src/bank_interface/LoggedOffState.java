@@ -64,13 +64,16 @@ public String enterPassword(String password) {
 public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber, double withdrawAmount, double depositAmount) {
     return ("You must log in first.");
 }
-/**
- * addAccount not allowed in this state
- *
- * @param accountRequest String representation of the account type requested by the user.
- * @return returns error message to display to the user.*/
+
+    /**
+     * creates and adds a user specified account in the appropriate states
+     *
+     * @param accountRequest String representation of the account type requested by the customer
+     * @param openingBalance opening balance passed to the account factory
+     * @return returns feedback to the user based on the outcome of the add account process
+     */
 @Override
-public String addAccount(String accountRequest) {
+public String addAccount(String accountRequest, double openingBalance) {
     return ("You must log in first.");
 
 }
