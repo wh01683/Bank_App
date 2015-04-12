@@ -42,12 +42,10 @@ public class PasswordChecker {
 
 
         if (userPassword.length > 32 | userPassword.length < 8) {
-            System.out.println("Must be no longer than 16 and no shorter than 8 chars long.");
             return false;
         } else {
             for (char c : userPassword) {
                 if ((int) c > 126 | (int) c < 33) {
-                    System.out.println("Outside allowed ASCII ranges.");
                     return false;
                 } else if ((int) c > 47 && (int) c < 58) {
                     numberOfNumbers++;
@@ -60,13 +58,7 @@ public class PasswordChecker {
                 }
             }
 
-
-            if (!(numberOfLowerCaseLetters > 0 && numberOfNumbers > 0 && numberOfSpecialCharacters > 0 && numberOfUpperCaseLetters > 0)) {
-                System.out.println("Did not have 1 of each: lower case, uppercase, special, number.");
-                return false;
-            } else {
-                return true;
-            }
+            return numberOfLowerCaseLetters > 0 && numberOfNumbers > 0 && numberOfSpecialCharacters > 0 && numberOfUpperCaseLetters > 0;
         }
     }
 }
