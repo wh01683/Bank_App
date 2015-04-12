@@ -32,8 +32,7 @@ public class CustomerInterface {
     final CustomerInterfaceState loggedInState;
     final CustomerInterfaceState processUsernameState;
     final CustomerInterfaceState processPasswordState;
-    /*private constructor... creates new customer interface using the current bank's information (passed through param)
-    * and the customer's unique ID also passed through param.*/
+
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
     private CustomerInterfaceState currentCustomerInterfaceState;
 
@@ -160,46 +159,9 @@ public class CustomerInterface {
         currentCustomerInterfaceState.enterEmail(email);
     }
 
-// --Commented out by Inspection START (3/27/15 8:02 PM):
-//    /** enterPassword called on the current state of the customer interface
-//     *                     prompts user to enter their password
-//     *                     Note: function changes based on current state
-//     * */
-//    public void enterPassword(String password) {
-//        currentCustomerInterfaceState.enterPassword(password);
-//    }
-// --Commented out by Inspection STOP (3/27/15 8:02 PM)
-
     /** requestInformation start of the login process; prompts user for desired actions to take during the login
      *                          process
      */
-    public void requestInformation() {
-        currentCustomerInterfaceState.requestInformation();
-    }
-
-// --Commented out by Inspection START (3/27/15 8:02 PM):
-//    public void startTransaction() {
-//        currentCustomerInterfaceState.startTransaction();
-//    }
-// --Commented out by Inspection STOP (3/27/15 8:02 PM)
-
-// --Commented out by Inspection START (3/27/15 8:02 PM):
-//    /**addAccount initiates the account adding process
-//     *
-//     * */
-//    public void addAccount() {
-//        currentCustomerInterfaceState.addAccount();
-//    }
-// --Commented out by Inspection STOP (3/27/15 8:02 PM)
-
-// --Commented out by Inspection START (3/27/15 8:02 PM):
-//    /** getBankProxy returns current bankProxy of the customer interface.
-//     *@return current bank proxy object
-//     * */
-//    public BankProxy getBankProxy() {
-//        return bankProxy;
-//    }
-// --Commented out by Inspection STOP (3/27/15 8:02 PM)
 
     /** saveBankDataToFile calls on the bank proxy object to save all information to file through object output stream
      *

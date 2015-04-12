@@ -7,30 +7,33 @@ interface CustomerInterfaceState {
      * enterUUID prompts the user for their UUID in the appropriate state
      * @param email email entered by the user in the gui form, used to retrieve the customer's actual password
      */
-    void enterEmail(String email);
+    String enterEmail(String email);
 
     /**
      * enterPassword prompts the user for their password and checks for correctness in the appropriate state
      * @param password password entered by the user in the gui form, verified against the customer's actual email
      *                 address on file
      */
-    void enterPassword(String password);
+    String enterPassword(String password);
     /**
      * logOff saves bank data, changes state to LoggedOffState and brings up first menu. Same in all states.
      * */
     void logOff();
-    /**
-     * requestInformation prompts the user for commands upon logging in
-     * */
-    void requestInformation();
 
     /**
      * startTransaction invoked when the user would like to start a transaction in the appropriate states
+     * @param transactionChoice
+     * @param accountFromNumber
+     * @param accountToNumber
+     * @param withdrawAmount
+     * @param depositAmount
      */
-    void startTransaction();
+    String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber,
+                            double withdrawAmount, double depositAmount);
 
     /**
      * addAccount creates and adds a user specified account in the appropriate states
+     * @param accountRequest
      */
-    void addAccount();
+    String addAccount(String accountRequest);
 }

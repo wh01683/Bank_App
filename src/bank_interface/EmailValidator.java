@@ -14,7 +14,7 @@ class EmailValidator {
     }
 
 
-/*    Validate hex with regular expression
+    /**    Validate hex with regular expression
 
       @param hex email string for validation
       @return true valid hex, false invalid hex

@@ -1,7 +1,6 @@
 package bank_interface;
 
 import bank_package.BankProxy;
-import utility.uScanner;
 
 /**
  * Created by robert on 3/15/2015.
@@ -37,31 +36,27 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     }
 
     /**
-     * requestInformation not used in this state, they have not entered their password yet
-     * */
-    @Override
-    public void requestInformation() {
-
-        System.out.println("Must enter your password first.");
-
-    }
-
-    /**
      * startTransaction not used in this state. If this method is ever invoked during this state, the customer is
      *                  prompted for their password before allowing them to proceed.
-     * */
+     *
+     * @param transactionChoice
+     * @param accountFromNumber
+     * @param accountToNumber
+     * @param withdrawAmount
+     * @param depositAmount*/
     @Override
-    public void startTransaction() {
-        System.out.println("Must enter your password first.");
+    public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber, double withdrawAmount, double depositAmount) {
+        return ("Must enter your password first.");
     }
 
     /**
      * addAccount not used in this state. If this method is ever invoked during this state, the customer is
      *            prompted for their password before allowing them to proceed.
-     * */
+     *
+     * @param accountRequest*/
     @Override
-    public void addAccount() {
-        System.out.println("Must enter your password first.");
+    public String addAccount(String accountRequest) {
+        return ("Must enter your password first.");
     }
 
     /**
@@ -70,8 +65,8 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      * @param email customer's email
      */
     @Override
-    public void enterEmail(String email) {
-        System.out.println("You have already entered your Email, please enter your password.");
+    public String enterEmail(String email) {
+        return ("You have already entered your Email, please enter your password.");
     }
 
     /** enterPassword creates a final String variable "realPass" to store the value of the customer's actual password on
@@ -82,49 +77,30 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      *
      * @param password password to check for validity*/
     @Override
-    public void enterPassword(String password) {
+    public String enterPassword(String password) {
 
         /*if their key is found in the customerHashTable, the instance's customer is set to the customer of that location
          * their password ON RECORD is set to a final String "realPass"*/
         final String realPass = bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()).getPASSWORD();
         /*the user is prompted for their password, which is stored in enteredPass*/
-        uScanner PASSWORD_SCANNER = new uScanner("Please enter your password.\nBACK, LOGOFF.", 4, 20);
-        String enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();
-
-        while (!(enteredPass.equalsIgnoreCase("BACK")) | !(enteredPass.equalsIgnoreCase("LOGOFF"))) {
-            int attempts = 1;
+        int attempts = 1;
         /*they will be prompted for their password as long as their REAL PASSWORD and their ENTERED PASSWORD do not match
         * and as long as their attempts do not exceed 4.*/
-        while (!enteredPass.equals(realPass) && attempts < 6) {
+        if (!password.equals(realPass) && attempts < 6) {
             if (attempts == 5) {
-                System.out.println("Maximum attempts reached. Exiting.");
-                System.exit(1);
+                return ("Maximum attempts reached. Exiting.");
             } else {
-                System.out.println("Invalid password. Try Again. " + attempts + " of 4 attempts exhausted.");
                 attempts++;
-                enteredPass = PASSWORD_SCANNER.alphaNumericStringGet();
+                return ("Invalid password. Try Again. " + attempts + " of 4 attempts exhausted.");
             }
         }
 
-        if (enteredPass.equals(realPass)) {
-            System.out.println("Congratulations! Your input password " + enteredPass + " matches your real password" +
-                    " on file, " + realPass + "\nYou may now access your bank account information!\n");
-            System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        if (password.equals(realPass)) {
             customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
-            customerInterface.requestInformation();
-        } else {
-            System.out.println("Invalid password, exiting.");
-            System.exit(1);
-        }
+            return ("Login Successful.");
+
         }
 
-        if (enteredPass.equalsIgnoreCase("BACK")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-        }
-        if (enteredPass.equalsIgnoreCase("LOGOFF")) {
-            System.out.println("Have a great day!");
-            customerInterface.saveBankDataToFile();
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-        }
+        return ("Invalid password, exiting.");
     }
 }

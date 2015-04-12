@@ -2,6 +2,8 @@ package bank_package;
 
 import acct.Account;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -271,7 +273,6 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
-
     /**getNumberAccounts returns current total number of accounts registered with the bank
      *
      * @return total number of accounts registered with the bank
@@ -357,6 +358,32 @@ public class RealBank implements Serializable, Bank {
         } catch (NullPointerException l) {
             System.out.printf("Customer not found.");
             return null;
+        }
+    }
+
+    /**
+     * saveAllBankDataToFile saves all bank data to file by creating a new temporary instance of the static real bank and
+     * writing to a file via object output stream. streams are closed after it is finished.
+     */
+    public void saveAllBankDataToFile() {
+
+        RealBank nonStaticRealBank = this;
+        Hashtable<Integer, Customer> nonStaticCustomerHT = this.customerHashtable;
+        Hashtable<Integer, Account> nonStaticAccountHT = this.accountHashtable;
+
+        try {
+
+            FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/bankData.txt");
+            ObjectOutputStream bankDataWriter = new ObjectOutputStream(fos);
+
+            bankDataWriter.writeObject(nonStaticRealBank);
+
+
+            fos.close();
+            bankDataWriter.close();
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
         }
     }
 }

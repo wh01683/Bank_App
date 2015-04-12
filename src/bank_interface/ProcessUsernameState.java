@@ -31,13 +31,12 @@ public class ProcessUsernameState implements CustomerInterfaceState {
      *           enters their UUID and the method checks whether or not the bank has the UUID on file through the bankProxy.
      *           They are given 5 attempts before the system closes. Upon a successful match, the state is changed to
      *           ProcessPasswordState and the customer is prompted for their password.
-     *
-     * @param email customer's email passed from the gui form to retrieve the customer's actual email, used to check
+     *  @param email customer's email passed from the gui form to retrieve the customer's actual email, used to check
      *              password for validity
      *
      *              */
     @Override
-    public void enterEmail(String email) {
+    public String enterEmail(String email) {
 
         try {
             uScanner EMAIL_SCANNER = new uScanner("Please enter your Email.\nBACK, LOGOFF", 0, 50);
@@ -100,7 +99,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
      *
      * @param password customer's password*/
     @Override
-    public void enterPassword(String password) {
+    public String enterPassword(String password) {
         System.out.println("You must enter your Email first.");
         customerInterface.enterEmail(password);
     }
@@ -117,25 +116,23 @@ public class ProcessUsernameState implements CustomerInterfaceState {
 
     /**
      * not allowed in this state
- * */
+     *
+     * @param transactionChoice
+     * @param accountFromNumber
+     * @param accountToNumber
+     * @param withdrawAmount
+     * @param depositAmount*/
     @Override
-    public void requestInformation() {
+    public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber, double withdrawAmount, double depositAmount) {
         System.out.println("You must log in first.");
     }
 
     /**
      * not allowed in this state
- * */
+     *
+     * @param accountRequest*/
     @Override
-    public void startTransaction() {
-        System.out.println("You must log in first.");
-    }
-
-    /**
-     * not allowed in this state
- * */
-    @Override
-    public void addAccount() {
+    public String addAccount(String accountRequest) {
         System.out.println("You must log in first.");
     }
 
