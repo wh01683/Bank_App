@@ -2,6 +2,7 @@ package bank_interface;
 
 import acct.Account;
 import acct.AccountFactory;
+import acct.AccountNumberGenerator;
 import bank_package.BankProxy;
 
 import java.util.Hashtable;
@@ -29,6 +30,7 @@ public class LoggedInState implements CustomerInterfaceState {
      */
     public LoggedInState(CustomerInterface newCustomerInterface, BankProxy newBankProxy, DataIO newDataIO) {
         bankProxy = newBankProxy;
+        AccountNumberGenerator.setAcctNumberList(bankProxy.getAccountNumbersUsed());
         dataIO = newDataIO;
         this.customerInterface = newCustomerInterface;
     }

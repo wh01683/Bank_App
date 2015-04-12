@@ -2,12 +2,20 @@ package acct;
 
 import bank_package.Customer;
 
-import java.io.Serializable;
 
+public class AccountFactory {
 
-public class AccountFactory implements Serializable {
+    private static AccountNumberGenerator accountNumberGenerator = new AccountNumberGenerator();
 
     /*Account factory for creating and applying to different types of accounts*/
+
+    public static AccountNumberGenerator getAccountNumberGenerator() {
+        return accountNumberGenerator;
+    }
+
+    public static void setAccountNumberGenerator(AccountNumberGenerator accountNumberGenerator) {
+        AccountFactory.accountNumberGenerator = accountNumberGenerator;
+    }
 
     /**
      * Method used to create accounts using a factory format. The request from the customer is passed as a string
@@ -24,19 +32,23 @@ public class AccountFactory implements Serializable {
         if (accountType == null)
             return null;
         if (accountType.equalsIgnoreCase("CHECKING")) {
-            return new CheckingAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
+            return new CheckingAccount(customer, openingBalance, accountNumberGenerator.acctGen()).
+                    applyForNewAccount(customer, openingBalance, accountNumberGenerator.acctGen());
         } else if (accountType.equalsIgnoreCase("SAVINGS")) {
-            return new SavingsAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
+            return new SavingsAccount(customer, openingBalance, accountNumberGenerator.acctGen()).
+                    applyForNewAccount(customer, openingBalance, accountNumberGenerator.acctGen());
         } else if (accountType.equalsIgnoreCase("IRA")) {
-            return new IndividualRetirementAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
+            return new IndividualRetirementAccount(customer, openingBalance, accountNumberGenerator.acctGen()).
+                    applyForNewAccount(customer, openingBalance, accountNumberGenerator.acctGen());
         } else if (accountType.equalsIgnoreCase("CD")) {
-            return new CertificateOfDepositAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
+            return new CertificateOfDepositAccount(customer, openingBalance, accountNumberGenerator.acctGen()).
+                    applyForNewAccount(customer, openingBalance, accountNumberGenerator.acctGen());
         } else if (accountType.equalsIgnoreCase("MMA")) {
-            return new MoneyMarketAccount(customer, openingBalance).applyForNewAccount(customer, openingBalance);
+            return new MoneyMarketAccount(customer, openingBalance, accountNumberGenerator.acctGen()).
+                    applyForNewAccount(customer, openingBalance, accountNumberGenerator.acctGen());
         }
         else
             return null;
     }
-
 }
 

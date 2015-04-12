@@ -1,7 +1,6 @@
 package acct;
 
 import bank_package.Customer;
-import utility.RandomGenerator;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -18,17 +17,16 @@ class CertificateOfDepositAccount implements Account, Serializable{
     /**
      * creates a new Certificate of Deposit account with a given customer (used to retrieve information for approval),
      * opening balance offered by the customer, and desired term length.
-     *
-     * @param customer       customer applying for the account
+     *  @param customer customer applying for the account
      * @param openingBalance initial balance to be deposited (must be above min required balance)
+     * @param accountNumber account number of the newly created account.
      */
-    public CertificateOfDepositAccount(Customer customer, double openingBalance) {
+    public CertificateOfDepositAccount(Customer customer, double openingBalance, Integer accountNumber) {
 
         this.OWNER = customer;
         double INTEREST_RATE = calculateInterestRate(this.termLength);
         this.accountBalance += openingBalance;
-        RandomGenerator random = new RandomGenerator();
-        this.ACCOUNT_NUMBER = random.acctGen();
+        this.ACCOUNT_NUMBER = accountNumber;
 
     }
 
@@ -136,13 +134,14 @@ class CertificateOfDepositAccount implements Account, Serializable{
      *
      * @param customer customer object applying for the account
      * @param openingBalance proposed opening balance for the account
+     * @param accountNumber account number of the new account
      * @return returns the newly created account object if the customer qualified, else returns null
      * */
     @Override
-    public Account applyForNewAccount(Customer customer, double openingBalance) {
+    public Account applyForNewAccount(Customer customer, double openingBalance, Integer accountNumber) {
 
         if (decideApproved(customer, openingBalance)) {
-            return new CertificateOfDepositAccount(customer, openingBalance);
+            return new CertificateOfDepositAccount(customer, openingBalance, accountNumber);
         }
         else{
             this.termLength = 0;

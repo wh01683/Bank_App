@@ -70,10 +70,11 @@ double deposit(double amount);
      * @param customer customer examined for qualification. The account factory obtains the information it needs from
      *                 the customer object passed through the params.
      * @param openingBalance proposed opening balance to open the account with.
+     * @param accountNumber account number of the new account
      * @return will return the newly created account if the customer qualified, else null is returned.
      *
      **/
-    Account applyForNewAccount(Customer customer, double openingBalance);
+    Account applyForNewAccount(Customer customer, double openingBalance, Integer accountNumber);
 
     /**
      * returns the UUID object of the owner of the account

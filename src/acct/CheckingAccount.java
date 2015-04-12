@@ -1,7 +1,6 @@
 package acct;
 
 import bank_package.Customer;
-import utility.RandomGenerator;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -19,17 +18,16 @@ class CheckingAccount implements Account, Serializable {
     /**
      * creates a new checking account with a given customer (used to retrieve information for approval)
      * and opening balance offered by the customer
-     *
-     * @param customer       customer applying for the account
+     *  @param customer customer applying for the account
      * @param openingBalance initial balance to be deposited (must be above min required balance)
+     * @param accountNumber account number of the new account
      */
-    public CheckingAccount(Customer customer, double openingBalance) {
+    public CheckingAccount(Customer customer, double openingBalance, Integer accountNumber) {
 
         this.OWNER = customer;
         this.accountBalance = openingBalance;
         calculateOverdraftProtection();
-        RandomGenerator random = new RandomGenerator();
-        this.ACCOUNT_NUMBER = random.acctGen();
+        this.ACCOUNT_NUMBER = accountNumber;
     }
 
 
@@ -146,13 +144,14 @@ class CheckingAccount implements Account, Serializable {
      *
      * @param customer customer object applying for the account
      * @param openingBalance proposed opening balance for the account
+     * @param accountNumber account number of the new account
      * @return returns the newly created account object if the customer qualified, else returns null
      * */
     @Override
-    public Account applyForNewAccount(Customer customer, double openingBalance) {
+    public Account applyForNewAccount(Customer customer, double openingBalance, Integer accountNumber) {
 
         if(decideApproved(customer, openingBalance)){
-            return new CheckingAccount(customer, openingBalance);
+            return new CheckingAccount(customer, openingBalance, accountNumber);
         }
         else{
             System.out.println("Sorry, " + customer.getName() + ". You do not qualify for a Savings Account at this time.");

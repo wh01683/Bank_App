@@ -197,7 +197,7 @@ public class CustomerInterface {
      * as a param. During each transaction choice, the method handles cases such as: owner does not own
      * account, invalid account number, depositing too large of an amount, withdrawing too large, and attempting
      * to withdraw or deposit negative amounts
-     * <p/>
+     *
      * Transfer requests also handle cases where the transfer TO and transfer FROM account numbers are
      * the same, attempting to initialize transfers while only 1 account is owned, and cases where one
      * half of the transaction is valid (method will undo the other half)

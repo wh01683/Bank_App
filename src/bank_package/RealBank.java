@@ -5,10 +5,7 @@ import acct.Account;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 
 public class RealBank implements Serializable, Bank {
@@ -19,6 +16,7 @@ public class RealBank implements Serializable, Bank {
     private Hashtable<Integer, Customer> customerHashtable;
     private Hashtable<Integer, Account> accountHashtable;
     private Hashtable<Integer, UUID> emailUUIDHashTable;
+    private Vector<Integer> accountNumbersUsed;
     /*ToDo: Declare Hashtables static and adapt saveData methods to cope with this.*/
 
     public RealBank(String name, int numberAccounts, int numberCustomers) {
@@ -361,6 +359,14 @@ public class RealBank implements Serializable, Bank {
         }
     }
 
+    public Vector<Integer> getAccountNumbersUsed() {
+        return accountNumbersUsed;
+    }
+
+    public void setAccountNumbersUsed(Vector<Integer> accountNumbersUsed) {
+        this.accountNumbersUsed = accountNumbersUsed;
+    }
+
     /**
      * saveAllBankDataToFile saves all bank data to file by creating a new temporary instance of the static real bank and
      * writing to a file via object output stream. streams are closed after it is finished.
@@ -368,8 +374,7 @@ public class RealBank implements Serializable, Bank {
     public void saveAllBankDataToFile() {
 
         RealBank nonStaticRealBank = this;
-        Hashtable<Integer, Customer> nonStaticCustomerHT = this.customerHashtable;
-        Hashtable<Integer, Account> nonStaticAccountHT = this.accountHashtable;
+
 
         try {
 

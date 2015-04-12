@@ -1,10 +1,12 @@
 package bank_package;
 
 import acct.Account;
+import acct.AccountNumberGenerator;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Hashtable;
+import java.util.Vector;
 
 
 public class BankProxy implements Bank {
@@ -132,6 +134,7 @@ public class BankProxy implements Bank {
 public void saveAllBankDataToFile() {
 
         RealBank nonStaticRealBank = realBank;
+    realBank.setAccountNumbersUsed(AccountNumberGenerator.getAcctNumberList());
 
         try {
 
@@ -147,6 +150,10 @@ public void saveAllBankDataToFile() {
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
+}
+
+    public Vector<Integer> getAccountNumbersUsed() {
+        return realBank.getAccountNumbersUsed();
     }
 
 }
