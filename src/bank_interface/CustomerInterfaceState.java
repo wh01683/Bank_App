@@ -41,4 +41,12 @@ interface CustomerInterfaceState {
      * @return returns feedback to the user based on the outcome of the add account process
      */
     String addAccount(String accountRequest);
+
+    /**
+     * removes the account associated with the account number provided
+     *
+     * @param accountNumber account number of the account to be removed
+     * @return returns feedback based on the outcome of the account removal process
+     */
+    String removeAccount(Integer accountNumber);
 }

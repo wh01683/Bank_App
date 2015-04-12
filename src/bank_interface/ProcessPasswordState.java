@@ -35,11 +35,11 @@ public class ProcessPasswordState implements CustomerInterfaceState {
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
     }
 
-    /** startTransaction not allowed in this state
+    /** initiates a transaction for the customer
      *
      * @param transactionChoice String version of the user's transaction choice (transfer, withdraw, deposit)
      * @param accountFromNumber Account number of the account to take money FROM
-     * @param accountToNumber Account number of the accoun tot put money IN
+     * @param accountToNumber Account number of the account ot put money IN
      * @param withdrawAmount Amount of money to withdraw. For transfers, this will equal deposit
      * @param depositAmount Amount of money to deposit. For transfers, this will equal withdraw
      *
@@ -58,6 +58,17 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     @Override
     public String addAccount(String accountRequest) {
         return ("Must enter your password first.");
+    }
+
+    /**
+     * removes the account associated with the account number provided
+     *
+     * @param accountNumber account number of the account to be removed
+     * @return returns feedback based on the outcome of the account removal process
+     */
+    @Override
+    public String removeAccount(Integer accountNumber) {
+        return ("You must enter your password first.");
     }
 
     /**

@@ -93,6 +93,32 @@ public class LoggedInState implements CustomerInterfaceState {
         return ("Request could not be processed.");
     }
 
+    /**
+     * removes the account associated with the account number provided
+     *
+     * @param accountNumber account number of the account to be removed
+     * @return returns feedback based on the outcome of the account removal process
+     */
+    @Override
+    public String removeAccount(Integer accountNumber) {
+        if (this.customerInterface.getCustomer().getAccountHashtable().containsKey(accountNumber)) {
+            if (bankProxy.removeAccount(accountNumber)) {
+                return ("Account successfully removed.");
+            } else {
+                return ("Could not remove account");
+            }
+
+        } else if (bankProxy.hasAccount(accountNumber) && !(this.customerInterface.getCustomer().
+                getAccountHashtable().containsKey(accountNumber))) {
+            return ("Account does not belong to you.");
+        } else if (!bankProxy.hasAccount(accountNumber)) {
+            return ("Account not found.");
+        } else {
+            return ("Could not process your request.");
+        }
+    }
+
+
 
     /**
      *  method to process transactions requested by the user. A request in string form is passed through

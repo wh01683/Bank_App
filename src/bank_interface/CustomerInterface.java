@@ -154,8 +154,7 @@ public class CustomerInterface {
      * @return returns feedback to the user based on the outcome of the email processing
      * */
     public String enterEmail(String email) {
-        currentCustomerInterfaceState.enterEmail(email);
-        return null;
+        return currentCustomerInterfaceState.enterEmail(email);
     }
 
     /** calls on the bank proxy object to save all information to file through object output stream
@@ -164,5 +163,55 @@ public class CustomerInterface {
         bankProxy.saveAllBankDataToFile();
     }
 
+    /**
+     * removes the account associated with the account number provided
+     *
+     * @param accountNumber account number of the account to be removed
+     * @return returns feedback based on the outcome of the account removal process
+     */
+    public String removeAccount(Integer accountNumber) {
+        return currentCustomerInterfaceState.removeAccount(accountNumber);
+
+    }
+
+    /**
+     * allows the logged in customer to add a new bank account under their name by passing their request
+     * (as a string) to the AccountFactory object. If a null account is returned by the Account Factory,
+     * the customer did not qualify for the account and nothing is added. Otherwise, the Account Factory returns
+     * a new account object created with their desired opening balance. Once the account is created, the
+     * information of the newly created account is printed back to the customer for confirmation. After the
+     * new account is added, the customer is given the opportunity to continue adding more accounts or return
+     * to the previous menu or log off. If at any time the method does not recognize an input string, the
+     * method is called recursively to give the opportunity to correct their input.
+     *
+     * @param accountRequest String representation of the account type desired by the customer
+     * @return returns feedback to the user based on the add account process
+     */
+    public String addAccount(String accountRequest) {
+        return currentCustomerInterfaceState.addAccount(accountRequest);
+    }
+
+    /**
+     * method to process transactions requested by the user. A request in string form is passed through
+     * as a param. During each transaction choice, the method handles cases such as: owner does not own
+     * account, invalid account number, depositing too large of an amount, withdrawing too large, and attempting
+     * to withdraw or deposit negative amounts
+     * <p/>
+     * Transfer requests also handle cases where the transfer TO and transfer FROM account numbers are
+     * the same, attempting to initialize transfers while only 1 account is owned, and cases where one
+     * half of the transaction is valid (method will undo the other half)
+     *
+     * @param transactionChoice String version of the user's transaction choice (transfer, withdraw, deposit)
+     * @param accountFromNumber Account number of the account to take money FROM
+     * @param accountToNumber   Account number of the accoun tot put money IN
+     * @param withdrawAmount    Amount of money to withdraw. For transfers, this will equal deposit
+     * @param depositAmount     Amount of money to deposit. For transfers, this will equal withdraw
+     * @return returns feedback to the user depending on the outcome of the transaction process
+     */
+    public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber,
+                                   double withdrawAmount, double depositAmount) {
+        return currentCustomerInterfaceState.startTransaction(transactionChoice, accountFromNumber, accountToNumber,
+                withdrawAmount, depositAmount);
+    }
 
 }

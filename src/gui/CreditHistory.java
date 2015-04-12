@@ -18,8 +18,10 @@ import java.lang.reflect.Method;
  * 3/27/15
  */
 public class CreditHistory implements FormGui {
+    private static CreateAccount createAccount;
     private JPanel creditPage;
     private JTextField outstandingBalanceField;
+    private final Border originalBorder = outstandingBalanceField.getBorder();
     private JTextField totalCreditLimitTextField;
     private JTextField latePaymentsAmountField;
     private JButton backButton;
@@ -27,9 +29,7 @@ public class CreditHistory implements FormGui {
     private JTextField recentCreditInquiriesField;
     private JTextField numberOfLatePaymentsField;
     private JTextField lenCredHistoryField;
-    private static CreateAccount createAccount;
     private Customer customer;
-    private final Border originalBorder = outstandingBalanceField.getBorder();
 
     public CreditHistory(CreateAccount prevStep, final AccountCreationSummary nextStep) {
         createAccount = prevStep;
@@ -154,6 +154,11 @@ public class CreditHistory implements FormGui {
         component.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.RAISED, Color.RED, Color.red));
     }
 
+    /**
+     * sets the current customer to the new passed customer
+     *
+     * @param customer new customer object
+     */
     public void setCustomer(Customer customer){
         this.customer = customer;
     }

@@ -41,7 +41,7 @@ public String enterPassword(String password) {
 
 
 /**
- * logOff not allowed in this state, user is already logged off
+ * not allowed in this state, user is already logged off
  **/
 @Override
     public void logOff() {
@@ -74,4 +74,15 @@ public String addAccount(String accountRequest) {
     return ("You must log in first.");
 
 }
+
+    /**
+     * removes the account associated with the account number provided
+     *
+     * @param accountNumber account number of the account to be removed
+     * @return returns feedback based on the outcome of the account removal process
+     */
+    @Override
+    public String removeAccount(Integer accountNumber) {
+        return ("You must log in first");
+    }
 }
