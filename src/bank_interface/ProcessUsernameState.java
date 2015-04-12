@@ -1,7 +1,6 @@
 package bank_interface;
 
 import bank_package.BankProxy;
-import utility.uScanner;
 
 /**
  * Created by robert on 3/15/2015.
@@ -39,59 +38,18 @@ public class ProcessUsernameState implements CustomerInterfaceState {
     public String enterEmail(String email) {
 
         try {
-            uScanner EMAIL_SCANNER = new uScanner("Please enter your Email.\nBACK, LOGOFF", 0, 50);
 
-
-            String emailInput = EMAIL_SCANNER.alphaNumericStringGet();
-
-            while (!(emailInput.equalsIgnoreCase("BACK"))) {
-
-                if (emailInput.equalsIgnoreCase("LOGOFF")) {
-                    System.out.println("Have a great day!");
-                    customerInterface.saveBankDataToFile();
-                    customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-
-
-                } else if (!bankProxy.hasCustomer(emailInput)) {
-            /*if the customerHashTable does not contain the provided customer ID, the system will display a prompt
-            * and ask them again if they would like to register. If they do not, the user is prompted for their UUID again
-            * They are given 5 attempts total before the system exits.*/
-                    System.out.println("We could not find your ID, please try again.");
-                    boolean wantsToRegister = wantsToRegister();
-                    int emailInputCounter = 1;
-
-                    while (!bankProxy.hasCustomer(emailInput) && emailInputCounter < 7) {
-                        if (emailInputCounter == 6) {
-                            System.out.println("All attempts exhausted. System exiting.");
-                            System.exit(1);
-                        }
-                        if (wantsToRegister) {
-                            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-                        } else if (emailInputCounter < 6) {
-                            System.out.println(emailInputCounter + " attempts remaining of 5. Please try again.");
-                            emailInput = EMAIL_SCANNER.alphaNumericStringGet();
-                            if (emailInput.equalsIgnoreCase("BACK")) {
-                                customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-
-                            } else if (emailInput.equalsIgnoreCase("LOGOFF")) {
-                                System.out.println("Have a great day!");
-                                customerInterface.logOff();
-                            }
-                        }
-                        emailInputCounter++;
-                    }
-                    customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-                }
-
+            if (!(bankProxy.hasCustomer(email))) {
+                return ("Email not found.");
+            } else if (bankProxy.hasCustomer(email)) {
                 customerInterface.setCustomerInterfaceState(customerInterface.processPasswordState);
-                customerInterface.setCustomer(bankProxy.requestCustomer(emailInput));
+                customerInterface.setCustomer(bankProxy.requestCustomer(email));
             }
-
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-
         } catch (IllegalArgumentException p) {
-            System.out.printf("Invalid UUID entered at HasAccount : enterEmail");
+            System.out.printf("Invalid argument");
         }
+
+        return ("Could not process request.");
     }
 
     /**
@@ -100,8 +58,8 @@ public class ProcessUsernameState implements CustomerInterfaceState {
      * @param password customer's password*/
     @Override
     public String enterPassword(String password) {
-        System.out.println("You must enter your Email first.");
-        customerInterface.enterEmail(password);
+        return ("You must enter your Email first.");
+
     }
 
     /**
@@ -109,7 +67,6 @@ public class ProcessUsernameState implements CustomerInterfaceState {
  * */
     @Override
     public void logOff() {
-        System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
     }
@@ -124,7 +81,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
      * @param depositAmount*/
     @Override
     public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber, double withdrawAmount, double depositAmount) {
-        System.out.println("You must log in first.");
+        return ("You must log in first.");
     }
 
     /**
@@ -133,35 +90,7 @@ public class ProcessUsernameState implements CustomerInterfaceState {
      * @param accountRequest*/
     @Override
     public String addAccount(String accountRequest) {
-        System.out.println("You must log in first.");
+        return ("You must log in first.");
     }
 
-    /**
-     * wantsToRegister upon failure to provide a correct UUID, the customer is asked if they would like to register. They
-     *                 are redirected based on their response.
-     *
-     * @return recursively calls itself until the user enters a correct response or logs off/exits. Will return true if the
-     *         customer wants to register.
- * */
-    private boolean wantsToRegister() {
-        final uScanner WANT_REGISTER_SCANNER = new uScanner("Would you like to register? YES, NO, LOGOFF, EXIT", 2, 6);
-        String answer = WANT_REGISTER_SCANNER.stringGet();
-
-        if (answer.equalsIgnoreCase("YES")) {
-            return true;
-        } else if (answer.equalsIgnoreCase("NO")) {
-            customerInterface.setCustomerInterfaceState(customerInterface.processUsernameState);
-        } else if (answer.equalsIgnoreCase("LOGOFF")) {
-            System.out.println("Have a great day!");
-            customerInterface.saveBankDataToFile();
-            customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
-
-        } else if (answer.equalsIgnoreCase("EXIT")) {
-            System.out.println("Exiting.");
-            System.exit(0);
-        } else
-            System.out.println("Incorrect response.");
-        return wantsToRegister();
-
-    }
 }
