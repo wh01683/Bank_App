@@ -14,15 +14,15 @@ class EmailValidator {
     }
 
 
-    /**    Validate hex with regular expression
+    /** Validate email with regular expression
 
-      @param hex email string for validation
-      @return true valid hex, false invalid hex
+     @param email email string for validation
+     @return true valid email, false invalid email
 
       */
 
-    public boolean validate(final String hex) {
-        Matcher matcher = pattern.matcher(hex);
+    public boolean validate(final String email) {
+        Matcher matcher = pattern.matcher(email);
         return matcher.matches();
 
     }

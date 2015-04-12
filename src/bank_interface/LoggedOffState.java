@@ -11,6 +11,8 @@ public class LoggedOffState implements CustomerInterfaceState {
      *
      * @param newCustomerInterface customer interface instance passed through customer interface constructor. used to
      *                             set and update states of the customer interface
+     *
+     * @param newBankProxy new bank proxy object used to retrieve information
      */
     public LoggedOffState(CustomerInterface newCustomerInterface, BankProxy newBankProxy) {
         this.customerInterface = newCustomerInterface;
@@ -40,7 +42,7 @@ public String enterPassword(String password) {
 
 /**
  * logOff not allowed in this state, user is already logged off
- * */
+ **/
 @Override
     public void logOff() {
     customerInterface.saveBankDataToFile();
@@ -48,23 +50,25 @@ public String enterPassword(String password) {
 
 }
 
-    /**
- * startTransaction not allowed in this state
+    /** startTransaction not allowed in this state
      *
-     * @param transactionChoice
-     * @param accountFromNumber
-     * @param accountToNumber
-     * @param withdrawAmount
-     * @param depositAmount*/
+     * @param transactionChoice String version of the user's transaction choice (transfer, withdraw, deposit)
+     * @param accountFromNumber Account number of the account to take money FROM
+     * @param accountToNumber Account number of the accoun tot put money IN
+     * @param withdrawAmount Amount of money to withdraw. For transfers, this will equal deposit
+     * @param depositAmount Amount of money to deposit. For transfers, this will equal withdraw
+     *
+     * @return returns feedback to the user depending on the outcome of the transaction process
+     * */
 @Override
 public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber, double withdrawAmount, double depositAmount) {
     return ("You must log in first.");
-
 }
 /**
  * addAccount not allowed in this state
  *
- * @param accountRequest*/
+ * @param accountRequest String representation of the account type requested by the user.
+ * @return returns error message to display to the user.*/
 @Override
 public String addAccount(String accountRequest) {
     return ("You must log in first.");

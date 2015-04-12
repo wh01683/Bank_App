@@ -23,7 +23,6 @@ import bank_package.RealBank;
 
 public class CustomerInterface {
     private static CustomerInterface SINGLETON_INSTANCE;
-    // --Commented out by Inspection (3/27/15 8:02 PM):private static UUID CustomerUUID;
     private static DataIO dataIO;
     private static RealBank realBank;
     private static BankProxy bankProxy;
@@ -38,7 +37,7 @@ public class CustomerInterface {
 
 
     /**
-     * CustomerInterface creates a new customer interface based around the real bank object passed. user information is
+     * creates a new customer interface based around the real bank object passed. user information is
      * retrieved from the real bank is used to verify the user retrieved for the user upon logging in
      *
      * @param newRealBank a RealBank object to build the Customer Interface around
@@ -66,7 +65,7 @@ public class CustomerInterface {
 
     }
 
-    /** getInstance: Singleton instance retriever.. ensures no two instances of customer interface exist at any
+    /** Singleton instance retriever.. ensures no two instances of customer interface exist at any
      *                one time.
      *
      * @param thisBank RealBank to pass to the CustomerInterface constructor
@@ -84,8 +83,8 @@ public class CustomerInterface {
         }
     }
 
-    /** START(): after the CustomerInterface is instantiated, the Start() function is called to get everything
-     * moving in the right direction. the while loops call the correct methods depending on which state it is in.
+    /** after the CustomerInterface is instantiated, the Start() function is called to load the realBank object from file
+     * and instantiate the Singleton
     *
      * */
     public void START() {
@@ -107,7 +106,7 @@ public class CustomerInterface {
     }
 
 
-    /** getCustomer: returns UUID of the customer currently logged in
+    /** returns the customer object of the customer currently logged in
      *
      * @return returns the UUID object of the customer currently logged in
      * */
@@ -120,7 +119,7 @@ public class CustomerInterface {
         }
     }
 
-    /** setCustomerUUID(UUID newCustomerUUID) updates the UUID of the customer interface
+    /** updates the Customer object held by the customer interface
      *
      * @param newCustomer new customer to which this instance of the CustomerInterface belongs
      * */
@@ -132,7 +131,7 @@ public class CustomerInterface {
         }
     }
 
-    /** setCustomerInterfaceState utilizing the State design pattern, this method updates the current Customer Interface state with the
+    /** utilizing the State design pattern, this method updates the current Customer Interface state with the
      *                                 new state.
      *
      * @param newCustomerInterfaceState new state passed to Customer Interface
@@ -142,29 +141,24 @@ public class CustomerInterface {
         this.currentCustomerInterfaceState = newCustomerInterfaceState;
     }
 
-    /** logOff: method logOff() is called on current state of the customer interface
+    /** called on current state of the customer interface
      *               disconnects the user from the user interface.
      * */
     public void logOff() {
         currentCustomerInterfaceState.logOff();
     }
 
-    /**enterUUID: method enterUUID() is called on current state of the customer interface
-     *                  prompts user to enter their provided UUID
-     *                  Note: function changes based on current state
+    /** processes the user's ENTERED email
      *
      * @param email email entered by the user in the gui form, used to log the customer in.
+     * @return returns feedback to the user based on the outcome of the email processing
      * */
-    public void enterEmail(String email) {
+    public String enterEmail(String email) {
         currentCustomerInterfaceState.enterEmail(email);
+        return null;
     }
 
-    /** requestInformation start of the login process; prompts user for desired actions to take during the login
-     *                          process
-     */
-
-    /** saveBankDataToFile calls on the bank proxy object to save all information to file through object output stream
-     *
+    /** calls on the bank proxy object to save all information to file through object output stream
      * */
     public void saveBankDataToFile() {
         bankProxy.saveAllBankDataToFile();

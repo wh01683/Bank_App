@@ -11,8 +11,8 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     private final CustomerInterface customerInterface;
 
     /**
-     * ProcessPasswordState state class used by CustomerInterface, represents the state entered when the customer provides
-     * a correct UUID and must then enter a password
+     * the process password state represents the state of the customer interface when the customer enters an email that
+     * IS on record, and must now enter their password
      *
      * @param newBankProxy         new BankProxy object passed from the CustomerInterface constructor; used to retrieve customer
      *                             information for password verification and etc.
@@ -26,7 +26,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
     }
 
     /**
-     * logOff saves current bank data to a file and logs the customer off
+     * saves current bank data to a file and logs the customer off
      * */
     @Override
     public void logOff() {
@@ -35,25 +35,26 @@ public class ProcessPasswordState implements CustomerInterfaceState {
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
     }
 
-    /**
-     * startTransaction not used in this state. If this method is ever invoked during this state, the customer is
-     *                  prompted for their password before allowing them to proceed.
+    /** startTransaction not allowed in this state
      *
-     * @param transactionChoice
-     * @param accountFromNumber
-     * @param accountToNumber
-     * @param withdrawAmount
-     * @param depositAmount*/
+     * @param transactionChoice String version of the user's transaction choice (transfer, withdraw, deposit)
+     * @param accountFromNumber Account number of the account to take money FROM
+     * @param accountToNumber Account number of the accoun tot put money IN
+     * @param withdrawAmount Amount of money to withdraw. For transfers, this will equal deposit
+     * @param depositAmount Amount of money to deposit. For transfers, this will equal withdraw
+     *
+     * @return returns feedback to the user depending on the outcome of the transaction process
+     * */
     @Override
     public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber, double withdrawAmount, double depositAmount) {
         return ("Must enter your password first.");
     }
 
     /**
-     * addAccount not used in this state. If this method is ever invoked during this state, the customer is
-     *            prompted for their password before allowing them to proceed.
-     *
-     * @param accountRequest*/
+     * processes user's ENTERED account request
+     * @param accountRequest String representation of the account type desired by the customer
+     * @return returns feedback to the user based on the outcome of the add account process
+     * */
     @Override
     public String addAccount(String accountRequest) {
         return ("Must enter your password first.");
@@ -63,19 +64,21 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      * enterEmail not used in this state. If this method is ever invoked during this state, the customer is
      *           prompted for their password before allowing them to proceed.
      * @param email customer's email
+     * @return returns feedback to the user based on the outcome of the email entering process
      */
     @Override
     public String enterEmail(String email) {
         return ("You have already entered your Email, please enter your password.");
     }
 
-    /** enterPassword creates a final String variable "realPass" to store the value of the customer's actual password on
+    /** creates a final String variable "realPass" to store the value of the customer's actual password on
      *                file. Customer is prompted for their password as long as the String they entered does not match
      *                their password on file. Customers are given 5 attempts before the system exits. Upon a successful
      *                match, the current state is set to "LoggedOn" and the "requestInformation" method is invoked to
      *                initialize the logged-in process loop inside the LoggedOn class.
      *
-     * @param password password to check for validity*/
+     * @param password password to check for validity
+     * @return returns feedback to the customer depending on the outcome of the password entering process*/
     @Override
     public String enterPassword(String password) {
 
@@ -101,6 +104,6 @@ public class ProcessPasswordState implements CustomerInterfaceState {
 
         }
 
-        return ("Invalid password, exiting.");
+        return ("Invalid password");
     }
 }

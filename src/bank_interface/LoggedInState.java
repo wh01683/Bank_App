@@ -19,7 +19,7 @@ public class LoggedInState implements CustomerInterfaceState {
 
 
     /**
-     * LoggedInState constructor of the LoggedInState state class, utilized by CustomerInterface class.
+     * constructor of the LoggedInState state class, utilized by CustomerInterface class.
      *
      * @param newBankProxy         bank proxy object passed by the CustomerInterface class when the CustomerInterface is created
      *                             the bank proxy provides the LoggedInState state with the information it needs about the customer
@@ -35,26 +35,27 @@ public class LoggedInState implements CustomerInterfaceState {
 
 
     /**
-     * enterUUID method prompts user for their UUID to login. in this state (Logged In), the method is unnecessary
+     * processes the user's ENTERED email
      *
-     * @param email customer's email*/
+     * @param email customer's email
+     * @return returns feedback to the user based on the outcome of the email entering process*/
     @Override
     public String enterEmail(String email) {
         return ("You are currently logged in.");
     }
 
     /**
-     * enterPassword enterPassword method prompts user for the password. In this state (Logged In), the method is unnecessary
+     * processes the user's ENTERED password
      *
-     * @param password customer's password*/
+     * @param password customer's password
+     * @return returns feedback to the user based on the outcome of the password entering process*/
     @Override
     public String enterPassword(String password) {
         return ("You are currently logged in.");
     }
 
-    /**
-     * logOff logs the user out of the system and resets the CustomerInterface state after saving all current data to
-     *        the appropriate file.
+    /**logs the user out of the system and resets the CustomerInterface state after saving all current data to
+     * the appropriate file.
      *        */
     @Override
     public void logOff() {
@@ -62,7 +63,7 @@ public class LoggedInState implements CustomerInterfaceState {
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
     }
 
-    /**addAccount allows the logged in customer to add a new bank account under their name by passing their request
+    /** allows the logged in customer to add a new bank account under their name by passing their request
      *            (as a string) to the AccountFactory object. If a null account is returned by the Account Factory,
      *            the customer did not qualify for the account and nothing is added. Otherwise, the Account Factory returns
      *            a new account object created with their desired opening balance. Once the account is created, the
@@ -72,7 +73,9 @@ public class LoggedInState implements CustomerInterfaceState {
      *            method is called recursively to give the opportunity to correct their input.
      *
      *
-     * @param accountRequest*/
+     * @param accountRequest String representation of the account type desired by the customer
+     * @return returns feedback to the user based on the add account process
+     * */
     @Override
     public String addAccount(String accountRequest) {
         try {
@@ -92,7 +95,7 @@ public class LoggedInState implements CustomerInterfaceState {
 
 
     /**
-     * startTransaction method to process transactions requested by the user. A request in string form is passed through
+     *  method to process transactions requested by the user. A request in string form is passed through
      *                    as a param. During each transaction choice, the method handles cases such as: owner does not own
      *                    account, invalid account number, depositing too large of an amount, withdrawing too large, and attempting
      *                    to withdraw or deposit negative amounts
@@ -101,7 +104,12 @@ public class LoggedInState implements CustomerInterfaceState {
      *                    the same, attempting to initialize transfers while only 1 account is owned, and cases where one
      *                    half of the transaction is valid (method will undo the other half)
      *
-     * @param transactionChoice string representation of the transaction desired by the customer.
+     * @param transactionChoice String version of the user's transaction choice (transfer, withdraw, deposit)
+     * @param accountFromNumber Account number of the account to take money FROM
+     * @param accountToNumber Account number of the accoun tot put money IN
+     * @param withdrawAmount Amount of money to withdraw. For transfers, this will equal deposit
+     * @param depositAmount Amount of money to deposit. For transfers, this will equal withdraw
+     * @return returns feedback to the user depending on the outcome of the transaction process
      * */
     public String startTransaction(String transactionChoice, Integer accountFromNumber, Integer accountToNumber,
                                    double withdrawAmount, double depositAmount) {
@@ -189,7 +197,7 @@ public class LoggedInState implements CustomerInterfaceState {
 
 
     /**
-     * getAccountHeaders stores headers used for displaying account information to the user
+     * stores headers used for displaying account information to the user
      *
      * @return String representation of the account information headers.
  * */
