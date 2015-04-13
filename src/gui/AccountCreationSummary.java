@@ -26,6 +26,7 @@ public class AccountCreationSummary implements FormGui{
     private Customer customer;
 
     public AccountCreationSummary() {
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {

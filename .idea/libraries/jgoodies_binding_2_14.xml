@@ -1,0 +1,35 @@
+<component name="libraryTable">
+  <library name="jgoodies-binding-2.14">
+    <CLASSES>
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-binding-2.14.0" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-common-1.9.0" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-forms-1.10" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-looks-2.8.0" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-validation-2.6.0" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-binding-2.14.0/docs/api" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-common-1.9.0/docs/api" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-forms-1.10/docs/api" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-looks-2.8.0/docs/api" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-validation-2.6.0/docs/api" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-binding-2.14.0" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-common-1.9.0" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-forms-1.10" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-looks-2.8.0" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-validation-2.6.0" />
+    </SOURCES>
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-binding-2.14.0" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-common-1.9.0" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-forms-1.10" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-looks-2.8.0" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-validation-2.6.0" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-binding-2.14.0" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-common-1.9.0" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-forms-1.10" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-looks-2.8.0" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://C:/Program Files/Java/jdk1.8.0_31/lib/jgoodies-validation-2.6.0" recursive="false" type="SOURCES" />
+  </library>
+</component>

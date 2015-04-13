@@ -17,6 +17,7 @@ public class BankGUI {
 
     public static void main(String[] args) {
         CreateAccount createAccount = new CreateAccount();
+        createAccount.setContentPane(createAccount.getContentPane());
     }
 
     public static BankProxy getBankProxy(){
