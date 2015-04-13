@@ -106,6 +106,9 @@ public class RealBank implements Serializable, Bank {
      * */
     public void addAccount(Account account) {
         try {
+            if (!customerHashtable.get(account.getOwner().hashCode()).getAccountHashtable().contains(account)) {
+                customerHashtable.get(account.getOwner().hashCode()).getAccountHashtable().put(account.getACCOUNT_NUMBER(), account);
+            }
             accountHashtable.put(account.getACCOUNT_NUMBER(), account);
             customerHashtable.get(account.getOwner().hashCode()).addAccount(account);
             this.numberOfAccounts++;
