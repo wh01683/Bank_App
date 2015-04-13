@@ -41,7 +41,9 @@ public class AccountCreationSummary implements FormGui{
                 proxy.addCustomer(customer);
                 CustomerInterface customerInterface = BankGUI.getCustomerInterface();
                 customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
+                proxy.saveAllBankDataToFile();
                 BankDashboard bankDashboard = new BankDashboard();
+                bankDashboard.setCustomerInterface(customerInterface);
                 getPanel().setVisible(false);
                 prevForm.setVisible(false);
                 //ToDo: get rid of frame after logging in.

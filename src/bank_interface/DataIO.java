@@ -13,6 +13,7 @@ public class DataIO {
     private RealBank realBank;
 
     public DataIO() {
+        readAllBankDataFromFile();
     }
 
     /**printAllCustomerPrivateInformation() prints all information concerning the customer including all information

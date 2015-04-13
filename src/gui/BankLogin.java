@@ -39,14 +39,17 @@ class BankLogin implements FormGui {
                     emailField.grabFocus();
                 } else {
                     customerInterface.setCustomerInterfaceState(customerInterface.processPasswordState);
-                    if (!(customerInterface.enterPassword(passwordField.getPassword().toString()) == null)) {
-                        JOptionPane.showMessageDialog(null, (customerInterface.enterPassword(passwordField.getPassword().toString())));
+                    customerInterface.setCustomer(BankGUI.getBankProxy().requestCustomer(emailField.getText()));
+                    if (!(customerInterface.enterPassword(String.valueOf(passwordField.getPassword())) == null)) {
+                        JOptionPane.showMessageDialog(null, (customerInterface.enterPassword(String.valueOf(passwordField.getPassword()).toString())));
                         passwordField.setText("");
                         passwordField.grabFocus();
                     } else {
                         JOptionPane.showMessageDialog(null, "Login Successful.");
                         customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
-                        //ToDo: bring up bank dashboard here.
+                        frame.setVisible(false);
+                        BankDashboard bankDashboard = new BankDashboard();
+                        bankDashboard.setCustomerInterface(customerInterface);
                     }
                 }
             }

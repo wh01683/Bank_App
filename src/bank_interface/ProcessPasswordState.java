@@ -30,7 +30,6 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      * */
     @Override
     public void logOff() {
-        System.out.println("Have a great day!");
         customerInterface.saveBankDataToFile();
         customerInterface.setCustomerInterfaceState(customerInterface.loggedOffState);
     }
@@ -59,7 +58,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      */
     @Override
     public String addAccount(String accountRequest, double openingBalance) {
-        return ("Must enter your password first.");
+        return ("You must enter your password first.");
     }
 
     /**
@@ -81,7 +80,7 @@ public class ProcessPasswordState implements CustomerInterfaceState {
      */
     @Override
     public String enterEmail(String email) {
-        return ("You have already entered your Email, please enter your password.");
+        return null;
     }
 
     /** creates a final String variable "realPass" to store the value of the customer's actual password on
