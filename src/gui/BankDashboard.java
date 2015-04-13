@@ -1,7 +1,6 @@
 package gui;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * William Trent Holliday
@@ -15,16 +14,12 @@ public class BankDashboard {
     private JButton logoutButton;
     private JButton closeButton;
 
-    public static void main(String[] args) {
+    public BankDashboard() {
         JFrame frame = new JFrame("BankDashboard");
-        frame.setContentPane(new BankDashboard().panel1);
+        frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
-
-    public BankDashboard() {
-
     }
 
 }
