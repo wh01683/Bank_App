@@ -33,6 +33,12 @@ public class BankDashboard {
         frame.pack();
         frame.setVisible(true);
         this.userName.setText(customerInterface.getCustomer().getName());
+        DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
+        String[] columnHeaders = {"TYPE", "ACCOUNT NUMBER", "BALANCE", "OWNER"};
+        for (String s : columnHeaders) {
+            model.addColumn(s);
+        }
+        model.addRow(columnHeaders);
         populateAccountTable();
 
         this.logoutButton.addActionListener(new ActionListener() {
@@ -77,8 +83,8 @@ public class BankDashboard {
     public void populateAccountTable() {
 
         Hashtable<Integer, Account> customerAccounts = customerInterface.getCustomer().getAccountHashtable();
-        String[] columnHeaders = {"TYPE", "ACCOUNT NUMBER", "BALANCE", "OWNER"};
         String[][] tableContents = new String[customerAccounts.size()][4];
+        clearTable();
 
 
         Enumeration<Integer> keys = customerAccounts.keys();
@@ -94,9 +100,6 @@ public class BankDashboard {
         }
         DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
 
-        for (String s : columnHeaders) {
-            model.addColumn(s);
-        }
 
         for (int k = 0; k < tableContents.length; k++) {
             model.addRow(tableContents[k]);
@@ -110,6 +113,12 @@ public class BankDashboard {
         DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
 
         model.addRow(data);
+    }
+
+    public void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
+        model.setRowCount(1);
+        accountsTable.setModel(model);
     }
 }
 
