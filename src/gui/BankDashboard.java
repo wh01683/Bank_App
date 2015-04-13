@@ -21,7 +21,8 @@ public class BankDashboard {
     private JTextField openingBalanceField;
     private JComboBox accountSelection;
 
-    public BankDashboard() {
+    public BankDashboard(CustomerInterface newCustomerInterface) {
+        customerInterface = newCustomerInterface;
         final JFrame frame = new JFrame("BankDashboard");
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

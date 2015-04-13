@@ -42,7 +42,7 @@ public class AccountCreationSummary implements FormGui{
                 CustomerInterface customerInterface = BankGUI.getCustomerInterface();
                 customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
                 proxy.saveAllBankDataToFile();
-                BankDashboard bankDashboard = new BankDashboard();
+                BankDashboard bankDashboard = new BankDashboard(customerInterface);
                 bankDashboard.setCustomerInterface(customerInterface);
                 getPanel().setVisible(false);
                 prevForm.setVisible(false);

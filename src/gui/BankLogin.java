@@ -48,7 +48,7 @@ class BankLogin implements FormGui {
                         JOptionPane.showMessageDialog(null, "Login Successful.");
                         customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
                         frame.setVisible(false);
-                        BankDashboard bankDashboard = new BankDashboard();
+                        BankDashboard bankDashboard = new BankDashboard(customerInterface);
                         bankDashboard.setCustomerInterface(customerInterface);
                     }
                 }
