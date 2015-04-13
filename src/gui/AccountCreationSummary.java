@@ -5,7 +5,6 @@ import bank_package.BankProxy;
 import bank_package.Customer;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +13,7 @@ import java.awt.event.ActionListener;
  * 3/30/15
  */
 public class AccountCreationSummary implements FormGui{
+    private static FormGui prevForm;
     private JPanel summaryPanel;
     private JLabel summaryTitle;
     private JLabel nameInfo;
@@ -23,7 +23,6 @@ public class AccountCreationSummary implements FormGui{
     private JButton finishButton;
     private JLabel acctNo;
     private JLabel creditScoreInfo;
-    private static FormGui prevForm;
     private Customer customer;
 
     public AccountCreationSummary() {
@@ -40,12 +39,13 @@ public class AccountCreationSummary implements FormGui{
                 BankProxy proxy = BankGUI.getBankProxy();
                 proxy.addCustomer(customer);
                 CustomerInterface customerInterface = BankGUI.getCustomerInterface();
-                // Login
-                customerInterface.setCustomer(customer);
-                customerInterface.enterEmail(customer.getEmail());
-
+                customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
             }
         });
+    }
+
+    public static void setPrev(FormGui prevFormGui) {
+        prevForm = prevFormGui;
     }
 
     public void populateAccountSummary(Customer aCustomer) {
@@ -55,10 +55,6 @@ public class AccountCreationSummary implements FormGui{
         this.emailInfo.setText(customer.getEmail());
         this.acctNo.setText(String.valueOf(customer.getUUID()));
         this.creditScoreInfo.setText(String.valueOf(customer.getCreditScore()));
-    }
-
-    public static void setPrev(FormGui prevFormGui) {
-        prevForm = prevFormGui;
     }
 
     public JPanel getPanel() {

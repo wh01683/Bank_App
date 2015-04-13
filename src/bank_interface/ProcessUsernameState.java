@@ -46,12 +46,13 @@ public class ProcessUsernameState implements CustomerInterfaceState {
             } else if (bankProxy.hasCustomer(email)) {
                 customerInterface.setCustomerInterfaceState(customerInterface.processPasswordState);
                 customerInterface.setCustomer(bankProxy.requestCustomer(email));
+                return null;
+            } else {
+                return ("Could not process request.");
             }
         } catch (IllegalArgumentException p) {
-            System.out.printf("Invalid argument");
+            return ("Could not process request.");
         }
-
-        return ("Could not process request.");
     }
 
     /**

@@ -1,7 +1,10 @@
 package gui;
 
+import bank_interface.CustomerInterface;
+import bank_interface.EmailValidator;
+import bank_interface.PasswordChecker;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,8 +13,12 @@ import java.awt.event.ActionListener;
  * 3/16/15
  */
 class BankLogin {
+    private static BankGUI bankGUI = new BankGUI();
+    private static CustomerInterface customerInterface = BankGUI.getCustomerInterface();
+    PasswordChecker passwordChecker = new PasswordChecker();
+    EmailValidator emailValidator = new EmailValidator();
     private JPanel panel1;
-    private JTextField usernameField;
+    private JTextField emailField;
     private JPasswordField passwordField;
     private JButton createNewAccountButton;
     private JButton loginButton;
@@ -20,34 +27,32 @@ class BankLogin {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                if (!(customerInterface.enterEmail(emailField.getText()) == null)) {
+                    JOptionPane.showMessageDialog(null, customerInterface.enterEmail(emailField.getText()));
+                    emailField.grabFocus();
+                } else {
+                    customerInterface.setCustomerInterfaceState(customerInterface.processPasswordState);
+                    if (!(customerInterface.enterPassword(passwordField.getPassword().toString()) == null)) {
+                        JOptionPane.showMessageDialog(null, (customerInterface.enterPassword(passwordField.getPassword().toString())));
+                        passwordField.setText("");
+                        passwordField.grabFocus();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Login Successful.");
+                        customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
+                        //ToDo: bring up bank dashboard here.
+                    }
+                }
             }
         });
         createNewAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                //ToDo: bring up create account pages here.
             }
         });
     }
 
     public static void main(String[] args) {
-//        DataIO dataIO = new DataIO(); /*declare new data input/output object. this helps us retrieve the bank'
-//        information form storage*/
-//
-//        //below is used to instantiate a new bank and register if you do not have a bankData file yet
-//
-//        /*RealBank tempBank = new RealBank("name", 1, 1);
-//        dataIO.saveAllBankDataToFile(tempBank);*/
-//
-//        dataIO.readAllBankDataFromFile(); /*invoke the "readAllBankDataFromFile()" method in the dataIO object
-//        this will populate the RealBank object INSIDE the dataIO object.*/
-//
-//        CustomerInterface userSession = CustomerInterface.getInstance(dataIO.getRealBank()); /*get the RealBank object from the
-//        dataIO object and pass it to the new CustomerInterface instance using the singleton instantiator*/
-//
-//        userSession.START(); /*call the START() method of the CustomerInterface class. this will start the chain of interactions*/
-
 
         JFrame frame = new JFrame("bank_gui");
         frame.setContentPane(new BankLogin().panel1);

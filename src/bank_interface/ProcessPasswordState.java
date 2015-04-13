@@ -113,10 +113,8 @@ public class ProcessPasswordState implements CustomerInterfaceState {
 
         if (password.equals(realPass)) {
             customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
-            return ("Login Successful.");
-
+            return null;
         }
-
         return ("Invalid password");
     }
 }

@@ -8,7 +8,7 @@ public class PasswordChecker {
     /**
      * Makes new password checker object. Call method strengthCheck(char[]) to check the strength of a given password
      */
-    PasswordChecker() {
+    public PasswordChecker() {
     }
 
 

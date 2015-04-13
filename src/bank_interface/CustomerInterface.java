@@ -27,10 +27,10 @@ public class CustomerInterface {
     private static RealBank realBank;
     private static BankProxy bankProxy;
     private static Customer customer;
-    final CustomerInterfaceState loggedOffState;
-    final CustomerInterfaceState loggedInState;
-    final CustomerInterfaceState processUsernameState;
-    final CustomerInterfaceState processPasswordState;
+    public final CustomerInterfaceState loggedOffState;
+    public final CustomerInterfaceState loggedInState;
+    public final CustomerInterfaceState processUsernameState;
+    public final CustomerInterfaceState processPasswordState;
 
     /*Private Constructor creates a new singleton CustomerInterface for the customer to access information with. Only one instance*/
     private CustomerInterfaceState currentCustomerInterfaceState;
@@ -157,6 +157,15 @@ public class CustomerInterface {
         return currentCustomerInterfaceState.enterEmail(email);
     }
 
+    /**
+     * processes the user's password
+     *
+     * @param password user's entered password
+     * @return returns feedback based on the outcome of the password process
+     */
+    public String enterPassword(String password) {
+        return currentCustomerInterfaceState.enterPassword(password);
+    }
     /** calls on the bank proxy object to save all information to file through object output stream
      * */
     public void saveBankDataToFile() {

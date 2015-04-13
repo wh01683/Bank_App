@@ -1,5 +1,6 @@
 package gui;
 
+import bank_package.BankProxy;
 import bank_package.Customer;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
  * 3/16/15
  */
 public class CreateAccount extends JFrame implements FormGui {
+    private static BankProxy bankProxy = BankGUI.getBankProxy();
     private JPasswordField passwordField;
     private JPasswordField passwordConfirmField;
     private JTextField nameField;
@@ -26,7 +28,7 @@ public class CreateAccount extends JFrame implements FormGui {
     public CreateAccount() {
         accountSummary = new AccountCreationSummary();
         creditHistory = new CreditHistory(this, accountSummary);
-        accountSummary.setPrev(creditHistory);
+        AccountCreationSummary.setPrev(creditHistory);
 
         this.setTitle("Create Your account");
         loadForm();
@@ -64,6 +66,11 @@ public class CreateAccount extends JFrame implements FormGui {
         }
         if (this.emailField.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Email is a required field.");
+            this.emailField.grabFocus();
+            return false;
+        }
+        if (bankProxy.hasCustomer(this.emailField.getText())) {
+            JOptionPane.showMessageDialog(null, "Email already in system.");
             this.emailField.grabFocus();
             return false;
         }

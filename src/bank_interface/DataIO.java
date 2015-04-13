@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /*DATA Input/Output class for storing all the write -to-file methods and headers, etc.*/
-class DataIO {
+public class DataIO {
     // --Commented out by Inspection (3/27/15 8:02 PM):String hiding = "ishallpass";
     private RealBank realBank;
 

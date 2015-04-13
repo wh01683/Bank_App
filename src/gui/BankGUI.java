@@ -1,6 +1,7 @@
 package gui;
 
 import bank_interface.CustomerInterface;
+import bank_interface.DataIO;
 import bank_package.BankProxy;
 import bank_package.RealBank;
 
@@ -9,7 +10,8 @@ import bank_package.RealBank;
  * 4/8/15
  */
 public class BankGUI {
-    private static final RealBank realBank = new RealBank("Test Bank", 0, 0);
+    private static final DataIO dataIo = new DataIO();
+    private static final RealBank realBank = dataIo.getRealBank();
     private static final BankProxy bankProxy = new BankProxy(realBank);
     private static final CustomerInterface customerInterface = CustomerInterface.getInstance(realBank);
 
