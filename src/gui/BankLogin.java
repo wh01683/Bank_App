@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
  * William Trent Holliday
  * 3/16/15
  */
-class BankLogin {
+class BankLogin implements FormGui {
     private static BankGUI bankGUI = new BankGUI();
     private static CustomerInterface customerInterface = BankGUI.getCustomerInterface();
     PasswordChecker passwordChecker = new PasswordChecker();
@@ -23,7 +23,14 @@ class BankLogin {
     private JButton createNewAccountButton;
     private JButton loginButton;
 
-    private BankLogin() {
+    BankLogin() {
+
+        final JFrame frame = new JFrame("Bank Login Screen");
+        frame.setContentPane(panel1);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -48,17 +55,26 @@ class BankLogin {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //ToDo: bring up create account pages here.
+                CreateAccount createAccount = new CreateAccount();
+                frame.setVisible(false);
             }
         });
+
+
     }
 
-    public static void main(String[] args) {
+    @Override
+    public void loadForm() {
 
-        JFrame frame = new JFrame("bank_gui");
-        frame.setContentPane(new BankLogin().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 
+    @Override
+    public boolean validateForm() {
+        return false;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+
+    }
 }

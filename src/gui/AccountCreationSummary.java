@@ -71,4 +71,9 @@ public class AccountCreationSummary implements FormGui{
     public boolean validateForm() {
         return false;
     }
+
+    @Override
+    public void setVisible(boolean visible) {
+
+    }
 }

@@ -109,6 +109,11 @@ public class CreditHistory implements FormGui {
                 validateField(integerParseMethod, this.lenCredHistoryField);
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+
+    }
+
     /**
      * Validate the specified field using the give method. So for example to validate that a JTextField
      * called `field` contains an integer value you would call the validateField method like so:

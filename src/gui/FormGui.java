@@ -8,4 +8,6 @@ public interface FormGui {
     void loadForm();
     boolean validateForm();
 
+    void setVisible(boolean visible);
+
 }

@@ -16,8 +16,11 @@ public class BankGUI {
     private static final CustomerInterface customerInterface = CustomerInterface.getInstance(realBank);
 
     public static void main(String[] args) {
-        CreateAccount createAccount = new CreateAccount();
-        createAccount.setContentPane(createAccount.getContentPane());
+//        CreateAccount createAccount = new CreateAccount();
+//        createAccount.setContentPane(createAccount.getContentPane());
+
+        BankLogin bankLogin = new BankLogin();
+
     }
 
     public static BankProxy getBankProxy(){
@@ -27,5 +30,6 @@ public class BankGUI {
     public static CustomerInterface getCustomerInterface(){
         return customerInterface;
     }
+
 
 }
