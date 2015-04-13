@@ -80,8 +80,8 @@ public class LoggedInState implements CustomerInterfaceState {
      * @return returns feedback to the user based on the add account process
      * */
     @Override
-    public String addAccount(String accountRequest, double openingBalance) {
-        try {
+    public String addAccount(String accountRequest, double openingBalance) throws NullPointerException {
+
             Account tempAccount = accountFactory.getAccount(accountRequest, customerInterface.getCustomer(), openingBalance);
                 if (tempAccount == null) {
                     return ("Account type invalid.");
@@ -90,11 +90,6 @@ public class LoggedInState implements CustomerInterfaceState {
                     customerInterface.getCustomer().addAccount(tempAccount);
                     return ("Congratulations. Account successfully added.");
                 }
-        } catch (NullPointerException q) {
-            System.out.printf("Null pointer caught in LoggedInState : addAccount");
-            q.printStackTrace();
-        }
-        return ("Request could not be processed.");
     }
 
     /**
@@ -171,7 +166,6 @@ public class LoggedInState implements CustomerInterfaceState {
         /*WITHDRAW SECTION*/
 
             else if (transactionChoice.equalsIgnoreCase("WITHDRAW")) {
-                System.out.println("You have chosen " + transactionChoice + ". From which account would you like to " + transactionChoice + "?");
 
                     if (!(customerInterface.getCustomer().getAccount(accountFromNumber) == null)) {
                         if ((customerInterface.getCustomer().getAccount(accountFromNumber).withdraw(withdrawAmount)) == -1) {

@@ -21,7 +21,7 @@ class CertificateOfDepositAccount implements Account, Serializable{
      * @param openingBalance initial balance to be deposited (must be above min required balance)
      * @param accountNumber account number of the newly created account.
      */
-    public CertificateOfDepositAccount(Customer customer, double openingBalance, Integer accountNumber) {
+    public CertificateOfDepositAccount(Customer customer, double openingBalance, Integer accountNumber) throws NullPointerException {
 
         this.OWNER = customer;
         double INTEREST_RATE = calculateInterestRate(this.termLength);

@@ -28,7 +28,7 @@ public class AccountFactory {
      * @return returns the desired, newly constructed account if the customer qualified for the account, returns null
      * otherwise
      */
-    public Account getAccount(String accountType, Customer customer, double openingBalance) {
+    public Account getAccount(String accountType, Customer customer, double openingBalance) throws NullPointerException {
         if (accountType == null)
             return null;
         if (accountType.equalsIgnoreCase("CHECKING")) {

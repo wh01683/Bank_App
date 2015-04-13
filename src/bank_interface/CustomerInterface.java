@@ -197,7 +197,7 @@ public class CustomerInterface {
      * @param openingBalance desired opening balance for the new account
      * @return returns feedback to the user based on the add account process
      */
-    public String addAccount(String accountRequest, double openingBalance) {
+    public String addAccount(String accountRequest, double openingBalance) throws NullPointerException {
         return currentCustomerInterfaceState.addAccount(accountRequest, openingBalance);
     }
 
