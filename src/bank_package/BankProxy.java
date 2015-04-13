@@ -134,7 +134,8 @@ public class BankProxy implements Bank {
 public void saveAllBankDataToFile() {
 
         RealBank nonStaticRealBank = realBank;
-    realBank.setAccountNumbersUsed(AccountNumberGenerator.getAcctNumberList());
+
+    nonStaticRealBank.setAccountNumbersUsed(AccountNumberGenerator.getAcctNumberList());
 
         try {
 

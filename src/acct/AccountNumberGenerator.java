@@ -8,8 +8,17 @@ import java.util.Vector;
  */
 public class AccountNumberGenerator {
 
-    private static Vector<Integer> acctNumberList = new Vector<Integer>(50);
+    private static Vector<Integer> acctNumberList;
     Random r = new Random();
+
+    public AccountNumberGenerator(Vector<Integer> newAcctNumberList) {
+        if (newAcctNumberList == null) {
+            acctNumberList = new Vector<Integer>(50);
+            acctNumberList.add(100000000);
+        } else {
+            acctNumberList = newAcctNumberList;
+        }
+    }
 
     public static Vector<Integer> getAcctNumberList() {
         return acctNumberList;
@@ -32,10 +41,11 @@ public class AccountNumberGenerator {
     public Integer acctGen() {
         /*Returns random account number.*/
         int temp = 100000000;
-        Integer tempAccountNumber = temp += r.nextInt(99999999);
+        Integer tempAccountNumber = (temp += r.nextInt(99999999));
 
-        while (acctNumberList.contains(tempAccountNumber))
-            tempAccountNumber = temp += r.nextInt(99999999);
+        while (acctNumberList.contains(tempAccountNumber)) {
+            tempAccountNumber = (temp += r.nextInt(99999999));
+        }
 
         acctNumberList.add(tempAccountNumber);
 

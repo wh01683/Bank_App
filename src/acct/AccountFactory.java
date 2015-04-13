@@ -5,7 +5,7 @@ import bank_package.Customer;
 
 public class AccountFactory {
 
-    private static AccountNumberGenerator accountNumberGenerator = new AccountNumberGenerator();
+    private static AccountNumberGenerator accountNumberGenerator = new AccountNumberGenerator(null);
 
     /*Account factory for creating and applying to different types of accounts*/
 

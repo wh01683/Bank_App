@@ -30,8 +30,8 @@ public class LoggedInState implements CustomerInterfaceState {
      */
     public LoggedInState(CustomerInterface newCustomerInterface, BankProxy newBankProxy, DataIO newDataIO) {
         bankProxy = newBankProxy;
-        AccountNumberGenerator.setAcctNumberList(bankProxy.getAccountNumbersUsed());
         dataIO = newDataIO;
+        AccountFactory.setAccountNumberGenerator(new AccountNumberGenerator(dataIO.getRealBank().getAccountNumbersUsed()));
         this.customerInterface = newCustomerInterface;
     }
 
@@ -82,16 +82,17 @@ public class LoggedInState implements CustomerInterfaceState {
     @Override
     public String addAccount(String accountRequest, double openingBalance) {
         try {
-            Account tempAccount = accountFactory.getAccount(accountRequest, bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()), openingBalance);
+            Account tempAccount = accountFactory.getAccount(accountRequest, customerInterface.getCustomer(), openingBalance);
                 if (tempAccount == null) {
                     return ("Account type invalid.");
                 } else {
                     bankProxy.addAccount(tempAccount);
-                    bankProxy.requestCustomer(customerInterface.getCustomer().getEmail()).addAccount(tempAccount);
+                    customerInterface.getCustomer().addAccount(tempAccount);
                     return ("Congratulations. Account successfully added.");
                 }
         } catch (NullPointerException q) {
             System.out.printf("Null pointer caught in LoggedInState : addAccount");
+            q.printStackTrace();
         }
         return ("Request could not be processed.");
     }
