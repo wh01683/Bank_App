@@ -40,6 +40,7 @@ public class AccountCreationSummary implements FormGui{
                 BankProxy proxy = BankGUI.getBankProxy();
                 proxy.addCustomer(customer);
                 CustomerInterface customerInterface = BankGUI.getCustomerInterface();
+                customerInterface.setCustomer(customer);
                 customerInterface.setCustomerInterfaceState(customerInterface.loggedInState);
                 proxy.saveAllBankDataToFile();
                 BankDashboard bankDashboard = new BankDashboard(customerInterface);
