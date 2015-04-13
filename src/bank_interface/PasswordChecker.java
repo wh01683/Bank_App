@@ -33,7 +33,7 @@ public class PasswordChecker {
      *                      specifically.
      * @return true if the password is strong enough AND of appropriate length, false otherwise.
      */
-    public boolean strengthCheck(final char[] userPassword) {
+    public static boolean strengthCheck(final char[] userPassword) {
 
         int numberOfSpecialCharacters = 0;
         int numberOfLowerCaseLetters = 0;

@@ -7,10 +7,10 @@ public class EmailValidator {
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private Pattern pattern;
+    private static Pattern pattern;
 
     public EmailValidator() {
-        this.pattern = Pattern.compile(EMAIL_PATTERN);
+        pattern = Pattern.compile(EMAIL_PATTERN);
     }
 
 
@@ -21,7 +21,7 @@ public class EmailValidator {
 
       */
 
-    public boolean validate(final String email) {
+    public static boolean validate(final String email) {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
 

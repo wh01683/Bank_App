@@ -1,5 +1,7 @@
 package gui;
 
+import bank_interface.EmailValidator;
+import bank_interface.PasswordChecker;
 import bank_package.BankProxy;
 import bank_package.Customer;
 
@@ -82,6 +84,21 @@ public class CreateAccount extends JFrame implements FormGui {
             this.passwordField.setText("");
             this.passwordConfirmField.setText("");
             this.passwordField.grabFocus();
+            return false;
+        }
+
+        if (!PasswordChecker.strengthCheck(passwordField.getPassword())) {
+            JOptionPane.showMessageDialog(null, "Password not strong enough.");
+            this.passwordField.setText("");
+            this.passwordConfirmField.setText("");
+            this.passwordField.grabFocus();
+            return false;
+        }
+
+        if (!EmailValidator.validate(emailField.getText())) {
+            JOptionPane.showMessageDialog(null, "Email not valid.");
+            this.emailField.setText("");
+            this.emailField.grabFocus();
             return false;
         }
 
