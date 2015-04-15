@@ -20,6 +20,45 @@ public class FormValidation {
         originalBorder = border;
     }
 
+    public static boolean validateField(Method parseMethod, JTextComponent field, String message){
+        try {
+            boolean result = true;
+            // User did not enter anything into the field.
+            if (field.getText().equals("")) {
+                setFieldError(field);
+                JOptionPane.showMessageDialog(null, "This field is required.");
+                return false;
+            }
+            if(parseMethod != null) {
+                if (parseMethod.getReturnType().toString().equals("boolean")) {
+                    System.out.println("is boolean value");
+                    // Call the correct method to try and convert the input field string into the correct data type
+                    result = Boolean.valueOf(parseMethod.invoke(null, field.getText()).toString());
+                    if (!result) {
+                        setFieldError(field);
+                        JOptionPane.showMessageDialog(null, message);
+                    }
+                }
+                else {
+                    parseMethod.invoke(null, field.getText());
+                }
+            }
+            if (result) {
+                // Remove the red error border
+                field.setBorder(originalBorder);
+            }
+            return result;
+        } catch (IllegalAccessException e) {
+            System.out.println("Error calling method: " + parseMethod);
+            e.printStackTrace();
+            return false;
+        } catch (InvocationTargetException e) {
+            setFieldError(field);
+            JOptionPane.showMessageDialog(null, message);
+            return false;
+        }
+    }
+
     /**
      * Validate the specified field using the give method. So for example to validate that a JTextField
      * called `field` contains an integer value you would call the validateField method like so:
@@ -34,29 +73,7 @@ public class FormValidation {
      * @return boolean true, if the field is valid, false otherwise.
      */
     public static boolean validateField(Method parseMethod, JTextComponent field) {
-        try {
-            // User did not enter anything into the field.
-            if (field.getText().equals("")) {
-                setFieldError(field);
-                JOptionPane.showMessageDialog(null, "This field is required.");
-                return false;
-            }
-            if(parseMethod != null) {
-                // Call the correct method to try and convert the input field string into the correct data type
-                parseMethod.invoke(null, field.getText());
-            }
-            // Remove the red error border
-            field.setBorder(originalBorder);
-            return true;
-        } catch (IllegalAccessException e) {
-            System.out.println("Error calling method: " + parseMethod);
-            e.printStackTrace();
-            return false;
-        } catch (InvocationTargetException e) {
-            setFieldError(field);
-            JOptionPane.showMessageDialog(null, "Enter a valid value.");
-            return false;
-        }
+        return validateField(parseMethod, field, "Enter a valid value.");
     }
 
     /**

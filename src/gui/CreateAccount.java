@@ -30,7 +30,7 @@ public class CreateAccount extends JFrame implements FormGui {
 
 
     public CreateAccount() {
-        FormValidation.storeDefaultBorder(this.nameField.getBorder());
+        FormValidation.storeDefaultBorder(this.firstNameField.getBorder());
         accountSummary = new AccountCreationSummary();
         creditHistory = new CreditHistory(this, accountSummary);
         AccountCreationSummary.setPrev(creditHistory);
@@ -66,21 +66,15 @@ public class CreateAccount extends JFrame implements FormGui {
         }
         boolean isValid = true;
 
-        if (Integer.parseInt(this.ageField.getText()) > 200) {
-            JOptionPane.showMessageDialog(null, "I know you aren't over 200 years old you piece of shit.\nI know you're lying. Stop it.");
-            this.ageField.grabFocus();
-            return false;
-        }
-
         try {
             Method passwordCheckMethod = PasswordChecker.class.getMethod("strengthCheck", String.class);
             Method emailValidatorMethod = EmailValidator.class.getMethod("validate", String.class);
             Method integerParseMethod = Integer.class.getMethod("parseInt", String.class);
 
-            isValid = FormValidation.validateField(null, this.nameField) &&
+            isValid = FormValidation.validateField(null, this.firstNameField) &&
                       FormValidation.validateField(integerParseMethod, this.ageField) &&
                       FormValidation.validateField(null, this.emailField) &&
-                      FormValidation.validateField(passwordCheckMethod, this.passwordField) &&
+                      FormValidation.validateField(passwordCheckMethod, this.passwordField, "Password not strong enough.") &&
                       FormValidation.validateField(emailValidatorMethod, this.emailField);
 
             if (!isValid){
@@ -88,6 +82,12 @@ public class CreateAccount extends JFrame implements FormGui {
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
+        }
+
+        if (Integer.parseInt(this.ageField.getText()) > 200) {
+            JOptionPane.showMessageDialog(null, "I know you aren't over 200 years old you piece of shit.\nI know you're lying. Stop it.");
+            this.ageField.grabFocus();
+            return false;
         }
 
         String firstPassword = String.valueOf(this.passwordField.getPassword());
