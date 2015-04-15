@@ -66,6 +66,11 @@ public class CreateAccount extends JFrame implements FormGui {
             this.ageField.grabFocus();
             return false;
         }
+        if (Integer.parseInt(this.ageField.getText()) > 200) {
+            JOptionPane.showMessageDialog(null, "I know you aren't over 200 years old you piece of shit.\nI know you're lying. Stop it.");
+            this.ageField.grabFocus();
+            return false;
+        }
         if (this.emailField.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Email is a required field.");
             this.emailField.grabFocus();
