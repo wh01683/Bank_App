@@ -22,7 +22,6 @@ public class PasswordChecker {
     * */
 
     public static boolean strengthCheck(String password) {
-        System.out.println(password.toCharArray());
         return strengthCheck(password.toCharArray());
     }
 
