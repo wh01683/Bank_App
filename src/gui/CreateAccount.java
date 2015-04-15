@@ -17,12 +17,13 @@ public class CreateAccount extends JFrame implements FormGui {
     private static BankProxy bankProxy = BankGUI.getBankProxy();
     private JPasswordField passwordField;
     private JPasswordField passwordConfirmField;
-    private JTextField nameField;
+    private JTextField lastNameField;
     private JTextField ageField;
     private JTextField emailField;
     private JButton continueButton;
     private JButton cancelButton;
     private JPanel startPage;
+    private JTextField firstNameField;
     private CreditHistory creditHistory;
     private AccountCreationSummary accountSummary;
 
@@ -56,9 +57,9 @@ public class CreateAccount extends JFrame implements FormGui {
     }
 
     public boolean validateForm(){
-        if (this.nameField.getText().equals("")) {
+        if (this.lastNameField.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Name is a required field.");
-            this.nameField.grabFocus();
+            this.lastNameField.grabFocus();
             return false;
         }
         if (this.ageField.getText().equals("")){
@@ -124,7 +125,7 @@ public class CreateAccount extends JFrame implements FormGui {
     }
 
     public Customer createCustomer(){
-        String name = this.nameField.getText();
+        String name = this.lastNameField.getText();
         String email = this.emailField.getText();
         int age = Integer.parseInt(this.ageField.getText());
         String password = String.valueOf(this.passwordConfirmField.getPassword());
