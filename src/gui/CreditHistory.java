@@ -101,62 +101,17 @@ public class CreditHistory implements FormGui {
             ex.printStackTrace();
         }
         // Validates every field, if any are not valid the whole form will be invalid.
-        return  validateField(doubleParseMethod, this.totalCreditLimitTextField) &&
-                validateField(integerParseMethod, this.outstandingBalanceField) &&
-                validateField(integerParseMethod, this.recentCreditInquiriesField) &&
-                validateField(integerParseMethod, this.numberOfLatePaymentsField) &&
-                validateField(doubleParseMethod, this.latePaymentsAmountField) &&
-                validateField(integerParseMethod, this.lenCredHistoryField);
+        return  FormValidation.validateField(doubleParseMethod, this.totalCreditLimitTextField) &&
+                FormValidation.validateField(integerParseMethod, this.outstandingBalanceField) &&
+                FormValidation.validateField(integerParseMethod, this.recentCreditInquiriesField) &&
+                FormValidation.validateField(integerParseMethod, this.numberOfLatePaymentsField) &&
+                FormValidation.validateField(doubleParseMethod, this.latePaymentsAmountField) &&
+                FormValidation.validateField(integerParseMethod, this.lenCredHistoryField);
     }
 
     @Override
     public void setVisible(boolean visible) {
 
-    }
-
-    /**
-     * Validate the specified field using the give method. So for example to validate that a JTextField
-     * called `field` contains an integer value you would call the validateField method like so:
-     *
-     *  try{
-     *      validateField(Integer.class.getMethod("parseInt", String.class), field);
-     *     } catch( NoSuchMethodException ex){}
-     *
-     * @param parseMethod the method to use to convert the field value to the correct data type.
-     * @param field the field to validate.
-     * @return boolean true, if the field is valid, false otherwise.
-     */
-    private boolean validateField(Method parseMethod, JTextComponent field) {
-        try {
-            // User did not enter anything into the field.
-            if (field.getText().equals("")) {
-                setFieldError(field);
-                JOptionPane.showMessageDialog(null, "This field is required.");
-                return false;
-            }
-            // Call the correct method to try and convert the input field string into the correct data type
-            parseMethod.invoke(null, field.getText());
-            // Remove the red error border
-            field.setBorder(originalBorder);
-            return true;
-        } catch (IllegalAccessException e) {
-            System.out.println("Error calling method: " + parseMethod);
-            e.printStackTrace();
-            return false;
-        } catch (InvocationTargetException e) {
-            setFieldError(field);
-            JOptionPane.showMessageDialog(null, "Enter a valid value.");
-            return false;
-        }
-    }
-
-    /**
-     * Adds a border to the specified component to indicate that it has erred.
-     * @param component the component to add the border to
-     */
-    private void setFieldError(JComponent component){
-        component.grabFocus();
-        component.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.RAISED, Color.RED, Color.red));
     }
 
     /**

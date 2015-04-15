@@ -78,6 +78,6 @@ class BankLogin implements FormGui {
 
     @Override
     public void setVisible(boolean visible) {
-
+        
     }
 }

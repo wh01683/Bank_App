@@ -21,6 +21,10 @@ public class PasswordChecker {
     *
     * */
 
+    public static boolean strengthCheck(String password) {
+        System.out.println(password.toCharArray());
+        return strengthCheck(password.toCharArray());
+    }
 
     /**
      * checks strength of password by examining the decimal integer ASCII values of chars

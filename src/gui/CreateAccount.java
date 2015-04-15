@@ -8,6 +8,7 @@ import bank_package.Customer;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
 
 /**
  * William Trent Holliday
@@ -28,6 +29,7 @@ public class CreateAccount extends JFrame implements FormGui {
 
 
     public CreateAccount() {
+        FormValidation.storeDefaultBorder(this.nameField.getBorder());
         accountSummary = new AccountCreationSummary();
         creditHistory = new CreditHistory(this, accountSummary);
         AccountCreationSummary.setPrev(creditHistory);
@@ -55,27 +57,32 @@ public class CreateAccount extends JFrame implements FormGui {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public boolean validateForm(){
-        if (this.nameField.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Name is a required field.");
-            this.nameField.grabFocus();
-            return false;
-        }
-        if (this.ageField.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Age is a required field.");
-            this.ageField.grabFocus();
-            return false;
-        }
-        if (this.emailField.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Email is a required field.");
-            this.emailField.grabFocus();
-            return false;
-        }
+    public boolean validateForm() {
         if (bankProxy.hasCustomer(this.emailField.getText())) {
             JOptionPane.showMessageDialog(null, "Email already in system.");
             this.emailField.grabFocus();
             return false;
         }
+        boolean isValid = true;
+
+        try {
+            Method passwordCheckMethod = PasswordChecker.class.getMethod("strengthCheck", String.class);
+            Method emailValidatorMethod = EmailValidator.class.getMethod("validate", String.class);
+            Method integerParseMethod = Integer.class.getMethod("parseInt", String.class);
+
+            isValid = FormValidation.validateField(null, this.nameField) &&
+                      FormValidation.validateField(integerParseMethod, this.ageField) &&
+                      FormValidation.validateField(null, this.emailField) &&
+                      FormValidation.validateField(passwordCheckMethod, this.passwordField) &&
+                      FormValidation.validateField(emailValidatorMethod, this.emailField);
+
+            if (!isValid){
+                return isValid;
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
         String firstPassword = String.valueOf(this.passwordField.getPassword());
         String confirmPassword = String.valueOf(this.passwordConfirmField.getPassword());
 
@@ -87,21 +94,6 @@ public class CreateAccount extends JFrame implements FormGui {
             return false;
         }
 
-        if (!PasswordChecker.strengthCheck(passwordField.getPassword())) {
-            JOptionPane.showMessageDialog(null, "Password not strong enough.");
-            this.passwordField.setText("");
-            this.passwordConfirmField.setText("");
-            this.passwordField.grabFocus();
-            return false;
-        }
-
-        if (!EmailValidator.validate(emailField.getText())) {
-            JOptionPane.showMessageDialog(null, "Email not valid.");
-            this.emailField.setText("");
-            this.emailField.grabFocus();
-            return false;
-        }
-
         if(!firstPassword.equals(confirmPassword)){
             JOptionPane.showMessageDialog(null, "Passwords do not match.");
             this.passwordField.setText("");
@@ -110,7 +102,7 @@ public class CreateAccount extends JFrame implements FormGui {
             return false;
         }
 
-        return true;
+        return isValid;
 
     }
 
