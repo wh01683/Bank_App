@@ -18,12 +18,13 @@ public class CreateAccount extends JFrame implements FormGui {
     private static BankProxy bankProxy = BankGUI.getBankProxy();
     private JPasswordField passwordField;
     private JPasswordField passwordConfirmField;
-    private JTextField nameField;
+    private JTextField lastNameField;
     private JTextField ageField;
     private JTextField emailField;
     private JButton continueButton;
     private JButton cancelButton;
     private JPanel startPage;
+    private JTextField firstNameField;
     private CreditHistory creditHistory;
     private AccountCreationSummary accountSummary;
 
@@ -64,6 +65,12 @@ public class CreateAccount extends JFrame implements FormGui {
             return false;
         }
         boolean isValid = true;
+
+        if (Integer.parseInt(this.ageField.getText()) > 200) {
+            JOptionPane.showMessageDialog(null, "I know you aren't over 200 years old you piece of shit.\nI know you're lying. Stop it.");
+            this.ageField.grabFocus();
+            return false;
+        }
 
         try {
             Method passwordCheckMethod = PasswordChecker.class.getMethod("strengthCheck", String.class);
@@ -111,7 +118,7 @@ public class CreateAccount extends JFrame implements FormGui {
     }
 
     public Customer createCustomer(){
-        String name = this.nameField.getText();
+        String name = this.lastNameField.getText();
         String email = this.emailField.getText();
         int age = Integer.parseInt(this.ageField.getText());
         String password = String.valueOf(this.passwordConfirmField.getPassword());

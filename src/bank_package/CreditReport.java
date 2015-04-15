@@ -97,35 +97,19 @@ public class CreditReport implements Serializable {
      * @return late payment portion of the customer's credit score.*/
     private int calcPaymentHistoryScore() {
         //min 0, max 279 (35% of credit score)
-        double severity;
-        int tempScore;
-        switch (this.recentLatePaymentNumber) {
-            case (0):
-                severity = 0;
-                break;
-            case (1):
-                severity = 1;
-                break;
-            case (3):
-            case (2):
-                severity = 2.5;
-                break;
-            case (5):
-            case (4):
-                severity = 5;
-                break;
-            default:
-                severity = 10;
+
+        int tempScore = 0;
+
+
+        tempScore += (int) (279 - (.75 * this.recentLatePaymentNumber * amountOfLatePayments));
+
+        if (tempScore < 0) {
+            return 0;
+        } else if (tempScore > 279) {
+            return 279;
+        } else {
+            return tempScore;
         }
-
-        double latePaymentMultiplier = severity * this.amountOfLatePayments;
-
-        if (latePaymentMultiplier == 0 | latePaymentMultiplier < 1000) tempScore = 279;
-        else if(latePaymentMultiplier < 3000) tempScore = 200;
-        else if (latePaymentMultiplier < 5000) tempScore = 100;
-        else tempScore = 0;
-
-        return tempScore;
 
     }
 
@@ -137,14 +121,18 @@ public class CreditReport implements Serializable {
      * @return the "amount owed" portion of their credit score.*/
     private int calcAmtOwedScore() {
         //max is 239.7
-        int tempScore;
+        int tempScore = 0;
 
-        if (this.creditAccountBalance == 0 | this.creditUsed < 10) tempScore = 239;
-        else if (this.creditUsed < 20) tempScore = 200;
-        else if (this.creditUsed < 50) tempScore = 100;
-        else tempScore = 0;
+        tempScore = (int) (239.7 - (Math.log(this.creditUsed) * this.creditUsed * 20));
 
-        return tempScore;
+
+        if (tempScore < 0) {
+            return 0;
+        } else if (tempScore > 239.7) {
+            return 239;
+        } else {
+            return tempScore;
+        }
     }
 
     /**calcLenHistoryScore calculates the portion of the customer's credit score dependent on how long their credit
@@ -158,12 +146,12 @@ public class CreditReport implements Serializable {
         tempScore += (this.lengthOfCreditHistory / (this.customerAge + 1)) * 100;
 
         if (tempScore > 120) {
-            tempScore = 120;
+            return 120;
         } else if (tempScore < 0) {
-            tempScore = 0;
+            return 0;
+        } else {
+            return tempScore;
         }
-
-        return tempScore;
     }
 
 }
