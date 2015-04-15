@@ -93,7 +93,6 @@ public class BankDashboard {
                 }
             }
         });
-
     }
 
     public CustomerInterface getCustomerInterface() {
