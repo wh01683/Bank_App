@@ -88,6 +88,14 @@ public class CreateAccount extends JFrame implements FormGui {
             JOptionPane.showMessageDialog(null, "I know you aren't over 200 years old you piece of shit.\nI know you're lying. Stop it.");
             this.ageField.grabFocus();
             return false;
+        } else if (Integer.parseInt(this.ageField.getText()) < 15) {
+            JOptionPane.showMessageDialog(null, "You must be at least 15 years old to open an account here.");
+            ageField.grabFocus();
+            return false;
+        } else if (Integer.parseInt(this.ageField.getText()) > 14 && Integer.parseInt(this.ageField.getText()) < 18) {
+            JOptionPane.showMessageDialog(null, "You may create a bank account, but you will not be able to fill out credit information.");
+            ageField.grabFocus();
+            return true;
         }
 
         String firstPassword = String.valueOf(this.passwordField.getPassword());
