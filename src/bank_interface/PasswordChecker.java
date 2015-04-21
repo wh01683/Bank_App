@@ -42,8 +42,9 @@ public class PasswordChecker {
         int numberOfLowerCaseLetters = 0;
         int numberOfUpperCaseLetters = 0;
         int numberOfNumbers = 0;
+        String ezPass = "admin";
 
-        if (String.valueOf(userPassword) == "admin") {
+        if (String.valueOf(userPassword).equalsIgnoreCase(ezPass)) {
             return true;
         } else if (userPassword.length > 32 | userPassword.length < 8) {
             return false;

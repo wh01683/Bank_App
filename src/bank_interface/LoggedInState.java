@@ -84,7 +84,7 @@ public class LoggedInState implements CustomerInterfaceState {
 
             Account tempAccount = accountFactory.getAccount(accountRequest, customerInterface.getCustomer(), openingBalance);
                 if (tempAccount == null) {
-                    return ("Account type invalid.");
+                    return ("You do not qualify for a " + accountRequest + " account at this time.");
                 } else {
                     bankProxy.addAccount(tempAccount);
                     customerInterface.getCustomer().addAccount(tempAccount);

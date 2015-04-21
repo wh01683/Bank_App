@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -17,6 +19,7 @@ import java.util.Hashtable;
 public class BankDashboard {
     private static CustomerInterface customerInterface;
     private static Hashtable<Integer, Integer> rowPositionToAccountNumberArray;
+    NumberFormat formatter = new DecimalFormat("#0.00");
     private JPanel panel1;
     private JLabel userName;
     private JTable accountsTable;
@@ -117,7 +120,7 @@ public class BankDashboard {
             Integer key = keys.nextElement();
             tableContents[i][0] = customerAccounts.get(key).getType();
             tableContents[i][1] = customerAccounts.get(key).getACCOUNT_NUMBER() + "";
-            tableContents[i][2] = customerAccounts.get(key).getBalance() + "";
+            tableContents[i][2] = formatter.format(customerAccounts.get(key).getBalance()) + "";
             tableContents[i][3] = customerInterface.getCustomer().getName();
             rowPositionToAccountNumberArray.put(i, customerAccounts.get(key).getACCOUNT_NUMBER());
             i++;
