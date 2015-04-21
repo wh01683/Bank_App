@@ -135,9 +135,9 @@ public class CreditReport implements Serializable {
         }
     }
 
-    /**calcLenHistoryScore calculates the portion of the customer's credit score dependent on how long their credit
-     *                     history is. Here, I simply find the percentage of the customer's age that they've had credit
-     *                     and add that to 20 for their score. It's not correct, but produces reliable fake figures.
+    /**calculates the portion of the customer's credit score dependent on how long their credit
+     * history is. Here, I simply find the percentage of the customer's age that they've had credit
+     * and add that to 20 for their score. It's not correct, but produces reliable fake figures.
      * @return returns the history portion of the customer's credit score.*/
     private int calcLenHistoryScore() {
         //max is 120

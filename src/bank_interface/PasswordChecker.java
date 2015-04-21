@@ -43,7 +43,7 @@ public class PasswordChecker {
         int numberOfUpperCaseLetters = 0;
         int numberOfNumbers = 0;
 
-        if (userPassword.toString() == "admin") {
+        if (String.valueOf(userPassword) == "admin") {
             return true;
         } else if (userPassword.length > 32 | userPassword.length < 8) {
             return false;
