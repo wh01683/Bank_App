@@ -4,9 +4,12 @@ import acct.Account;
 import bank_interface.CustomerInterface;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Enumeration;
@@ -28,8 +31,8 @@ public class BankDashboard {
     private JButton closeButton;
     private JTextField openingBalanceField;
     private JComboBox accountSelection;
-    private JButton startTransactionButton;
     private JComboBox transactionSelection;
+    private JButton transactionButton;
     private JTextField transactionAmountField;
 
     public BankDashboard(CustomerInterface newCustomerInterface) {
@@ -68,10 +71,25 @@ public class BankDashboard {
             }
         });
 
-        this.startTransactionButton.addActionListener(new ActionListener() {
+        this.accountSelection.addMouseListener(new MouseInputAdapter() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                startTransaction();
+            public void mousePressed(MouseEvent mouseEvent) {
+                super.mousePressed(mouseEvent);
+                if (SwingUtilities.isRightMouseButton(mouseEvent)) {
+                    String[] trans = {"Deposit", "Withdraw", "Transfer"};
+                    JPopupMenu popupMenu = new JPopupMenu("Transactions");
+                    for (String s : trans) {
+                        popupMenu.add(s);
+                    }
+                    popupMenu.setLocation(MouseInfo.getPointerInfo().getLocation());
+//                    startTransaction((String)popupMenu.);
+
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+                super.mouseReleased(mouseEvent);
             }
         });
 
@@ -94,6 +112,13 @@ public class BankDashboard {
                     JOptionPane.showMessageDialog(null, "Must enter an opening balance value.");
                     openingBalanceField.grabFocus();
                 }
+            }
+        });
+
+        this.transactionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                startTransaction((String) transactionSelection.getSelectedItem());
             }
         });
     }
@@ -142,8 +167,8 @@ public class BankDashboard {
         accountsTable.setModel(model);
     }
 
-    public void startTransaction() {
-        String transactionChoice = (String) transactionSelection.getSelectedItem();
+    public void startTransaction(String transaction) {
+        String transactionChoice = transaction;
         Double transactionAmount = Double.parseDouble(transactionAmountField.getText());
         Integer toAccountNumber = rowPositionToAccountNumberArray.get(accountsTable.getSelectedRow() - 1);
         Integer fromAccountNumber = rowPositionToAccountNumberArray.get(accountsTable.getSelectedRow() - 1);
